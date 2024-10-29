@@ -1069,8 +1069,10 @@ angular
       // Theme support
       $scope.selectTheme = function (theme) {
         if (profile.get("uiTheme") !== theme) {
+          console.log('[UITHEME]==>'+theme);
           profile.set("uiTheme", theme);
-          //-- Shared variable for ace-editor blocks in "profile.js"
+      setTimeout(function(){
+            //-- Shared variable for ace-editor blocks in "profile.js"
           global.uiTheme = theme;
           //-- Load selected profile
           utils.loadProfile(profile);
@@ -1085,6 +1087,8 @@ angular
               });
             }
           );
+
+        } ,1000);
           //ICEpm.publishAt('all', 'ui.updateTheme', { uiTheme: theme });
         }
       };
