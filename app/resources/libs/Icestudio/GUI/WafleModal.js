@@ -6,7 +6,7 @@ class WafleModal{
     }
 
     waitingSeconds(seconds,title,msg){
-        const milis=Math.floor(seconds*1000);
+        const milis=parseInt(Math.floor(seconds*1000));
         console.log('WAIT==>',seconds,title,msg);
         let timerInterval;
         Swal.fire({
@@ -20,7 +20,7 @@ class WafleModal{
                 Swal.showLoading();
                 const timer = Swal.getPopup().querySelector("b");
                 timerInterval = setInterval(() => {
-                    timer.textContent = `${Swal.getTimerLeft()}`;
+                    timer.textContent = `${parseInt(Math.round(Swal.getTimerLeft()/1000))}`;
                 }, 100);
             },
             willClose: () => {
