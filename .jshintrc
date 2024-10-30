@@ -55,6 +55,7 @@
     "g": false,
     "V": false,
     "IceCollection":false,
-    "IceHD": false
+    "IceHD": false,
+    "WafleModal": false
   }
 }

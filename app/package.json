@@ -46,6 +46,7 @@
   "engines": {},
   "node": ">= 21.1.0",
   "dependencies": {
+
     "ace-builds": "~1.4.12",
     "adm-zip": "0.4.7",
     "alertifyjs": "~1.13.1",
@@ -87,7 +88,8 @@
     "svg-pan-zoom": "~3.4.1",
     "svgo": "~0.7.2",
     "tmp": "0.0.33",
-    "proper-lockfile": "^4.1.2"
+    "proper-lockfile": "^4.1.2",
+    "sweetalert2": "^11.14.4"
   },
   "readme": "../README.md",
   "keywords": [

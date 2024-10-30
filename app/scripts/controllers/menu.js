@@ -225,7 +225,7 @@ angular
 
         //-- Display the version notes, if the option is enabled or
         //-- if this is a newer version
-
+        console.log('VWINDOW',versionW,hasNewVersion,lastversionReview,_package.version);
         if (versionW === "yes" || hasNewVersion) {
 
           $scope.openVersionInfoWindow();
@@ -274,6 +274,7 @@ angular
           ":checked"
         );
 
+        console.log('VERSIONINFO',nodisplay);
         //-- Write the option to the profile file (so that it is remembered
         //--  after icestudio is closed)
         let option = (nodisplay) ? "no" : "yes";
@@ -1069,6 +1070,8 @@ angular
       // Theme support
       $scope.selectTheme = function (theme) {
         if (profile.get("uiTheme") !== theme) {
+          const modalWait = new WafleModal();
+            modalWait.waitingSeconds(3,gettextCatalog.getString('UI Theme'),gettextCatalog.getString('Wait for <b></b> seconds') );
           console.log('[UITHEME]==>'+theme);
           profile.set("uiTheme", theme);
       setTimeout(function(){
