@@ -81,6 +81,32 @@ angular.module('icestudio')
         });
     };
 
+    this.adaptToTheTop= function(data){
+        data.design.graph.blocks.forEach(block => { 
+         switch (block.type) {
+          case blocks.BASIC_INPUT:
+          case blocks.BASIC_OUTPUT:
+          case blocks.BASIC_OUTPUT_LABEL:
+          case blocks.BASIC_INPUT_LABEL:
+          
+                 if (typeof block.data.virtual === 'undefined') {
+                    block.data.virtual=true;
+                    block.data.pins= [{
+                        index: 0,
+                        name: null,
+                        value: null
+                    }];
+
+                 } 
+                break;
+         } 
+
+        });
+        return data;
+
+
+    };
+
     this.load = function (name, data) {
       var self = this;
       if (!checkVersion(data.version)) {
@@ -88,10 +114,11 @@ angular.module('icestudio')
         return;
       }
 
+      data = this.adaptToTheTop(data);
       project = _safeUpgradeVersion(data, name);
-      utils.approveProjectBlock(profile, project, true).then((result) => {
+      
+        utils.approveProjectBlock(profile, project, true).then((result) => {
         if (result === 'cancel') {
-          console.log('cancelLoad');
           utils.endBlockingTask();
           return;
         }
@@ -200,8 +227,8 @@ angular.module('icestudio')
       switch (data.version) {
         case common.VERSION:
         case '1.1':
-          project = data;
-          break;
+            project = data;
+              break;
         case '1.0':
           project = convert10To12(data);
           break;
@@ -353,6 +380,7 @@ angular.module('icestudio')
       var name = utils.basename(filepath);
      
       if (subModuleActive) {
+
         backupProject = utils.clone(project);
 
       } else {

@@ -1321,7 +1321,6 @@ angular.module('icestudio')
 
             // Update dependencies
             if (opt.deps !== false) {
-             console.log('DEPS',opt);
                 var types = this.findSubDependencies(p, common.allDependencies);
                 for (var t in types) {
                     p.dependencies[types[t]] = common.allDependencies[types[t]];

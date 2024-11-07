@@ -542,7 +542,7 @@ angular.module('icestudio')
 
         switch (instance.type) {
           case blocks.BASIC_INPUT:
-            return loadBasicInput(instance, disabled);
+              return loadBasicInput(instance, disabled);
 
           case blocks.BASIC_OUTPUT:
             return loadBasicOutput(instance, disabled);
@@ -794,6 +794,7 @@ angular.module('icestudio')
         var topPorts = [];
         var bottomPorts = [];
         let virtualBlock = new IceBlock({ cacheDirImg: common.IMAGE_CACHE_DIR });
+          
         instance.data = { ports: { in: [] } };
 
         for (i in block.design.graph.blocks) {

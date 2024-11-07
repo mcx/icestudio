@@ -1448,7 +1448,6 @@ angular.module('icestudio')
                     commandManager.stopListening();
 
                     self.clearAll();
-
                     let cells = graphToCells(design.graph, opt);
 
                     self.fitContent();
@@ -1572,7 +1571,7 @@ angular.module('icestudio')
                 _.each(_graph.blocks, function (blockInstance) {
 
 
-                    if (blockInstance.type !== false && blockInstance.type.indexOf('basic.') !== -1) {
+                    if (blockInstance.type !== false && blockInstance.type.indexOf('basic.') >-1) {
                         if (opt.reset &&
                             (blockInstance.type === blocks.BASIC_INPUT ||
                                 blockInstance.type === blocks.BASIC_OUTPUT)) {
@@ -1616,6 +1615,7 @@ angular.module('icestudio')
                             }
 
                         }
+
                         cell = blockforms.loadBasic(blockInstance, opt.disabled);
                     }
                     else {

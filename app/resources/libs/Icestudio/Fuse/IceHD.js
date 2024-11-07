@@ -51,7 +51,6 @@ class IceHD {
             // Is file
             basen = (b.indexOf('.') < 0) ? b : b.substr(0, b.lastIndexOf('.'));
         }
-        console.log(basen);
         return basen;
     }
 
