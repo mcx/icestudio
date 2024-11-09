@@ -59,9 +59,9 @@ angular.module('icestudio')
     this.open = function (filepath, emptyPath) {
       let _this=this;
       utils.beginBlockingTask();
-      setTimeout(function(){
+      //setTimeout(function(){
         _this._decoupledOpen(filepath,emptyPath);
-      },200);
+     // },200);
     };
 
     this._decoupledOpen = function(filepath,emptyPath){
@@ -134,17 +134,17 @@ angular.module('icestudio')
             gettextCatalog.getString('You can load it as it is or convert it to use the {{name}} board.', { name: utils.bold(common.selectedBoard.info.label) }),
             function () {
               // Load
-              setTimeout(function(){
+             // setTimeout(function(){
                 _load();
-              },100);
+             // },100);
             },
             function () {
               // Convert
-              setTimeout(function(){
+            //  setTimeout(function(){
                 project.design.board = common.selectedBoard.name;
 
                 _load(true, boardMigration(projectBoard, common.selectedBoard.name));
-              },100);
+              //},100);
             });
         }
         else {

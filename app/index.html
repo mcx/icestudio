@@ -1,412 +1,412 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!----------------------------------------------------------------------->
-<!-- INDEX HTML FILE --- Initial ENTRY POINT                           -->
-<!----------------------------------------------------------------------->
-<!-- Start sequence:                                                   -->
-<!--   * NW is executed. Icestudio is a NWjs application.              -->
-<!--   * NW creates the main display window  (a browser)               -->
-<!--   * NW loads this file into the window (index.html)               -->
-<!--   * index.html is processed and executed                          -->
-<!----------------------------------------------------------------------->
-<!-- index.html structure:                                             -->
-<!--   * CSS is loaded (for both internal and external dependencies)   -->
-<!--   * js files are loaded (both internal and external js files)     -->
-<!--   * The body contains the structure of the Icestudio GUI          -->
-<!----------------------------------------------------------------------->
-<!-- When the js files are executed, there is already a nw window      -->
-<!--   available                                                       -->
-<!-- All the js files have access to the nw object (which gives access -->
-<!-- to the nw API                                                     -->
-<!----------------------------------------------------------------------->
-<!-- JS ENTRY POINT:                                                   -->
-<!--   Icestudio depends on many .js files. The main JS file, which is -->
-<!--   initially executed, is app.js                                   -->
-<!-- If you want to understand the icestudio code, first have a look   -->
-<!-- to this index.html and then continue with app.js                  -->
-<!----------------------------------------------------------------------->
-<!-- NW documentation:                                                 -->
-<!-- https://nwjs.readthedocs.io/en/latest/                            -->
-<!----------------------------------------------------------------------->
+    <!----------------------------------------------------------------------->
+    <!-- INDEX HTML FILE --- Initial ENTRY POINT                           -->
+    <!----------------------------------------------------------------------->
+    <!-- Start sequence:                                                   -->
+    <!--   * NW is executed. Icestudio is a NWjs application.              -->
+    <!--   * NW creates the main display window  (a browser)               -->
+    <!--   * NW loads this file into the window (index.html)               -->
+    <!--   * index.html is processed and executed                          -->
+    <!----------------------------------------------------------------------->
+    <!-- index.html structure:                                             -->
+    <!--   * CSS is loaded (for both internal and external dependencies)   -->
+    <!--   * js files are loaded (both internal and external js files)     -->
+    <!--   * The body contains the structure of the Icestudio GUI          -->
+    <!----------------------------------------------------------------------->
+    <!-- When the js files are executed, there is already a nw window      -->
+    <!--   available                                                       -->
+    <!-- All the js files have access to the nw object (which gives access -->
+    <!-- to the nw API                                                     -->
+    <!----------------------------------------------------------------------->
+    <!-- JS ENTRY POINT:                                                   -->
+    <!--   Icestudio depends on many .js files. The main JS file, which is -->
+    <!--   initially executed, is app.js                                   -->
+    <!-- If you want to understand the icestudio code, first have a look   -->
+    <!-- to this index.html and then continue with app.js                  -->
+    <!----------------------------------------------------------------------->
+    <!-- NW documentation:                                                 -->
+    <!-- https://nwjs.readthedocs.io/en/latest/                            -->
+    <!----------------------------------------------------------------------->
 
-<head>
-  <title>Icestudio</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <head>
+        <title>Icestudio</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-  <!-- critical css, should be loaded as soon as possible -->
-  <style>
-    
-    /* -- Splash screen  */
-    #main-icestudio-load-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 9999999999999999;
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-      background-color: #305eac;
-      opacity: 1;
-      transition: opacity 1s ease;
-    }
-    
+        <!-- critical css, should be loaded as soon as possible -->
+        <style>
+
+/* -- Splash screen  */
+#main-icestudio-load-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999999999999999;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #305eac;
+    opacity: 1;
+    transition: opacity 1s ease;
+}
+
     #main-icestudio-load-wrapper img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
-      width:100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 100%;
     }
     .spinner-wrapper {
-      width:100%;
-      height:100vh;
-      position:fixed;
-      overflow:hidden;
-      top:0;left:0;
-      z-index:999;
-      display:none;
+        width:100%;
+        height:100vh;
+        position:fixed;
+        overflow:hidden;
+        top:0;left:0;
+        z-index:999;
+        display:none;
     }
     body.waiting .spinner-wrapper{
-      display:block;
+        display:block;
     }
     .spinner-wrapper--bg{
-      width:100%;
-      height:100vh;
-      position:absolute;
-      top:0;left:0;
-      overflow:hidden;
-      z-index:0;
-      background-color:#7ccff4;
-      opacity:0.4;
+        width:100%;
+        height:100vh;
+        position:absolute;
+        top:0;left:0;
+        overflow:hidden;
+        z-index:0;
+        background-color:#7ccff4;
+        opacity:0.4;
     }
     .spinner-wrapper--container{
-      position:absolute;
-      top:0;left:0;right:0;bottom:0;
-      margin:auto;
-      width:80px;
-      height:80px;
-      z-index:1;
+        position:absolute;
+        top:0;left:0;right:0;bottom:0;
+        margin:auto;
+        width:80px;
+        height:80px;
+        z-index:1;
     }
-  </style> 
+        </style> 
 
 
-  <!-- ************************************************************** -->
-  <!-- ******      Priority Styles                          ********* -->
-  <!-- ************************************************************** -->
-  <!-- Splash screen -->
-  <link rel="stylesheet" href="styles/splash.css" />
+        <!-- ************************************************************** -->
+        <!-- ******      Priority Styles                          ********* -->
+        <!-- ************************************************************** -->
+        <!-- Splash screen -->
+        <link rel="stylesheet" href="styles/splash.css" />
 
 
-  <!-- ************************************************************** -->
-  <!-- ******      External Styles                          ********* -->
-  <!-- ************************************************************** -->
+        <!-- ************************************************************** -->
+        <!-- ******      External Styles                          ********* -->
+        <!-- ************************************************************** -->
 
-  <!-- Jointjs: Visualize and interact with diagrams and graphs       -->
-  <!-- https://www.jointjs.com/opensource                             -->
-  <link rel="stylesheet" href="node_modules/jointjs/dist/joint.css" />
+        <!-- Jointjs: Visualize and interact with diagrams and graphs       -->
+        <!-- https://www.jointjs.com/opensource                             -->
+        <link rel="stylesheet" href="node_modules/jointjs/dist/joint.css" />
 
-  <!-- Bootstrap: Build fast, responsive sites with Bootstrap         -->
-  <!-- https://getbootstrap.com/                                      -->
-  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <!-- Bootstrap: Build fast, responsive sites with Bootstrap         -->
+        <!-- https://getbootstrap.com/                                      -->
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
 
-  <!-- Select2: The jQuery replacement for select boxes               -->
-  <!-- https://select2.org/                                           -->
-  <link rel="stylesheet" href="node_modules/select2/dist/css/select2.min.css" />
+        <!-- Select2: The jQuery replacement for select boxes               -->
+        <!-- https://select2.org/                                           -->
+        <link rel="stylesheet" href="node_modules/select2/dist/css/select2.min.css" />
 
-  <!-- Alertifyjs: A javascript framework for developing pretty       -->
-  <!-- browser dialogs and notifications                              -->
-  <!-- https://alertifyjs.com/                                        -->
-  <link rel="stylesheet" href="node_modules/alertifyjs/build/css/alertify.min.css" />
-  <link rel="stylesheet" href="node_modules/alertifyjs/build/css/themes/default.min.css" />
+        <!-- Alertifyjs: A javascript framework for developing pretty       -->
+        <!-- browser dialogs and notifications                              -->
+        <!-- https://alertifyjs.com/                                        -->
+        <link rel="stylesheet" href="node_modules/alertifyjs/build/css/alertify.min.css" />
+        <link rel="stylesheet" href="node_modules/alertifyjs/build/css/themes/default.min.css" />
 
-  <!-- Jexcel:  is a lightweight Vanilla JavaScript plugin to create  -->
-  <!-- amazing web-based interactive HTML tables and spreadsheets     -->
-  <!-- compatible with other spreadsheet software                     -->
-  <!-- https://github.com/jspreadsheet/ce                             -->
-  <link rel="stylesheet" href="node_modules/jexcel/dist/jexcel.css" />
+        <!-- Jexcel:  is a lightweight Vanilla JavaScript plugin to create  -->
+        <!-- amazing web-based interactive HTML tables and spreadsheets     -->
+        <!-- compatible with other spreadsheet software                     -->
+        <!-- https://github.com/jspreadsheet/ce                             -->
+        <link rel="stylesheet" href="node_modules/jexcel/dist/jexcel.css" />
 
-  <!-- jSuites: jSuites is a collection of lightweight common         -->
-  <!-- required javascript web components                             -->
-  <!-- https://github.com/jsuites/jsuites                             -->
-  <link rel="stylesheet" href="node_modules/jsuites/dist/jsuites.css" />
+        <!-- jSuites: jSuites is a collection of lightweight common         -->
+        <!-- required javascript web components                             -->
+        <!-- https://github.com/jsuites/jsuites                             -->
+        <link rel="stylesheet" href="node_modules/jsuites/dist/jsuites.css" />
 
-  <!-- sweetAlert                                                     -->
-  <!-- Beautiful popups                                               -->
-  <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css" />
+        <!-- sweetAlert                                                     -->
+        <!-- Beautiful popups                                               -->
+        <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css" />
 
-  <!-- ************************************************************** -->
-  <!-- ****    ICESTUDIO STYLES (Internal)                       **** -->
-  <!-- ************************************************************** -->
-  <!-- Fonts -->
-  <link rel="stylesheet" href="resources/fonts/Lato2OFLWeb/Lato/latofonts.css" />
-  <link rel="stylesheet" href="resources/fonts/fontawesome-free-5.15.1-web/css/all.min.css" />
+        <!-- ************************************************************** -->
+        <!-- ****    ICESTUDIO STYLES (Internal)                       **** -->
+        <!-- ************************************************************** -->
+        <!-- Fonts -->
+        <link rel="stylesheet" href="resources/fonts/Lato2OFLWeb/Lato/latofonts.css" />
+        <link rel="stylesheet" href="resources/fonts/fontawesome-free-5.15.1-web/css/all.min.css" />
 
-  <!-- Style for the markdown -->
-  <link rel="stylesheet" href="resources/viewers/markdown/css/github-markdown.css" />
-
-
+        <!-- Style for the markdown -->
+        <link rel="stylesheet" href="resources/viewers/markdown/css/github-markdown.css" />
 
 
-  <!-- FPGA resources style -->
-  <link rel="stylesheet" href="styles/design.css" />
 
-  <!-- Main UI -->
-  <link rel="stylesheet" href="styles/main.css" />
 
-  <!-- Main UI -->
-  <link rel="stylesheet" href="styles/ics-wm.css" />
+        <!-- FPGA resources style -->
+        <link rel="stylesheet" href="styles/design.css" />
 
-  <!-- Menu -->
-  <link rel="stylesheet" href="styles/menu.css" />
+        <!-- Main UI -->
+        <link rel="stylesheet" href="styles/main.css" />
 
-  <!-- Version window -->
-  <link rel="stylesheet" href="styles/version.css" />
+        <!-- Main UI -->
+        <link rel="stylesheet" href="styles/ics-wm.css" />
 
-</head>
+        <!-- Menu -->
+        <link rel="stylesheet" href="styles/menu.css" />
 
-<!---------------------------------------------------------------->
-<!-- ICESTUDIO GUI STRUCTURE                                    -->
-<!---------------------------------------------------------------->
+        <!-- Version window -->
+        <link rel="stylesheet" href="styles/version.css" />
 
-<!-- The ng-app directive tells Angularjs that this is the root -->
-<!-- element of the Angularjs application                       -->
-<body ng-app="icestudio">
+    </head>
 
-  <!------------------------------------------------------->
-  <!-- Initial load screen                               -->
-  <!-- It is shown every time a new Icestudio window     -->
-  <!-- is open (including the initial one)               -->
-  <!------------------------------------------------------->
-  <div id="main-icestudio-load-wrapper">
-    <div id="main-icestudio-load-wrapper--bar"></div>
+    <!---------------------------------------------------------------->
+    <!-- ICESTUDIO GUI STRUCTURE                                    -->
+    <!---------------------------------------------------------------->
 
-      <div class="splash-img-container">
-        <div class="splash-img-center">
-            <img src="resources/images/icestudio-github.svg" alt="icestudio splash">
+    <!-- The ng-app directive tells Angularjs that this is the root -->
+    <!-- element of the Angularjs application                       -->
+    <body ng-app="icestudio">
+
+        <!------------------------------------------------------->
+        <!-- Initial load screen                               -->
+        <!-- It is shown every time a new Icestudio window     -->
+        <!-- is open (including the initial one)               -->
+        <!------------------------------------------------------->
+        <div id="main-icestudio-load-wrapper">
+            <div id="main-icestudio-load-wrapper--bar"></div>
+
+            <div class="splash-img-container">
+                <div class="splash-img-center">
+                    <img src="resources/images/icestudio-github.svg" alt="icestudio splash">
+                </div>
+            </div>
         </div>
-      </div>
-  </div>
 
-  <!-------------------------------------------------------->
-  <!-- ICESTUDIO MAIN WINDOW                              -->
-  <!-------------------------------------------------------->
-  <div id="main-icestudio-wrapper">
+        <!-------------------------------------------------------->
+        <!-- ICESTUDIO MAIN WINDOW                              -->
+        <!-------------------------------------------------------->
+        <div id="main-icestudio-wrapper">
 
-    <!-- SPINNER: Normally hidden                    -->
-    <!-- It is used for showing activity to the user -->
-    <!-- The main interface is disabled and only the -->
-    <!-- animation is shown                          -->
-    <div class="spinner-wrapper">
-      <div class="spinner-wrapper--bg"></div>
-      <div class="spinner-wrapper--container">
-        <div class="sk-cube-grid">
-          <div class="sk-cube sk-cube1"></div>
-          <div class="sk-cube sk-cube2"></div>
-          <div class="sk-cube sk-cube3"></div>
-          <div class="sk-cube sk-cube4"></div>
-          <div class="sk-cube sk-cube5"></div>
-          <div class="sk-cube sk-cube6"></div>
-          <div class="sk-cube sk-cube7"></div>
-          <div class="sk-cube sk-cube8"></div>
-          <div class="sk-cube sk-cube9"></div>
+            <!-- SPINNER: Normally hidden                    -->
+            <!-- It is used for showing activity to the user -->
+            <!-- The main interface is disabled and only the -->
+            <!-- animation is shown                          -->
+            <div class="spinner-wrapper">
+                <div class="spinner-wrapper--bg"></div>
+                <div class="spinner-wrapper--container">
+                    <div class="sk-cube-grid">
+                        <div class="sk-cube sk-cube1"></div>
+                        <div class="sk-cube sk-cube2"></div>
+                        <div class="sk-cube sk-cube3"></div>
+                        <div class="sk-cube sk-cube4"></div>
+                        <div class="sk-cube sk-cube5"></div>
+                        <div class="sk-cube sk-cube6"></div>
+                        <div class="sk-cube sk-cube7"></div>
+                        <div class="sk-cube sk-cube8"></div>
+                        <div class="sk-cube sk-cube9"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ICESTUDIO MENU BAR, located at the top          -->
+            <!-- Associated to app/scripts/controllers/menu.js   -->
+            <div ng-include="'views/menu.html'"></div>
+
+            <!-- The rest of ICESTUDIO GUI:                      -->
+            <!--  * Information banners                          -->
+            <!--  * Label Finder popUp menu                      -->
+            <!--  * Basic Toolbox pop up menu                    -->
+            <!--  * PAPER: Main design board                     -->
+            <!--  * Bottom toolbar                               -->
+            <!----------------------------------------------------->
+            <!-- Associated to app/scripts/controllers/design.js -->
+            <div ng-include="'views/design.html'"></div>
+
         </div>
-      </div>
-    </div>
 
-    <!-- ICESTUDIO MENU BAR, located at the top          -->
-    <!-- Associated to app/scripts/controllers/menu.js   -->
-    <div ng-include="'views/menu.html'"></div>
+        <!-------------------------------------------------------------------->
+        <!-- IMPORTANT! The javascript files should be loaded at the end    -->
+        <!-- of the BODY, and in this order. DO NOT CHANGE THEIR LOCATION   -->
+        <!-- In this index file                                             -->
+        <!-------------------------------------------------------------------->
 
-    <!-- The rest of ICESTUDIO GUI:                      -->
-    <!--  * Information banners                          -->
-    <!--  * Label Finder popUp menu                      -->
-    <!--  * Basic Toolbox pop up menu                    -->
-    <!--  * PAPER: Main design board                     -->
-    <!--  * Bottom toolbar                               -->
-    <!----------------------------------------------------->
-    <!-- Associated to app/scripts/controllers/design.js -->
-    <div ng-include="'views/design.html'"></div>
+        <!-- ************************************************************** -->
+        <!-- ******      External Javascript modules              ********* -->
+        <!-- ************************************************************** -->
 
-  </div>
+        <!-- jquery: jQuery is a fast, small, and feature-rich JavaScript   -->
+        <!-- library                                                        -->
+        <!-- https://jquery.com/                                            -->
+        <script src="node_modules/jquery/dist/jquery.min.js"></script>
 
-  <!-------------------------------------------------------------------->
-  <!-- IMPORTANT! The javascript files should be loaded at the end    -->
-  <!-- of the BODY, and in this order. DO NOT CHANGE THEIR LOCATION   -->
-  <!-- In this index file                                             -->
-  <!-------------------------------------------------------------------->
+        <!-- jquery-resize: Resize elements easily                          -->
+        <!-- https://benalman.com/projects/jquery-resize-plugin/            -->
+        <script src="node_modules/cos-jquery-resize/jquery.ba-resize.min.js"></script>
 
-  <!-- ************************************************************** -->
-  <!-- ******      External Javascript modules              ********* -->
-  <!-- ************************************************************** -->
+        <!-- underscore: a JavaScript library that provides a whole mess of -->
+        <!-- useful functional programming helpers without extending any    -->
+        <!-- built-in objects                                               -->
+        <!-- https://underscorejs.org/                                      -->
+        <script src="node_modules/underscore/underscore.js"></script>
 
-  <!-- jquery: jQuery is a fast, small, and feature-rich JavaScript   -->
-  <!-- library                                                        -->
-  <!-- https://jquery.com/                                            -->
-  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+        <!-- backbone: Give your JS App some Backbone with Models, Views,   -->
+        <!-- Collections, and Events.                                       -->
+        <!-- https://backbonejs.org/                                        -->
+        <script src="node_modules/backbone/backbone.js"></script>
 
-  <!-- jquery-resize: Resize elements easily                          -->
-  <!-- https://benalman.com/projects/jquery-resize-plugin/            -->
-  <script src="node_modules/cos-jquery-resize/jquery.ba-resize.min.js"></script>
+        <!-- lodash: A modern JavaScript utility library delivering         -->
+        <!-- modularity, performance & extras.                              -->
+        <!-- https://lodash.com/                                            -->
+        <script src="node_modules/lodash/index.js"></script>
 
-  <!-- underscore: a JavaScript library that provides a whole mess of -->
-  <!-- useful functional programming helpers without extending any    -->
-  <!-- built-in objects                                               -->
-  <!-- https://underscorejs.org/                                      -->
-  <script src="node_modules/underscore/underscore.js"></script>
+        <!-- Jointjs: Visualize and interact with diagrams and graphs       -->
+        <!-- https://www.jointjs.com/opensource                             -->
+        <script src="node_modules/jointjs/dist/joint.js"></script>
 
-  <!-- backbone: Give your JS App some Backbone with Models, Views,   -->
-  <!-- Collections, and Events.                                       -->
-  <!-- https://backbonejs.org/                                        -->
-  <script src="node_modules/backbone/backbone.js"></script>
+        <!-- Bootstrap: Build fast, responsive sites with Bootstrap         -->
+        <!-- https://getbootstrap.com/                                      -->
+        <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
 
-  <!-- lodash: A modern JavaScript utility library delivering         -->
-  <!-- modularity, performance & extras.                              -->
-  <!-- https://lodash.com/                                            -->
-  <script src="node_modules/lodash/index.js"></script>
+        <!-- Select2: The jQuery replacement for select boxes               -->
+        <!-- https://select2.org/                                           -->
+        <script src="node_modules/select2/dist/js/select2.full.js"></script>
 
-  <!-- Jointjs: Visualize and interact with diagrams and graphs       -->
-  <!-- https://www.jointjs.com/opensource                             -->
-  <script src="node_modules/jointjs/dist/joint.js"></script>
+        <!-- Ace is a code editor written in JavaScript                     -->
+        <!-- https://github.com/ajaxorg/ace-builds                          -->
+        <script src="node_modules/ace-builds/src-min-noconflict/ace.js"></script>
+        <script src="node_modules/ace-builds/src-min-noconflict/theme-chrome.js"></script>
+        <script src="node_modules/ace-builds/src-min-noconflict/mode-verilog.js"></script>
 
-  <!-- Bootstrap: Build fast, responsive sites with Bootstrap         -->
-  <!-- https://getbootstrap.com/                                      -->
-  <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+        <!-- async: Higher-order functions and common patterns for          -->
+        <!-- asynchronous code                                              -->
+        <!-- https://caolan.github.io/async/v3/                             -->
+        <script src="node_modules/async/dist/async.min.js"></script>
 
-  <!-- Select2: The jQuery replacement for select boxes               -->
-  <!-- https://select2.org/                                           -->
-  <script src="node_modules/select2/dist/js/select2.full.js"></script>
+        <!-- svg-pan-zoom: Simple pan/zoom solution for SVGs in HTML. It    -->
+        <!-- adds events listeners for mouse scroll, double-click and pan   -->
+        <!-- https://github.com/bumbu/svg-pan-zoom#readme                   -->
+        <script src="node_modules/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
 
-  <!-- Ace is a code editor written in JavaScript                     -->
-  <!-- https://github.com/ajaxorg/ace-builds                          -->
-  <script src="node_modules/ace-builds/src-min-noconflict/ace.js"></script>
-  <script src="node_modules/ace-builds/src-min-noconflict/theme-chrome.js"></script>
-  <script src="node_modules/ace-builds/src-min-noconflict/mode-verilog.js"></script>
+        <!-- Alertifyjs: A javascript framework for developing pretty       -->
+        <!-- browser dialogs and notifications                              -->
+        <!-- https://alertifyjs.com/                                        -->
+        <script src="node_modules/alertifyjs/build/alertify.js"></script>
 
-  <!-- async: Higher-order functions and common patterns for          -->
-  <!-- asynchronous code                                              -->
-  <!-- https://caolan.github.io/async/v3/                             -->
-  <script src="node_modules/async/dist/async.min.js"></script>
+        <!-- snapsvg: The JavaScript SVG library for the modern web         -->
+        <!-- http://snapsvg.io/                                             -->
+        <script src="node_modules/snapsvg/dist/snap.svg-min.js"></script>
 
-  <!-- svg-pan-zoom: Simple pan/zoom solution for SVGs in HTML. It    -->
-  <!-- adds events listeners for mouse scroll, double-click and pan   -->
-  <!-- https://github.com/bumbu/svg-pan-zoom#readme                   -->
-  <script src="node_modules/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
+        <!-- jSuites: a collection of lightweight common required           -->
+        <!-- javascript web components                                      -->
+        <!-- https://www.npmjs.com/package/jsuites                          -->
+        <script src="node_modules/jsuites/dist/jsuites.js"></script>
 
-  <!-- Alertifyjs: A javascript framework for developing pretty       -->
-  <!-- browser dialogs and notifications                              -->
-  <!-- https://alertifyjs.com/                                        -->
-  <script src="node_modules/alertifyjs/build/alertify.js"></script>
+        <!-- jexcel: Jspreadsheet CE is a lightweight Vanilla JavaScript    -->
+        <!-- plugin to create amazing web-based interactive HTML tables     -->
+        <!-- and spreadsheets compatible with other spreadsheet software    -->
+        <!-- https://github.com/jspreadsheet/ce                             -->
+        <script src="node_modules/jexcel/dist/jexcel.js"></script>
 
-  <!-- snapsvg: The JavaScript SVG library for the modern web         -->
-  <!-- http://snapsvg.io/                                             -->
-  <script src="node_modules/snapsvg/dist/snap.svg-min.js"></script>
+        <!-- mustache: a logic-less template syntax. It can be used for     -->
+        <!-- html, config files, source code - anything. It works by        -->
+        <!-- expanding tags in a template using values provided in a hash   -->
+        <!-- object                                                         -->
+        <!-- https://github.com/janl/mustache.js                            -->
+        <script src="node_modules/mustache/mustache.min.js"></script>
 
-  <!-- jSuites: a collection of lightweight common required           -->
-  <!-- javascript web components                                      -->
-  <!-- https://www.npmjs.com/package/jsuites                          -->
-  <script src="node_modules/jsuites/dist/jsuites.js"></script>
+        <!-- ************************************************************** -->
+        <!-- ******      ICESTUDIO Javascript modules             ********* -->
+        <!-- ************************************************************** -->
 
-  <!-- jexcel: Jspreadsheet CE is a lightweight Vanilla JavaScript    -->
-  <!-- plugin to create amazing web-based interactive HTML tables     -->
-  <!-- and spreadsheets compatible with other spreadsheet software    -->
-  <!-- https://github.com/jspreadsheet/ce                             -->
-  <script src="node_modules/jexcel/dist/jexcel.js"></script>
+        <!-- New components (Refactored) -->
+        <script src="resources/libs/Icestudio/Core/IceBlock.js"></script>
+        <script src="resources/libs/Icestudio/Core/IceCollection.js"></script>
+        <script src="resources/libs/Icestudio/Fuse/IceHD.js"></script>
+        <script src="resources/libs/Icestudio/Network/WafleRemoteFile.js"></script>
+        <script src="resources/libs/Icestudio/GUI/WafleTemplate.js"></script>
+        <script src="resources/libs/Icestudio/GUI/Widgets/WafleUIWindow.js"></script>
+        <script src="resources/libs/Icestudio/GUI/Widgets/WafleUITree.js"></script>
+        <script src="resources/libs/Icestudio/GUI/WafleGUI.js"></script>
+        <script src="resources/libs/Icestudio/GUI/WafleModal.js"></script>
+        <script src="resources/libs/Icestudio/GUI/WafleWindowManager.js"></script>
+        <script src="resources/libs/Icestudio/Log/IceLogger.js"></script>
+        <script src="resources/libs/Icestudio/Crypto/UniqueIdGenerator.js"></script>
+        <script src="resources/libs/Icestudio/Plugin/WaflePlugin.js"></script>
+        <script src="resources/libs/Icestudio/Plugin/WaflePluginExtService.js"></script>
+        <script src="resources/libs/Icestudio/Plugin/WaflePluginExtWindow.js"></script>
+        <script src="resources/libs/Icestudio/Plugin/WaflePluginExtEmbeddedWindowed.js"></script>
+        <script src="resources/libs/Icestudio/Plugin/WaflePluginExtEmbedded.js"></script>
+        <script src="resources/libs/Icestudio/Services/WafleEventBus.js"></script>
+        <script src="resources/libs/Icestudio/Services/WaflePluginManager.js"></script>
+        <script src="resources/libs/Icestudio/Icestudio.js"></script>
+        <script src="resources/libs/iceprofiler.js"></script>
+        <script src="resources/libs/iceparametrichelper.js"></script>
 
-  <!-- mustache: a logic-less template syntax. It can be used for     -->
-  <!-- html, config files, source code - anything. It works by        -->
-  <!-- expanding tags in a template using values provided in a hash   -->
-  <!-- object                                                         -->
-  <!-- https://github.com/janl/mustache.js                            -->
-  <script src="node_modules/mustache/mustache.min.js"></script>
+        <!-- angularjs: AngularJS lets you extend HTML vocabulary for your  -->
+        <!-- application. The resulting environment is extraordinarily      -->
+        <!-- expressive, readable, and quick to develop                     -->
+        <!-- https://angularjs.org/                                         -->
+        <script src="node_modules/angular/angular.js"></script>
+        <script src="node_modules/angular-route/angular-route.js"></script>
+        <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+        <script src="node_modules/angular-gettext/dist/angular-gettext.min.js"></script>
+        <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
-  <!-- ************************************************************** -->
-  <!-- ******      ICESTUDIO Javascript modules             ********* -->
-  <!-- ************************************************************** -->
-
-  <!-- New components (Refactored) -->
-  <script src="resources/libs/Icestudio/Core/IceBlock.js"></script>
-  <script src="resources/libs/Icestudio/Core/IceCollection.js"></script>
-  <script src="resources/libs/Icestudio/Fuse/IceHD.js"></script>
-  <script src="resources/libs/Icestudio/Network/WafleRemoteFile.js"></script>
-  <script src="resources/libs/Icestudio/GUI/WafleTemplate.js"></script>
-  <script src="resources/libs/Icestudio/GUI/Widgets/WafleUIWindow.js"></script>
-  <script src="resources/libs/Icestudio/GUI/Widgets/WafleUITree.js"></script>
-  <script src="resources/libs/Icestudio/GUI/WafleGUI.js"></script>
-  <script src="resources/libs/Icestudio/GUI/WafleModal.js"></script>
-  <script src="resources/libs/Icestudio/GUI/WafleWindowManager.js"></script>
-  <script src="resources/libs/Icestudio/Log/IceLogger.js"></script>
-  <script src="resources/libs/Icestudio/Crypto/UniqueIdGenerator.js"></script>
-  <script src="resources/libs/Icestudio/Plugin/WaflePlugin.js"></script>
-  <script src="resources/libs/Icestudio/Plugin/WaflePluginExtService.js"></script>
-  <script src="resources/libs/Icestudio/Plugin/WaflePluginExtWindow.js"></script>
-  <script src="resources/libs/Icestudio/Plugin/WaflePluginExtEmbeddedWindowed.js"></script>
-  <script src="resources/libs/Icestudio/Plugin/WaflePluginExtEmbedded.js"></script>
-  <script src="resources/libs/Icestudio/Services/WafleEventBus.js"></script>
-  <script src="resources/libs/Icestudio/Services/WaflePluginManager.js"></script>
-  <script src="resources/libs/Icestudio/Icestudio.js"></script>
-  <script src="resources/libs/iceprofiler.js"></script>
-  <script src="resources/libs/iceparametrichelper.js"></script>
-
-  <!-- angularjs: AngularJS lets you extend HTML vocabulary for your  -->
-  <!-- application. The resulting environment is extraordinarily      -->
-  <!-- expressive, readable, and quick to develop                     -->
-  <!-- https://angularjs.org/                                         -->
-  <script src="node_modules/angular/angular.js"></script>
-  <script src="node_modules/angular-route/angular-route.js"></script>
-  <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
-  <script src="node_modules/angular-gettext/dist/angular-gettext.min.js"></script>
-  <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
-
-  <!---------------------------------------------->
-  <!-- Icestudio app ENTRY POINT                -->
-  <!---------------------------------------------->
-  <script src="scripts/app.js"></script>
+        <!---------------------------------------------->
+        <!-- Icestudio app ENTRY POINT                -->
+        <!---------------------------------------------->
+        <script src="scripts/app.js"></script>
 
 
-  <!---------------------------------------------->
-  <!-- Icestudio javascript modules             -->
-  <!---------------------------------------------->
-  <!-- Definition of external modules -->
-  <script src="scripts/factories/error.js"></script>
-  <script src="scripts/factories/joint.js"></script>
-  <script src="scripts/factories/node.js"></script>
-  <script src="scripts/factories/window.js"></script>
+        <!---------------------------------------------->
+        <!-- Icestudio javascript modules             -->
+        <!---------------------------------------------->
+        <!-- Definition of external modules -->
+        <script src="scripts/factories/error.js"></script>
+        <script src="scripts/factories/joint.js"></script>
+        <script src="scripts/factories/node.js"></script>
+        <script src="scripts/factories/window.js"></script>
 
-  <!-- js files associated to html code     -->
-  <!-- They contain the callback functions  -->
-  <script src="scripts/controllers/design.js"></script>
-  <script src="scripts/controllers/menu.js"></script>
+        <!-- js files associated to html code     -->
+        <!-- They contain the callback functions  -->
+        <script src="scripts/controllers/design.js"></script>
+        <script src="scripts/controllers/menu.js"></script>
 
-  <!-- Special menus  -->
-  <script src="scripts/directives/menuboard.js"></script>
-  <script src="scripts/directives/menutree.js"></script>
+        <!-- Special menus  -->
+        <script src="scripts/directives/menuboard.js"></script>
+        <script src="scripts/directives/menutree.js"></script>
 
-  <!-- js files related to joint (the graphical library)  -->
-  <!-- used for drawing the circuits                      -->
-  <script src="scripts/graphics/joint.command.js"></script>
-  <script src="scripts/graphics/joint.connectors.js"></script>
-  <script src="scripts/graphics/joint.routers.js"></script>
-  <script src="scripts/graphics/joint.selection.js"></script>
-  <script src="scripts/graphics/joint.shapes.js"></script>
+        <!-- js files related to joint (the graphical library)  -->
+        <!-- used for drawing the circuits                      -->
+        <script src="scripts/graphics/joint.command.js"></script>
+        <script src="scripts/graphics/joint.connectors.js"></script>
+        <script src="scripts/graphics/joint.routers.js"></script>
+        <script src="scripts/graphics/joint.selection.js"></script>
+        <script src="scripts/graphics/joint.shapes.js"></script>
 
-  <!-- Other internal support libraries -->
-  <script src="scripts/services/blockforms.js"></script>
-  <script src="scripts/services/boards.js"></script>
-  <script src="scripts/services/utils.js"></script>
-  <script src="scripts/services/blocks.js"></script>
-  <script src="scripts/services/forms.js"></script>
-  <script src="scripts/services/common.js"></script>
-  <script src="scripts/services/compiler.js"></script>
-  <script src="scripts/services/drivers.js"></script>
-  <script src="scripts/services/graph.js"></script>
-  <script src="scripts/services/profile.js"></script>
-  <script src="scripts/services/project.js"></script>
-  <script src="scripts/services/collections.js"></script>
-  <script src="scripts/services/shortcuts.js"></script>
-  <script src="scripts/services/tools.js"></script>
+        <!-- Other internal support libraries -->
+        <script src="scripts/services/blockforms.js"></script>
+        <script src="scripts/services/boards.js"></script>
+        <script src="scripts/services/utils.js"></script>
+        <script src="scripts/services/blocks.js"></script>
+        <script src="scripts/services/forms.js"></script>
+        <script src="scripts/services/common.js"></script>
+        <script src="scripts/services/compiler.js"></script>
+        <script src="scripts/services/drivers.js"></script>
+        <script src="scripts/services/graph.js"></script>
+        <script src="scripts/services/profile.js"></script>
+        <script src="scripts/services/project.js"></script>
+        <script src="scripts/services/collections.js"></script>
+        <script src="scripts/services/shortcuts.js"></script>
+        <script src="scripts/services/tools.js"></script>
 
-</body>
+    </body>
 </html>

@@ -220,7 +220,7 @@ angular
       setTimeout(function () {
           $("#main-icestudio-load-wrapper").addClass("loaded");
           $("#main-icestudio-load-wrapper").removeClass("fade-loaded");
-        }, 1000);
+        }, 2000);
       //}, 1000);
     });
     

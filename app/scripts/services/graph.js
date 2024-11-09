@@ -31,8 +31,9 @@ angular.module('icestudio')
                  between modules, we fix with the new engine , meanwhile this works --*/
             let _this=this;
             $('body').on('Graph::updateWires',function(){
-                   setTimeout(function(){ _this.updateWires();
-                   },200);
+                  // setTimeout(function(){ 
+                       _this.updateWires();
+                 //  },2000);
             }); 
         
             //-- ZOOM constants
@@ -1461,11 +1462,12 @@ angular.module('icestudio')
                         commandManager.listen();
                     }
 
+                                    self.fitContent();
                     if (callback) {
                         callback();
                     }
 
-                    self.fitContent();
+
                     return true;
                 }
 
