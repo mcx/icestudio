@@ -59,9 +59,10 @@ angular.module('icestudio')
     this.open = function (filepath, emptyPath) {
       let _this=this;
       utils.beginBlockingTask();
-      //setTimeout(function(){
+      //-- Timeout needed in windows systems
+      setTimeout(function(){
         _this._decoupledOpen(filepath,emptyPath);
-     // },200);
+       },500);
     };
 
     this._decoupledOpen = function(filepath,emptyPath){
