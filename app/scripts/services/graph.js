@@ -557,7 +557,7 @@ angular.module('icestudio')
                 function checkInsideViewBox(view, x, y) {
                     let $box = $(view.$box[0]);
                     let position = $box.position();
-                    let rbox = g.rect(position.left, position.top, $box.width(), $box.height());
+                    let rbox = g.rect(position.left, position.top, $box.width()*state.zoom, $box.height()*state.zoom);
                     return rbox.containsPoint({
                         x: x * state.zoom + state.pan.x,
                         y: y * state.zoom + state.pan.y

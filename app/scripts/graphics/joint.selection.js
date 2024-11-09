@@ -165,13 +165,13 @@ joint.ui.SelectionView = Backbone.View.extend({
             top: this._offsetY,
         });
         /*-- unComment for debugging purpouses
-        */
+         *
           console.table({'client':{x:this._clientX,y:this._clientY},
                      'scroll':{x:paperScrollLeft,y:paperScrollTop},
                      'offsetP':{x:paperOffset.left,y:paperOffset.top},
                      'offset':{x:this._offsetX,y:this._offsetY}
                     });
-                    
+        */          
     },
 
 
