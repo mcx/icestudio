@@ -31,9 +31,9 @@ angular.module('icestudio')
                  between modules, we fix with the new engine , meanwhile this works --*/
             let _this=this;
             $('body').on('Graph::updateWires',function(){
-                 setTimeout(function(){ 
+                 //setTimeout(function(){ 
                        _this.updateWires();
-                   },750);
+                   //},1200);
             }); 
         
             //-- ZOOM constants
@@ -467,8 +467,9 @@ angular.module('icestudio')
                             self.addingDraggableBlock = false;
                             processReplaceBlock(selection.at(0));
                             disableSelected();
-                            updateWiresOnObstacles();
+                            updateWiresOnObstacles().then(() => {
                             graph.trigger('batch:stop');
+                            }); 
                         }
                         else {
                             // Toggle selected cell
@@ -870,7 +871,7 @@ angular.module('icestudio')
                 updateWiresOnObstacles();
             };
 
-            function updateWiresOnObstacles() {
+            function __updateWiresOnObstacles() {
                 let cells = graph.getCells();
 
                 //_.each(cells, function (cell) {
@@ -880,6 +881,14 @@ angular.module('icestudio')
                     }
                 }
             }
+            function updateWiresOnObstacles() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      __updateWiresOnObstacles();
+      resolve(); // Resuelve la promesa después de ejecutar la función
+    }, 1000); // Espera de 1 segundo
+  });
+} 
 
             this.setBoardRules = function (rules) {
                 let cells = graph.getCells();
