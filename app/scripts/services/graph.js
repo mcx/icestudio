@@ -27,13 +27,9 @@ angular.module('icestudio')
             window
         ) {
 
-            /*-- This is a temporal trick to maintain wires ordered and avoid anoing wire rumble when navigate
-                 between modules, we fix with the new engine , meanwhile this works --*/
             let _this=this;
             $('body').on('Graph::updateWires',function(){
-                 //setTimeout(function(){ 
                        _this.updateWires();
-                   //},1200);
             }); 
         
             //-- ZOOM constants

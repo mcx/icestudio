@@ -1525,10 +1525,15 @@ angular.module('icestudio')
         this.endBlockingTask = function () {
 
             $('body').trigger('Graph::updateWires');
+            $(".code-editor.ace_editor").each(function() {
+                                const editor = ace.edit(this); 
+                                editor.resize();                
+            });
+
             setTimeout(function(){
                 angular.element('#menu').removeClass('is-disabled');
                 $('body').removeClass('waiting');
-            },750); 
+            },1000); 
         };
 
         this.isFunction = function (functionToCheck) {
