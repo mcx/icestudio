@@ -55,9 +55,16 @@ angular
 
             do {
               graph.breadcrumbs.pop();
+              common.submoduleHeap.pop();
               item = graph.breadcrumbs.slice(-1)[0];
             }
             while (selectedItem !== item);
+            if(common.submoduleHeap.length>0){
+                const last=common.submoduleHeap.length - 1;
+                common.submoduleId=common.submoduleHeap[last].id;
+                common.submoduleUID=common.submoduleHeap[last].uid;
+            }
+
             loadSelectedGraph();
           }
         }
@@ -67,8 +74,13 @@ angular
         if (!$scope.isNavigating) {
           $scope.isNavigating = true;
           graph.breadcrumbs.pop();
-
-          loadSelectedGraph();
+            common.submoduleHeap.pop();
+            if(common.submoduleHeap.length>0){
+                const last=common.submoduleHeap.length - 1;
+                common.submoduleId=common.submoduleHeap[last].id;
+                common.submoduleUID=common.submoduleHeap[last].uid;
+            }
+            loadSelectedGraph();
         }
       };
 
@@ -112,7 +124,6 @@ angular
             tmp = utils.clone(common.allDependencies[block.type]);
             tmp.design.graph = p.design.graph;
             /*var hId = utils.dependencyID(tmp);*/
-
             var hId = block.type;
             common.allDependencies[hId] = tmp;
             $scope.toRestore = hId;
@@ -152,7 +163,6 @@ angular
         var design = false;
         var i = 0;
         if (n === 1) {
-
           design = project.get('design');
           opt.disabled = false;
           if ($scope.toRestore !== false &&
@@ -190,7 +200,6 @@ angular
             }
             $scope.toRestore = false;
           }
-
           graph.fitContent();
           graph.resetView();
           graph.loadDesign(dependency.design, opt, function () {
@@ -203,21 +212,30 @@ angular
 
       $rootScope.$on('navigateProject', function (event, args) {
         var opt = { disabled: true };
+        if(typeof common.submoduleHeap === 'undefined'){
+            common.submoduleHeap=[];
+        }
+        let heap={id:false,uid:false};
         if (typeof args.submodule !== 'undefined') {
 
           common.submoduleId = args.submodule;
-
+            heap.id=args.submodule;
         }
         if (typeof args.submoduleId !== 'undefined') {
 
           common.submoduleUID = args.submoduleId;
 
+            heap.uid=args.submoduleId;
         }
+
+        if(heap.id !== false || heap.uid !== false) {
+          common.submoduleHeap.push(heap);
+        }
+
         if (typeof args.editMode !== 'undefined') {
 
           opt.disabled = args.editMode;
         }
-
         if (args.update) {
           graph.resetView();
           project.update({ deps: false }, function () {

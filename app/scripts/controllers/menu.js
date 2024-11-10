@@ -998,6 +998,7 @@ angular
 
             function getProjectInformation() {
                 var p = false;
+                console.log('INFO:',subModuleActive,common);
                 if (
                     subModuleActive &&
                     typeof common.submoduleId !== "undefined" &&
