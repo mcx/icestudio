@@ -33,7 +33,7 @@ angular.module('icestudio')
             $('body').on('Graph::updateWires',function(){
                  setTimeout(function(){ 
                        _this.updateWires();
-                   },100);
+                   },750);
             }); 
         
             //-- ZOOM constants

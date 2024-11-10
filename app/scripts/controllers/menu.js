@@ -981,9 +981,10 @@ angular
                 utils.projectinfoprompt(values, function (evt, newValues) {
                     if (!_.isEqual(values, newValues)) {
                         if (
-                            subModuleActive &&
-                            typeof common.submoduleId !== "undefined" &&
-                            typeof common.allDependencies[common.submoduleId] !== "undefined"
+                              typeof common.submoduleHeap !== 'undefined' &&
+                              common.submoduleHeap.length>0
+     
+
                         ) {
                             graph.setBlockInfo(values, newValues, common.submoduleId);
                         } else {
@@ -1000,9 +1001,8 @@ angular
                 var p = false;
                 console.log('INFO:',subModuleActive,common);
                 if (
-                    subModuleActive &&
-                    typeof common.submoduleId !== "undefined" &&
-                    typeof common.allDependencies[common.submoduleId] !== "undefined"
+                    typeof common.submoduleHeap !== 'undefined' &&
+                    common.submoduleHeap.length>0
                 ) {
                     p = common.allDependencies[common.submoduleId].package;
                 } else {
