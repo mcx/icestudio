@@ -1525,9 +1525,12 @@ angular.module('icestudio')
         this.endBlockingTask = function () {
 
             $('body').trigger('Graph::updateWires');
+            console.log('EDITORES');
             $(".code-editor.ace_editor").each(function() {
                                 const editor = ace.edit(this); 
-                                editor.resize();                
+                setTimeout(() => {
+                                editor.resize();      
+                    }, 300); 
             });
 
             setTimeout(function(){
