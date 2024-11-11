@@ -228,14 +228,25 @@ function iceSleepMs(ms) {
 async function initAfterLoad() {
     await iceSleepMs(1000); //-- this custom 1s wait smooth the loading screen
 
-    $("#main-icestudio-load-wrapper").addClass("fade-loaded");
-    $("#main-icestudio-wrapper").addClass("loaded");
     angular.element(document).ready(function() {
 
-        $("#main-icestudio-load-wrapper").addClass("loaded");
-        $("#main-icestudio-load-wrapper").removeClass("fade-loaded");
+
+  const observer = new MutationObserver(() => {
+    requestAnimationFrame(() => {
+        $("#main-icestudio-load-wrapper").addClass("fade-loaded");
+        setTimeout(function(){
+            $("#main-icestudio-load-wrapper").addClass("loaded");
+        },500);
         iceStudioReady=true;
+
+        observer.disconnect(); // Detener el observador después de ocultar el splash
     });
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+
+
+          });
 }
 
 //-- Remove loaders when app is fully loaded
