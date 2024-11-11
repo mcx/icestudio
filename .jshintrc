@@ -24,6 +24,7 @@
   "globals": { 
     "iceStudio":false,
     "Icestudio":false,
+    "iceStudioReady":false,
     "domCache":false,
     "iprof":false,
     "IceProfiler":false,

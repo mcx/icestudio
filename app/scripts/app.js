@@ -230,12 +230,13 @@ async function initAfterLoad() {
 
     $("#main-icestudio-load-wrapper").addClass("fade-loaded");
     $("#main-icestudio-wrapper").addClass("loaded");
-angular.element(document).ready(function() {
+    angular.element(document).ready(function() {
 
-    $("#main-icestudio-load-wrapper").addClass("loaded");
-    $("#main-icestudio-load-wrapper").removeClass("fade-loaded");
-    iceStudioReady=true;
-});
+        $("#main-icestudio-load-wrapper").addClass("loaded");
+        $("#main-icestudio-load-wrapper").removeClass("fade-loaded");
+        iceStudioReady=true;
+    });
 }
+
 //-- Remove loaders when app is fully loaded
 initAfterLoad();

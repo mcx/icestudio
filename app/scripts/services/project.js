@@ -58,11 +58,12 @@ angular.module('icestudio')
     
     this.waitForIcestudioReady=function(){
 
-        if(iceStudioReady) return true;
-
+        if(iceStudioReady){
+            return true;
+        }
         return false;
 
-    }
+    };
     this.open = function (filepath, emptyPath) {
       let _this=this;
       utils.beginBlockingTask();
