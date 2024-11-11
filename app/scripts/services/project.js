@@ -55,14 +55,28 @@ angular.module('icestudio')
         project[key] = obj;
       }
     };
+    
+    this.waitForIcestudioReady=function(){
 
+        if(iceStudioReady) return true;
+
+        return false;
+
+    }
     this.open = function (filepath, emptyPath) {
       let _this=this;
       utils.beginBlockingTask();
       //-- Timeout needed in windows systems
-      setTimeout(function(){
+        if(this.waitForIcestudioReady()){
+      //setTimeout(function(){
         _this._decoupledOpen(filepath,emptyPath);
-       },500);
+        }else{
+            setTimeout(function(){
+
+                _this.open(filepath,emptyPath);
+            },300);
+        } 
+       //},500);
     };
 
     this._decoupledOpen = function(filepath,emptyPath){

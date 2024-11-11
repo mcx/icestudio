@@ -22,6 +22,7 @@ var iceStudio = new Icestudio();
 //-- The log file by default is "icestudio.log", located in the
 //-- user home folder
 var iceConsole = new IceLogger();
+var iceStudioReady=false;
 
 angular
     .module("icestudio", ["ui.bootstrap", "ngRoute", "gettext"])
@@ -219,11 +220,6 @@ angular
             console.log("->DEBUG: app.js: END");
         });
 
-function waitForLoad() {
-    return new Promise((resolve) => {
-        window.addEventListener("load", resolve);
-    });
-}
 
 function iceSleepMs(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -234,10 +230,12 @@ async function initAfterLoad() {
 
     $("#main-icestudio-load-wrapper").addClass("fade-loaded");
     $("#main-icestudio-wrapper").addClass("loaded");
-    
-    await waitForLoad();
+angular.element(document).ready(function() {
+
     $("#main-icestudio-load-wrapper").addClass("loaded");
     $("#main-icestudio-load-wrapper").removeClass("fade-loaded");
+    iceStudioReady=true;
+});
 }
 //-- Remove loaders when app is fully loaded
 initAfterLoad();
