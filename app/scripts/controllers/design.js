@@ -63,7 +63,11 @@ angular
                 const last=common.submoduleHeap.length - 1;
                 common.submoduleId=common.submoduleHeap[last].id;
                 common.submoduleUID=common.submoduleHeap[last].uid;
+                iceStudio.bus.events.publish('Navigation::ReadOnly');
+            }else{
+                iceStudio.bus.events.publish('Navigation::ReadWrite');
             }
+            
 
             loadSelectedGraph();
           }
@@ -79,13 +83,16 @@ angular
                 const last=common.submoduleHeap.length - 1;
                 common.submoduleId=common.submoduleHeap[last].id;
                 common.submoduleUID=common.submoduleHeap[last].uid;
+                iceStudio.bus.events.publish('Navigation::ReadOnly');
+            }else{
+
+                iceStudio.bus.events.publish('Navigation::ReadWrite');
             }
             loadSelectedGraph();
         }
       };
 
       $scope.editModeToggle = function ($event) {
-
         var btn = $event.currentTarget;
 
         if (!$scope.isNavigating) {
@@ -95,6 +102,7 @@ angular
           var lockImg = false;
           var lockImgSrc = false;
           if (common.isEditingSubmodule) {
+
             lockImg = $('img', btn);
             lockImgSrc = lockImg.attr('data-lock');
             lockImg[0].src = lockImgSrc;
@@ -138,7 +146,9 @@ angular
             rw = false;
             common.isEditingSubmodule = true;
             subModuleActive = true;
+
           }
+
 
           $rootScope.$broadcast('navigateProject', {
             update: false,
@@ -238,6 +248,7 @@ angular
         }
         if (args.update) {
           graph.resetView();
+
           project.update({ deps: false }, function () {
             graph.loadDesign(args.project.design, opt, function () {
               utils.endBlockingTask();
@@ -261,6 +272,13 @@ angular
           common.forceBack = false;
           $scope.breadcrumbsBack();
         }
+
+          if (common.isEditingSubmodule || common.submoduleHeap.length===0){
+            iceStudio.bus.events.publish('Navigation::ReadWrite');
+          }else{
+
+            iceStudio.bus.events.publish('Navigation::ReadOnly');
+          }
 
       });
 

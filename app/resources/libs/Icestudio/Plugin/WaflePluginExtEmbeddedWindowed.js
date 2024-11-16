@@ -18,6 +18,7 @@ class WaflePluginExtEmbeddedWindowed extends WaflePlugin {
             console.log('Plugin is running');
         } else {
 
+            console.log('Windowed plugin ',this.uuid);
             iceStudio.bus.events.subscribe(`${this.uuid}::Terminate`,'terminate',this,this.uuid);
             this.running = true;
             let _this = this;
@@ -94,6 +95,7 @@ class WaflePluginExtEmbeddedWindowed extends WaflePlugin {
             });
         }
     }//--END run
+
 
     terminate(){
         iceStudio.gui.removeNode(this.dom.host);

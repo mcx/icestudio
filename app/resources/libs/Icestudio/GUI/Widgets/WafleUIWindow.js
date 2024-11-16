@@ -35,6 +35,17 @@ class WafleUIWindow{
         this.dom.style.right=params.right;
         this.dom.style.width=params.width;
         this.dom.style.height=params.height;
+        iceStudio.bus.events.subscribe(`Navigation::ReadOnly`,'hide',this);
+        iceStudio.bus.events.subscribe(`Navigation::ReadWrite`,'show',this);
+
+    }
+
+    hide(){
+        this.dom.style.display='none';
+    }
+
+    show(){
+        this.dom.style.display='block';
     }
 
     close(){
