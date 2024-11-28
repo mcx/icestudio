@@ -27,7 +27,7 @@ let iceRok = function (port) {
   this.networkInterfaces = [];
 
   this.__CONSTRUCTOR__ = function () {
-    this.getNetworkInterfaces();
+   /* this.getNetworkInterfaces();
 
     if (this.tcps.server) {
       this.tcps.server.disconnect();
@@ -36,10 +36,10 @@ let iceRok = function (port) {
     tcpServer.listen(onAcceptCallback);
 
     this.tcps.supported = true;
-  }
+    */
 
   this.serial.sm = new SerialManager();
-};
+}
 
 this.getUARTs = function (_callback) {
 
@@ -47,7 +47,7 @@ this.getUARTs = function (_callback) {
 
     this.serial.sm.refreshDevices(_callback);
   }
-};
+}
 //-- Using webRTC api we can obtain our ip in all modern browser
 this.getNetworkInterfaces = function (callback) {
   let ips = [];
@@ -85,7 +85,7 @@ this.getNetworkInterfaces = function (callback) {
     },
     function onerror() { }
   );
-};
+}
 
 this.isConnected = function () {
 
@@ -104,7 +104,7 @@ this.stopTCPS = function () {
   this.tcps.server.disconnect();
   this.tcps.server = null;
 
-};
+}
 
 this.stopUART = function () {
 
@@ -200,7 +200,7 @@ this.startTCPS = function (port, _onStart) {
       _onStart(this.networkInterfaces, this.tcps.port);
     }.bind(this), 250);
   }
-};
+}
 
 this.__CONSTRUCTOR__(port);
 };

@@ -58,6 +58,7 @@ angular
       //-- circuit
       this.verifyCode = function (startMessage, endMessage) {
 
+          console.log('APIO VERIFY', this.toolchain.apio);
         let board = (common.selectedBoard.name === 'MCH2022_badge') ? 'iCE40-UP5K' : common.selectedBoard.name;
         return apioRun(
           ["verify", "--board", board],
