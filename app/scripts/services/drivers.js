@@ -379,8 +379,8 @@ angular.module('icestudio')
       const fs = require('fs');
 
       const possibleBrewPaths = [
+        '/opt/homebrew/bin/brew',
         '/usr/local/bin/brew',
-        '/opt/homebrew/bin/brew'
       ];
 
       let brewPath = 'brew';

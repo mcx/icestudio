@@ -60,8 +60,18 @@ angular
 
           console.log('APIO VERIFY', this.toolchain.apio);
         let board = (common.selectedBoard.name === 'MCH2022_badge') ? 'iCE40-UP5K' : common.selectedBoard.name;
+      
+        let apioParams=[];
+
+          if (toolchain.apio >= '0.9.6') {
+          apioParams = ["lint"];
+        }else{
+
+          apioParams= ["verify", "--board", board];
+        }
+
         return apioRun(
-          ["verify", "--board", board],
+         apioParams,
           startMessage,
           endMessage
         );
@@ -71,7 +81,9 @@ angular
       this.buildCode = function (startMessage, endMessage) {
         let board = (common.selectedBoard.name === 'MCH2022_badge') ? 'iCE40-UP5K' : common.selectedBoard.name;
         let apioParams = [];
-        if (toolchain.apio >= '0.9.0') {
+        if (toolchain.apio >= '0.9.6') {
+          apioParams = ["build"];
+        }else if (toolchain.apio >= '0.9.0') {
           apioParams = ["build", "--board", board, "--top-module", "main"];
         } else {
           apioParams = ["build", "--board", board];
@@ -92,7 +104,9 @@ angular
           return toolchainRun(['upload'], startMessage, endMessage);
         }
         let apioParams = [];
-        if (toolchain.apio >= '0.9.0') {
+        if (toolchain.apio >= '0.9.6') {
+          apioParams = ["upload"];
+        } else  if (toolchain.apio >= '0.9.0') {
           apioParams = ["upload", "--board", common.selectedBoard.name, "--top-module", "main"];
         } else {
           apioParams = ["upload", "--board", common.selectedBoard.name];
