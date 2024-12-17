@@ -1,0 +1,944 @@
+[
+  {
+    "type": "input",
+    "name": "clk",
+    "value": "C7"
+  },
+  {
+    "type": "output",
+    "name": "led_4",
+    "value": "C13"
+  },
+  {
+    "type": "output",
+    "name": "led_3",
+    "value": "D12"
+  },
+  {
+    "type": "output",
+    "name": "led_2",
+    "value": "D13"
+  },
+  {
+    "type": "output",
+    "name": "led_1",
+    "value": "E12"
+  },
+  {
+    "type": "output",
+    "name": "led_r_n",
+    "value": "T6"
+  },
+  {
+    "type": "output",
+    "name": "led_g_n",
+    "value": "R6"
+  },
+  {
+    "type": "output",
+    "name": "led_b_n",
+    "value": "R7"
+  },
+  {
+    "type": "input",
+    "name": "sw_1",
+    "value": "A8"   
+  },
+  {
+    "type": "input",
+    "name": "sw_2",
+    "value": "A7"
+  },
+  {
+    "type": "input",
+    "name": "sw_3",
+    "value": "A15"
+  },
+  {
+    "type": "input",
+    "name": "sw_4",
+    "value": "B14"
+  },
+  {
+    "type": "inout",
+    "name": "flash_clk",
+    "value": "U3",
+    "pullmode": "DOWN"
+  },
+  {
+    "type": "inout",
+    "name": "flash_mosi",
+    "value": "W2",
+    "pullmode": "UP"
+  },
+  {
+    "type": "inout",
+    "name": "flash_miso",
+    "value": "V2",
+    "pullmode": "UP"
+  },
+  {
+    "type": "inout",
+    "name": "flash_holdn",
+    "value": "W1",
+    "pullmode": "UP"
+  },
+  {
+    "type": "inout",
+    "name": "flash_wpn",
+    "value": "Y2",
+    "pullmode": "UP"
+  },
+  {
+    "type": "inout",
+    "name": "P7_D0",
+    "value": "D11",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P7_D1",
+    "value": "E11",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P7_D2",
+    "value": "A9",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P7_D3",
+    "value": "A10",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P7_D4",
+    "value": "B12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P7_D5",
+    "value": "C12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P7_D6",
+    "value": "H14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P7_D7",
+    "value": "G14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P10_D0",
+    "value": "D10",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P10_D1",
+    "value": "E10",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P10_D2",
+    "value": "B10",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P10_D3",
+    "value": "C10",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P10_D4",
+    "value": "A11",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P10_D5",
+    "value": "A12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P10_D6",
+    "value": "A13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P10_D7",
+    "value": "A14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_1_P",
+    "value": "B16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_2_P",
+    "value": "C16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_3_P",
+    "value": "D16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_4_P",
+    "value": "G12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_5_P",
+    "value": "F16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_6_P",
+    "value": "G16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_7_P",
+    "value": "H12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_8_P",
+    "value": "K13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_9_P",
+    "value": "J16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_10_P",
+    "value": "J14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_11_P",
+    "value": "K16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_12_P",
+    "value": "L16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_13_P",
+    "value": "N16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_14_P",
+    "value": "P16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_15_P",
+    "value": "N13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_16_P",
+    "value": "P13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_1_N",
+    "value": "B15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_2_N",
+    "value": "C15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_3_N",
+    "value": "E15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_4_N",
+    "value": "G13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_5_N",
+    "value": "G15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_6_N",
+    "value": "H15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_7_N",
+    "value": "H13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_8_N",
+    "value": "K12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_9_N",
+    "value": "J15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_10_N",
+    "value": "K14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_11_N",
+    "value": "K15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_12_N",
+    "value": "L15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_13_N",
+    "value": "P15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_14_N",
+    "value": "R16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_15_N",
+    "value": "P14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_16_N",
+    "value": "R14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_17",
+    "value": "T13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_18",
+    "value": "R12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_19",
+    "value": "M11",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P4_20",
+    "value": "N11",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_21",
+    "value": "C14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_22",
+    "value": "E16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_23",
+    "value": "D14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_24",
+    "value": "F15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_25",
+    "value": "F14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_26",
+    "value": "E14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_27",
+    "value": "F13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_28",
+    "value": "F12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_29",
+    "value": "B9",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_30",
+    "value": "C9",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_31",
+    "value": "D9",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_32",
+    "value": "E9",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_33",
+    "value": "B8",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_34",
+    "value": "C8",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_35",
+    "value": "D8",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_36",
+    "value": "E8",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_37",
+    "value": "J12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_38",
+    "value": "J13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_39",
+    "value": "L12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_40",
+    "value": "L13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_41",
+    "value": "N12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_42",
+    "value": "M12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_43",
+    "value": "P11",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_44",
+    "value": "P12",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_45",
+    "value": "M13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_46",
+    "value": "M14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_47",
+    "value": "N14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_48",
+    "value": "R13",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_49",
+    "value": "M15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_50",
+    "value": "L14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_51",
+    "value": "T14",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_52",
+    "value": "T15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_53",
+    "value": "R15",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "P5_54",
+    "value": "M16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR0",
+    "value": "N6",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR1",
+    "value": "C1",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR2",
+    "value": "F2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR3",
+    "value": "E1",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR4",
+    "value": "F3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR5",
+    "value": "G5",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR6",
+    "value": "C3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR7",
+    "value": "D1",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR8",
+    "value": "D3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR9",
+    "value": "G4",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR10",
+    "value": "E2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR11",
+    "value": "C2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR12",
+    "value": "F4",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ADDR13",
+    "value": "M16",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_BA2",
+    "value": "R3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_BA1",
+    "value": "P4",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_BA0",
+    "value": "T2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_CKE",
+    "value": "R5",
+    "pullmode": "NONE"
+  },
+    {
+    "type": "output",
+    "name": "DDR3_CK_P",
+    "value": "N4",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_CK_N",
+    "value": "P3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_CS_N",
+    "value": "L2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_DM_0",
+    "value": "K4",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_DM_1",
+    "value": "J3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_RAS_N",
+    "value": "N5",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_CAS_N",
+    "value": "M5",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_WE_N",
+    "value": "T4",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_ODT",
+    "value": "T3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "DDR3_RESET_N",
+    "value": "J3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ15",
+    "value": "G2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ14",
+    "value": "J5",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ13",
+    "value": "F1",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ12",
+    "value": "J2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ11",
+    "value": "H3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ10",
+    "value": "K2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ9",
+    "value": "H5",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ8",
+    "value": "H4",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ7",
+    "value": "L4",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ6",
+    "value": "L1",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ5",
+    "value": "L3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ4",
+    "value": "M4",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ3",
+    "value": "M2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ2",
+    "value": "P1",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ1",
+    "value": "L2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQ0",
+    "value": "N3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQS_0_P",
+    "value": "N1",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQS_0_N",
+    "value": "P2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQS_1_P",
+    "value": "G1",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "inout",
+    "name": "DDR3_DQS_1_N",
+    "value": "H2",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "FPGA_TX",
+    "value": "D6",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "input",
+    "name": "FPGA_RX",
+    "value": "E6",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "input",
+    "name": "RXE_N",
+    "value": "C4",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "input",
+    "name": "TXE_N",
+    "value": "B4",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "input",
+    "name": "RXLED",
+    "value": "A3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "input",
+    "name": "TXLED",
+    "value": "A3",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "output",
+    "name": "NULL",
+    "value": "NULL",
+    "pullmode": "NONE"
+  },
+  {
+    "type": "input",
+    "name": "NULL",
+    "value": "NULL",
+    "pullmode": "NONE"
+  }
+]
