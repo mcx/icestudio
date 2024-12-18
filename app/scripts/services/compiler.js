@@ -768,7 +768,8 @@ angular.module('icestudio')
               // Declare m port
               ports.out.push({
                 name: 'vinit',
-                range: '[0:' + (n - 1) + ']'
+                //range: [0:' + (n - 1) + ']'
+                range: `[${(n - 1)}:0 ]`
               });
               // Generate port value
               var value = n.toString() + '\'b';

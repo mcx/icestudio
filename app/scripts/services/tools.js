@@ -743,10 +743,11 @@ if(!test){
 
       function processResult(result, code) {
         result = result || {};
-        var _error = result.error;
-        var stdout = result.stdout;
-        var stderr = result.stderr;
-
+        let _error = result.error;
+        let stdout = result.stdout;
+        let stderr = result.stderr;
+        console.log('***PROCESS***',_error,stdout,stderr);
+        
         return new Promise(function (resolve, reject) {
 
           var archName = common.selectedBoard.info.arch;
@@ -881,10 +882,15 @@ if(!test){
                   matchError,
                   codeErrors = [];
 
+                // Verilator
+                //
+                //-----------------------------------
                 // - Iverilog errors & warnings
                 // main.v:#: error: ...
                 // main.v:#: warning: ...
                 // main.v:#: syntax error
+             
+                if(iceStudio.toolchain.apio < '0.9.6'){
                 re = /main.v:([0-9]+):\s(error|warning):\s(.*?)[\r|\n]/g;
                 while ((matchError = re.exec(stdout))) {
                   codeErrors.push({
@@ -901,6 +907,20 @@ if(!test){
                     type: "error"
                   });
                 }
+                }else{
+let re = /%Error:\s+(\w+\.v):(\d+):(\d+):\s*(syntax error,.*)$/gm;
+
+while ((matchError = re.exec(stdout))) {
+  codeErrors.push({
+    line: parseInt(matchError[2]),
+    msg: matchError[4].trim(),
+    type: 'error'
+  });
+}
+
+console.log('ERROR_TASK',code);
+                } 
+
                 // - Yosys errors
                 // ERROR: ... main.v:#...
                 // Warning: ... main.v:#...
