@@ -437,9 +437,28 @@ angular.module('icestudio')
         //--
         this.apioInstall = function (pkg, callback) {
 
+            iceConsole.log("APIO VERSION "+common.APIO_VERSION+' / '+iceStudio.toolchain.apio);
+           
+          if(iceStudio.toolchain.apio >= '0.9.6'){
+              let args='--install';
+              let edge='packages';
+              switch(pkg){
+              case 'drivers':
+                edge='drivers';
+                args='--install-ftdi';
+                pkg='';
+                break;
+              default:
+
+              }
+                iceConsole.log("OSS-CAD-SUITE? "+common.APIO_CMD+' '+edge+' '+args+' '+pkg);
+                this.executeCommand([common.APIO_CMD, edge ,args,pkg], null, true, callback);
+            }else{
+              iceConsole.log('--->OLD APIO'); 
             //-- common.APIO_CMD contains the command for executing APIO
             this.executeCommand([common.APIO_CMD, 'install', pkg], null, true, callback);
-        };
+             } 
+      };
 
         //-- The toolchains are NOT disabled by default
         this.toolchainDisabled = false;

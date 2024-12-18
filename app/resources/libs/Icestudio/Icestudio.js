@@ -10,6 +10,7 @@ class Icestudio {
         this.pluginManager = false;
         this.gui = false;
         this.env={};
+        this.toolchain={apio:false,installed:false};
 
     }
     isInitialized(){

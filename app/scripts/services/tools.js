@@ -54,16 +54,57 @@ angular
       //-- build dir is used
       nodeFse.removeSync(common.OLD_BUILD_DIR);
 
+      async function apioIntegrityCheck(){
+
+        let test=true;
+        if(iceStudio.toolchain.apio >= '0.9.6'){
+          const hd = new IceHD();
+          console.log('Checks for APIO project integrity');
+          //Check if build dir exists
+          if (!nodeFs.existsSync(common.BUILD_DIR)) {
+            console.log('Build dir not exists',common.BUILD_DIR);  
+            nodeFs.mkdirSync(common.BUILD_DIR, { recursive: true });
+
+          }//-- if buildir exists
+
+          if (!nodeFs.existsSync(hd.joinPath(common.BUILD_DIR, 'Apio.ini'))) {
+            console.log('Apio.ini not found');  
+            test=false;
+
+          }//-- if buildir exists
+
+          let board = (common.selectedBoard.name === 'MCH2022_badge') ? 'iCE40-UP5K' : common.selectedBoard.name;
+if(!test){
+            test=true;
+            try{
+            apioRun(
+              ["create",'--board',board],
+              'Setup Apio project',
+              'Apio project ready',
+              false
+            );
+
+
+          }catch(error){
+            test=false;
+            console.log('ERROR CHECK',error);
+          }
+        }
+        } 
+
+        return test;
+
+      } //--Apio Integrity check
       //-- Execute the apio verify command. It checks the syntax of the current
       //-- circuit
       this.verifyCode = function (startMessage, endMessage) {
 
-          console.log('APIO VERIFY', this.toolchain.apio);
+        console.log('APIO VERIFY', this.toolchain.apio);
         let board = (common.selectedBoard.name === 'MCH2022_badge') ? 'iCE40-UP5K' : common.selectedBoard.name;
-      
+
         let apioParams=[];
 
-          if (toolchain.apio >= '0.9.6') {
+        if(iceStudio.toolchain.apio >= '0.9.6'){
           apioParams = ["lint"];
         }else{
 
@@ -71,7 +112,7 @@ angular
         }
 
         return apioRun(
-         apioParams,
+          apioParams,
           startMessage,
           endMessage
         );
@@ -81,7 +122,7 @@ angular
       this.buildCode = function (startMessage, endMessage) {
         let board = (common.selectedBoard.name === 'MCH2022_badge') ? 'iCE40-UP5K' : common.selectedBoard.name;
         let apioParams = [];
-        if (toolchain.apio >= '0.9.6') {
+        if(iceStudio.toolchain.apio >= '0.9.6'){
           apioParams = ["build"];
         }else if (toolchain.apio >= '0.9.0') {
           apioParams = ["build", "--board", board, "--top-module", "main"];
@@ -104,7 +145,7 @@ angular
           return toolchainRun(['upload'], startMessage, endMessage);
         }
         let apioParams = [];
-        if (toolchain.apio >= '0.9.6') {
+        if(iceStudio.toolchain.apio >= '0.9.6'){
           apioParams = ["upload"];
         } else  if (toolchain.apio >= '0.9.0') {
           apioParams = ["upload", "--board", common.selectedBoard.name, "--top-module", "main"];
@@ -221,8 +262,15 @@ angular
 
       //----------------------------------------------------------------
       //-- Execute an apio command: build, verify, upload
-      function apioRun(commands, startMessage, endMessage) {
-        return new Promise(function (resolve) {
+      function apioRun(commands, startMessage, endMessage,checkIntegrity=true) {
+
+
+        return new Promise(function (resolve,reject) {
+
+          if (checkIntegrity && !apioIntegrityCheck()) {
+            reject(new Error("No Apio project found"));
+            return; // Asegúrate de salir de la función aquí
+          }
 
           //-- Variable for storing the verilog source code of 
           //-- the current circuit
@@ -521,7 +569,7 @@ angular
             //-- Get the version number
             toolchain.apio = msg.match(/apio,\sversion\s(.+)/)[1];
 
-
+            iceStudio.toolchain.apio=toolchain.apio;
             //-- Check if the apio version is ok with the specification
             //-- in the package.json file
 
@@ -529,6 +577,7 @@ angular
               toolchain.apio >= _package.apio.min &&
               toolchain.apio < _package.apio.max;
 
+            iceStudio.toolchain.installed=toolchain.installed;
             //-- Everything is ok: call the callback function
             if (toolchain.installed) {
 
@@ -602,9 +651,9 @@ angular
                 );
                 nodeSSHexec(
                   ["apio"]
-                    .concat(commands)
-                    .concat(["--project-dir", ".build"])
-                    .join(" "),
+                  .concat(commands)
+                  .concat(["--project-dir", ".build"])
+                  .join(" "),
                   hostname,
                   function (error, stdout, stderr) {
                     resolve({
@@ -750,7 +799,7 @@ angular
                 );
               } else if (stdout.indexOf("[upload] Error") !== -1) {
                 switch (common.selectedBoard.name) {
-                  // TinyFPGA-B2 programmer errors
+                    // TinyFPGA-B2 programmer errors
                   case "TinyFPGA-B2":
                   case "TinyFPGA-BX":
                     var match = stdout.match(/Bootloader\snot\sactive/g);
@@ -1109,7 +1158,7 @@ angular
           var match = pattern.exec(output);
           return (match && match[1]) ? match[1] : previousValue;
         }
-    */
+        */
       function mapCodeModules(code) {
         var codelines = code.split("\n");
         var match,
@@ -1979,7 +2028,7 @@ angular
                   if (hasNewVersion === "stable") {
                     msg =
                       '<div class="new-version-notifier-box"><div class="new-version-notifier-box--icon"><img src="resources/images/confetti.svg"></div>\
-                                          <div class="new-version-notifier-box--text">' +
+                      <div class="new-version-notifier-box--text">' +
                       gettextCatalog.getString(
                         "There is a new stable version available"
                       ) +
@@ -1991,7 +2040,7 @@ angular
                   } else {
                     msg =
                       '<div class="new-version-notifier-box"><div class="new-version-notifier-box--icon"><img src="resources/images/confetti.svg"></div>\
-                                          <div class="new-version-notifier-box--text">' +
+                      <div class="new-version-notifier-box--text">' +
                       gettextCatalog.getString(
                         "There is a new nightly version available"
                       ) +
@@ -2008,63 +2057,63 @@ angular
           );
         }
       };
-      this.ifDevelopmentMode = function () {
+this.ifDevelopmentMode = function () {
+  if (
+    typeof _package.development !== "undefined" &&
+    typeof _package.development.mode !== "undefined" &&
+    _package.development.mode === true
+  ) {
+    utils.openDevToolsUI();
+  }
+};
+
+this.initializePluginManager = function (callbackOnRun) {
+  if (typeof ICEpm !== "undefined") {
+    ICEpm.setEnvironment(common);
+    ICEpm.setPluginDir(common.DEFAULT_PLUGIN_DIR, function () {
+      let plist = ICEpm.getAll();
+      let uri = ICEpm.getBaseUri();
+      let t = $(".icm-icon-list");
+      t.empty();
+      let html = "";
+      for (let prop in plist) {
         if (
-          typeof _package.development !== "undefined" &&
-          typeof _package.development.mode !== "undefined" &&
-          _package.development.mode === true
+          typeof plist[prop].manifest.type === "undefined" ||
+          plist[prop].manifest.type === "app"
         ) {
-          utils.openDevToolsUI();
+          html +=
+            '<a href="#" data-action="icm-plugin-run" data-plugin="' +
+            prop +
+            '"><img class="icm-plugin-icon" src="' +
+            uri +
+            "/" +
+            prop +
+            "/" +
+            plist[prop].manifest.icon +
+            '"><span>' +
+            plist[prop].manifest.name +
+            "</span></a>";
         }
-      };
+      }
+      t.append(html);
 
-      this.initializePluginManager = function (callbackOnRun) {
-        if (typeof ICEpm !== "undefined") {
-          ICEpm.setEnvironment(common);
-          ICEpm.setPluginDir(common.DEFAULT_PLUGIN_DIR, function () {
-            let plist = ICEpm.getAll();
-            let uri = ICEpm.getBaseUri();
-            let t = $(".icm-icon-list");
-            t.empty();
-            let html = "";
-            for (let prop in plist) {
-              if (
-                typeof plist[prop].manifest.type === "undefined" ||
-                plist[prop].manifest.type === "app"
-              ) {
-                html +=
-                  '<a href="#" data-action="icm-plugin-run" data-plugin="' +
-                  prop +
-                  '"><img class="icm-plugin-icon" src="' +
-                  uri +
-                  "/" +
-                  prop +
-                  "/" +
-                  plist[prop].manifest.icon +
-                  '"><span>' +
-                  plist[prop].manifest.name +
-                  "</span></a>";
-              }
-            }
-            t.append(html);
-
-            $('[data-action="icm-plugin-run"]').off();
-            $('[data-action="icm-plugin-run"]').on("click", function (e) {
-              e.preventDefault();
-              let ptarget = $(this).data("plugin");
-              if (typeof callbackOnRun !== "undefined") {
-                callbackOnRun();
-              }
-              ICEpm.run(ptarget);
-              return false;
-            });
-
-
-
-          });
-
-
+      $('[data-action="icm-plugin-run"]').off();
+      $('[data-action="icm-plugin-run"]').on("click", function (e) {
+        e.preventDefault();
+        let ptarget = $(this).data("plugin");
+        if (typeof callbackOnRun !== "undefined") {
+          callbackOnRun();
         }
-      };
-    }
-  );
+        ICEpm.run(ptarget);
+        return false;
+      });
+
+
+
+    });
+
+
+  }
+};
+}
+        );
