@@ -1,1 +1,0 @@
-{"label":"Mimas ECP5 Mini","SysClkMhz":100,"datasheet":"https://numato.com/docs/mimas-ecp5-mini-fpga-development-board","interface":"FTDI","arch":"ecp5","FPGAResources":{"ffs":5280,"luts":5280,"pios":39,"plbs":660,"brams":30}}
