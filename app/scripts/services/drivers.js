@@ -617,7 +617,7 @@ angular.module('icestudio')
     }
 
     function enableWindowsDrivers(type) {
-      if(iceStudio.toolchain.apio && icesStudio.toolchain.apio<'0.9.6'){
+      if(iceStudio.toolchain.apio && iceStudio.toolchain.apio<'0.9.6'){
         var option = '--' + type + '-enable';
         utils.beginBlockingTask();
         nodeSudo.exec([common.APIO_CMD, 'drivers', option].join(' '), { name: 'Icestudio' }, function (error, stdout, stderr) {
