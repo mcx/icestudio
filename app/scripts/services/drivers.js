@@ -617,22 +617,50 @@ angular.module('icestudio')
     }
 
     function enableWindowsDrivers(type) {
-      var option = '--' + type + '-enable';
-      utils.beginBlockingTask();
-      nodeSudo.exec([common.APIO_CMD, 'drivers', option].join(' '), { name: 'Icestudio' }, function (error, stdout, stderr) {
-        utils.endBlockingTask();
-        if (stderr) {
-          alertify.error(gettextCatalog.getString('Toolchain not installed') + '.<br>' + gettextCatalog.getString('Click here to install it'), 30)
-            .callback = function (isClicked) {
-              if (isClicked) {
-                $rootScope.$broadcast('installToolchain');
+      if(iceStudio.toolchain.apio && icesStudio.toolchain.apio<'0.9.6'){
+        var option = '--' + type + '-enable';
+        utils.beginBlockingTask();
+        nodeSudo.exec([common.APIO_CMD, 'drivers', option].join(' '), { name: 'Icestudio' }, function (error, stdout, stderr) {
+          utils.endBlockingTask();
+          if (stderr) {
+            alertify.error(gettextCatalog.getString('Toolchain not installed') + '.<br>' + gettextCatalog.getString('Click here to install it'), 30)
+              .callback = function (isClicked) {
+                if (isClicked) {
+                  $rootScope.$broadcast('installToolchain');
+                }
+              };
+          }
+          else if (!error) {
+            alertify.message(gettextCatalog.getString('<b>Unplug</b> and <b>reconnect</b> the board'), 5);
+          }
+        });
+      }else{
+        //NEW APIO, first install drivers, then configure
+        utils.beginBlockingTask();
+        nodeSudo.exec([common.APIO_CMD, 'drivers', '--install'].join(' '), { name: 'Icestudio' }, function (error, stdout, stderr) {
+          utils.endBlockingTask();
+          if (stderr) {
+            alertify.error(gettextCatalog.getString('Error installing drivers'), 30);
+          }
+          else if (!error) {
+
+            nodeSudo.exec([common.APIO_CMD, 'drivers', `--${type}-install`].join(' '), { name: 'Icestudio' }, function (error, stdout, stderr) {
+              utils.endBlockingTask();
+              if (stderr) {
+                alertify.error(gettextCatalog.getString('Error enabling driver type') + ' ' + type, 30);
               }
-            };
-        }
-        else if (!error) {
-          alertify.message(gettextCatalog.getString('<b>Unplug</b> and <b>reconnect</b> the board'), 5);
-        }
-      });
+              else if (!error) {
+                alertify.message(gettextCatalog.getString('<b>Unplug</b> and <b>reconnect</b> the board'), 5);
+              }
+            });
+
+
+
+          }
+        });
+
+
+      }
     }
 
     function disableWindowsDrivers(type) {
