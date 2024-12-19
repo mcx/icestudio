@@ -637,7 +637,7 @@ angular.module('icestudio')
       }else{
         //NEW APIO, first install drivers, then configure
         utils.beginBlockingTask();
-        nodeSudo.exec([common.APIO_CMD, 'drivers', '--install'].join(' '), { name: 'Icestudio' }, function (error, stdout, stderr) {
+        nodeSudo.exec([common.APIO_CMD, 'packages drivers', '--install'].join(' '), { name: 'Icestudio' }, function (error, stdout, stderr) {
           utils.endBlockingTask();
           if (stderr) {
             alertify.error(gettextCatalog.getString('Error installing drivers'), 30);
