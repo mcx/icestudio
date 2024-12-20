@@ -439,7 +439,7 @@ angular.module('icestudio')
 
             iceConsole.log("APIO VERSION "+common.APIO_VERSION+' / '+iceStudio.toolchain.apio);
            
-          if(iceStudio.toolchain.apio >= '0.9.6'){
+          if(iceStudio.toolchain.apio >= '0.9.6' || common.APIO_VERSION === common.APIO_VERSION_DEV){
               let args='--install';
               let edge='packages';
              /* switch(pkg){
