@@ -637,7 +637,18 @@ angular.module('icestudio')
       }else{
         //NEW APIO, first install drivers, then configure
         utils.beginBlockingTask();
-        nodeSudo.exec([common.APIO_CMD, 'packages drivers', '--install'].join(' '), { name: 'Icestudio' }, function (error, stdout, stderr) {
+         nodeSudo.exec([common.APIO_CMD, 'drivers', `--${type}-install`].join(' '), { name: 'Icestudio' }, function (error, stdout, stderr) {
+              utils.endBlockingTask();
+              if (stderr) {
+                alertify.error(gettextCatalog.getString('Error enabling driver type') + ' ' + type, 30);
+              }
+              else if (!error) {
+                alertify.message(gettextCatalog.getString('<b>Unplug</b> and <b>reconnect</b> the board'), 5);
+              }
+            });
+
+
+        /*nodeSudo.exec([common.APIO_CMD, 'packages drivers', '--install'].join(' '), { name: 'Icestudio' }, function (error, stdout, stderr) {
           utils.endBlockingTask();
           if (stderr) {
             alertify.error(gettextCatalog.getString('Error installing drivers'), 30);
@@ -657,7 +668,7 @@ angular.module('icestudio')
 
 
           }
-        });
+        });*/
 
 
       }

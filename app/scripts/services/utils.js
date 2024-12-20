@@ -442,7 +442,7 @@ angular.module('icestudio')
           if(iceStudio.toolchain.apio >= '0.9.6'){
               let args='--install';
               let edge='packages';
-              switch(pkg){
+             /* switch(pkg){
               case 'drivers':
                 edge='drivers';
                 args='--install-ftdi';
@@ -450,7 +450,7 @@ angular.module('icestudio')
                 break;
               default:
 
-              }
+              }*/
                 iceConsole.log("OSS-CAD-SUITE? "+common.APIO_CMD+' '+edge+' '+args+' '+pkg);
                 this.executeCommand([common.APIO_CMD, edge ,args,pkg], null, true, callback);
             }else{
