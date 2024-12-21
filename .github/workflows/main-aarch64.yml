@@ -23,7 +23,20 @@ jobs:
      
       # Checkout the develop branch
       - uses: actions/checkout@v3
-    
+   
+      # Check commit message for keyword RUN_BUILD
+      - name: Check commit message for RUN_BUILD
+        id: commit_message_check
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MESSAGE"
+          if [[ "$COMMIT_MESSAGE" != *"RUN_BUILD"* ]]; then
+            echo "Commit message does not contain RUN_BUILD, skipping build."
+            exit 0
+          fi
+
+
+
       - name: Setup por arm64
         run:  ./scripts/preInstallArm64.sh
         
