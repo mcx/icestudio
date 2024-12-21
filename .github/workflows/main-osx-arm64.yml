@@ -33,23 +33,26 @@ jobs:
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" != *"RUN_BUILD"* ]]; then
             echo "Commit message does not contain RUN_BUILD, skipping build."
-            exit 0
+            echo "skip_build=true" >> $GITHUB_ENV
           fi
 
 
 
 
       - name: Setup Nodejs version
+        if: env.skip_build != 'true'
         uses: actions/setup-node@v3
         with:
           node-version: '21.1.0'
       
       - name: Install npm dependencies
+        if: env.skip_build != 'true'
         run:   |
           sed -i '' 's/darwinDependencies/dependencies/g' package.json
           npm install --legacy-peer-deps
       
       - name: Build OSX ARM64 packages
+        if: env.skip_build != 'true'
         env:
           MACOS_CERTIFICATE: ${{ secrets.APPLE_CERT_DATA }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.APPLE_CERT_PASSWORD }}
@@ -67,17 +70,20 @@ jobs:
 
       # Loading vars from icestudio package.json
       - id: icestudio_json
+        if: env.skip_build != 'true'
         run: |
           content=`tr '\n' ' ' < package.json`
           echo "packageJson=${content}" >> $GITHUB_OUTPUT 
       
       # Timestamp for the build
       - id: build_date
+        if: env.skip_build != 'true'
         run: |
           content=`tr '\n' ' ' < app/buildinfo.json`
           echo "buildJson=${content}" >> $GITHUB_OUTPUT
  
       - name: Sign DMG
+        if: env.skip_build != 'true'
         env:
           ICESTUDIO_VERSION: "${{fromJson(steps.icestudio_json.outputs.packageJson).version}}"
           TIMESTAMP: "${{fromJson(steps.build_date.outputs.buildJson).ts}}"
@@ -86,6 +92,7 @@ jobs:
           codesign --force --deep --sign ${MACOS_APPLE_UID} dist/icestudio-${ICESTUDIO_VERSION}${TIMESTAMP}-osxarm64.dmg -v
 
       - name: 'Upload DMG/OSX64'
+        if: env.skip_build != 'true'
         env:
           ICESTUDIO_VERSION: "${{fromJson(steps.icestudio_json.outputs.packageJson).version}}"
           TIMESTAMP: "${{fromJson(steps.build_date.outputs.buildJson).ts}}"

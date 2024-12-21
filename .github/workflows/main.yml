@@ -35,19 +35,22 @@ jobs:
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" != *"RUN_BUILD"* ]]; then
             echo "Commit message does not contain RUN_BUILD, skipping build."
-            exit 0
+            echo "skip_build=true" >> $GITHUB_ENV
           fi
 
 
       - name: Setup Nodejs version
+        if: env.skip_build != 'true'
         uses: actions/setup-node@v3
         with:
           node-version: '21.1.0'
       
       - name: Install npm dependencies
+        if: env.skip_build != 'true'
         run:   npm install --legacy-peer-deps
       
       - name: Build Linux
+        if: env.skip_build != 'true'
         run: |
           sudo apt install -y libfuse2
           export DISPLAY=:0.0 
@@ -55,21 +58,25 @@ jobs:
           
       # jq is bash command for reading properties from a json file
       - name: Install jq package
+        if: env.skip_build != 'true'
         run: sudo apt install jq
 
       # Read the icestudio version from package.json (version property)
       - id: icestudio_json
+        if: env.skip_build != 'true'
         run: |
           version=$(jq -r '.version' package.json)
           echo "icestudio_version=${version}" >> $GITHUB_OUTPUT
     
       # Timestamp for the build
       - id: build_date
+        if: env.skip_build != 'true'
         run: |
           timestamp=$(jq -r '.ts' app/buildinfo.json)
           echo "icestudio_timestamp=${timestamp}" >> $GITHUB_OUTPUT
           
       - name: 'Upload AppImage/linux64'
+        if: env.skip_build != 'true'
         env:
           ICESTUDIO_VERSION: "${{steps.icestudio_json.outputs.icestudio_version}}" 
           TIMESTAMP: "${{steps.build_date.outputs.icestudio_timestamp}}"
@@ -80,6 +87,7 @@ jobs:
           if-no-files-found: error
           
       - name: 'Upload ZIP/linux64'
+        if: env.skip_build != 'true'
         env:
           ICESTUDIO_VERSION: "${{steps.icestudio_json.outputs.icestudio_version}}"
           TIMESTAMP: "${{steps.build_date.outputs.icestudio_timestamp}}"
