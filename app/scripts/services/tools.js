@@ -54,47 +54,6 @@ angular
       //-- build dir is used
       nodeFse.removeSync(common.OLD_BUILD_DIR);
 
-      async function apioIntegrityCheck(){
-
-        let test=true;
-        if(iceStudio.toolchain.apio >= '0.9.6'){
-          const hd = new IceHD();
-          console.log('Checks for APIO project integrity');
-          //Check if build dir exists
-          if (!nodeFs.existsSync(common.BUILD_DIR)) {
-            console.log('Build dir not exists',common.BUILD_DIR);  
-            nodeFs.mkdirSync(common.BUILD_DIR, { recursive: true });
-
-          }//-- if buildir exists
-
-          if (!nodeFs.existsSync(hd.joinPath(common.BUILD_DIR, 'Apio.ini'))) {
-            console.log('Apio.ini not found');  
-            test=false;
-
-          }//-- if buildir exists
-
-          let board = (common.selectedBoard.name === 'MCH2022_badge') ? 'iCE40-UP5K' : common.selectedBoard.name;
-if(!test){
-            test=true;
-            try{
-            apioRun(
-              ["create",'--board',board],
-              'Setup Apio project',
-              'Apio project ready',
-              false
-            );
-
-
-          }catch(error){
-            test=false;
-            console.log('ERROR CHECK',error);
-          }
-        }
-        } 
-
-        return test;
-
-      } //--Apio Integrity check
       //-- Execute the apio verify command. It checks the syntax of the current
       //-- circuit
       this.verifyCode = function (startMessage, endMessage) {
@@ -258,19 +217,55 @@ if(!test){
       }
       //----------------------------------------------------------------------------
 
+      function apioIntegrityCheck(){
+
+        let test=true;
+
+        const hd = new IceHD();
+        console.log('Checks for APIO project integrity');
+        //Check if build dir exists
+        if (!nodeFs.existsSync(common.BUILD_DIR)) {
+          console.log('Build dir not exists',common.BUILD_DIR);  
+          nodeFs.mkdirSync(common.BUILD_DIR, { recursive: true });
+
+        }//-- if buildir exists
 
 
-      //----------------------------------------------------------------
+        if(iceStudio.toolchain.apio >= '0.9.6'){
+          if (!nodeFs.existsSync(hd.joinPath(common.BUILD_DIR, 'Apio.ini'))) {
+            console.log('Apio.ini not found');  
+            test=false;
+
+          }//-- if buildir exists
+
+
+        } 
+
+        return test;
+
+      } //--Apio Integrity check
+
       //-- Execute an apio command: build, verify, upload
-      function apioRun(commands, startMessage, endMessage,checkIntegrity=true) {
+      function apioRun(commands, startMessage, endMessage) {
 
 
         return new Promise(function (resolve,reject) {
 
-          if (checkIntegrity && !apioIntegrityCheck()) {
-            reject(new Error("No Apio project found"));
-            return; // Asegúrate de salir de la función aquí
+          if (!apioIntegrityCheck()) { //--S-- CheckIntegrity
+
+
+            let board = (common.selectedBoard.name === 'MCH2022_badge') ? 'iCE40-UP5K' : common.selectedBoard.name;
+            executeLocalSync( ["create",'--board',board]);
+          }//--E-- CheckIntegrity
+
+          if (taskRunning) {
+            reject(new Error("Another task is already running"));
+            return;
           }
+          //-- Flag that there is a command running
+          taskRunning = true;
+
+
 
           //-- Variable for storing the verilog source code of 
           //-- the current circuit
@@ -278,71 +273,69 @@ if(!test){
 
           //-- The command can only be executed if there is no other
           //-- command already running
-          if (!taskRunning) {
 
-            //-- Flag that there is a command running
-            taskRunning = true;
 
-            if (infoAlert) {
-              infoAlert.dismiss(false);
-            }
-
-            if (resultAlert) {
-              resultAlert.dismiss(false);
-            }
-
-            graph
-              .resetCodeErrors()
-              .then(function () {
-                return checkToolchainInstalled();
-              })
-              .then(function () {
-                utils.beginBlockingTask();
-                if (startMessage) {
-                  startAlert = alertify.message(startMessage, 100000);
-                }
-
-                return generateCode(commands);
-              })
-              .then(function (output) {
-                sourceCode = output.code;
-
-                return syncResources(output.code, output.internalResources);
-              })
-              .then(function () {
-                var hostname = profile.get("remoteHostname");
-                var command = commands[0];
-                if (command === "build" || command === "upload") {
-                  if (profile.get("showFPGAResources")) {
-                    commands = commands.concat("--verbose-pnr");
-                  }
-                }
-                if (hostname) {
-                  return executeRemote(commands, hostname);
-                } else {
-                  return executeLocal(commands);
-                }
-              })
-              .then(function (result) {
-                return processResult(result, sourceCode);
-              })
-              .then(function () {
-                // Success
-                if (endMessage) {
-                  resultAlert = alertify.success(
-                    gettextCatalog.getString(endMessage)
-                  );
-                }
-                utils.endBlockingTask();
-                restoreTask();
-                resolve();
-              })
-              .catch(function (/* e */) {
-                // Error
-                utils.endBlockingTask();
-                restoreTask();
-              });
+          if (infoAlert) {
+            infoAlert.dismiss(false);
           }
+
+          if (resultAlert) {
+            resultAlert.dismiss(false);
+          }
+
+          graph
+            .resetCodeErrors()
+            .then(function () {
+              return checkToolchainInstalled();
+            })
+            .then(function () {
+              utils.beginBlockingTask();
+              if (startMessage) {
+                startAlert = alertify.message(startMessage, 100000);
+              }
+
+              return generateCode(commands);
+            })
+            .then(function (output) {
+              sourceCode = output.code;
+
+              return syncResources(output.code, output.internalResources);
+            })
+            .then(function () {
+              var hostname = profile.get("remoteHostname");
+              var command = commands[0];
+              if (command === "build" || command === "upload") {
+                if (profile.get("showFPGAResources")) {
+                  commands = commands.concat("--verbose-pnr");
+                }
+              }
+              if (hostname) {
+                return executeRemote(commands, hostname);
+              } else {
+                return executeLocal(commands);
+              }
+            })
+            .then(function (result) {
+              return processResult(result, sourceCode);
+            })
+            .then(function () {
+              // Success
+              if (endMessage) {
+                resultAlert = alertify.success(
+                  gettextCatalog.getString(endMessage)
+                );
+              }
+              utils.endBlockingTask();
+              restoreTask();
+              resolve();
+            })
+            .catch(function (/* e */) {
+              // Error
+              utils.endBlockingTask();
+              restoreTask();
+            });
+
+
         });
       }
       //----------------------------------------------------------------------------
@@ -683,6 +676,19 @@ if(!test){
           return c;
         });
       }
+
+      async function executeLocalSync(commands){
+
+        try{
+          await executeLocal(commands);
+
+
+        }catch(error){
+          console.log('Execute command fails',commands);
+
+        }
+
+      }
       function executeLocal(commands) {
         return new Promise(function (resolve) {
           if (commands[0] === "upload") {
@@ -747,7 +753,7 @@ if(!test){
         let stdout = result.stdout;
         let stderr = result.stderr;
         console.log('***PROCESS***',_error,stdout,stderr);
-        
+
         return new Promise(function (resolve, reject) {
 
           var archName = common.selectedBoard.info.arch;
@@ -889,36 +895,36 @@ if(!test){
                 // main.v:#: error: ...
                 // main.v:#: warning: ...
                 // main.v:#: syntax error
-             
+
                 if(iceStudio.toolchain.apio < '0.9.6'){
-                re = /main.v:([0-9]+):\s(error|warning):\s(.*?)[\r|\n]/g;
-                while ((matchError = re.exec(stdout))) {
-                  codeErrors.push({
-                    line: parseInt(matchError[1]),
-                    msg: matchError[3].replace(/\sin\smain\..*$/, ""),
-                    type: matchError[2]
-                  });
-                }
-                re = /main.v:([0-9]+):\ssyntax\serror[\r|\n]/g;
-                while ((matchError = re.exec(stdout))) {
-                  codeErrors.push({
-                    line: parseInt(matchError[1]),
-                    msg: "Syntax error",
-                    type: "error"
-                  });
-                }
+                  re = /main.v:([0-9]+):\s(error|warning):\s(.*?)[\r|\n]/g;
+                  while ((matchError = re.exec(stdout))) {
+                    codeErrors.push({
+                      line: parseInt(matchError[1]),
+                      msg: matchError[3].replace(/\sin\smain\..*$/, ""),
+                      type: matchError[2]
+                    });
+                  }
+                  re = /main.v:([0-9]+):\ssyntax\serror[\r|\n]/g;
+                  while ((matchError = re.exec(stdout))) {
+                    codeErrors.push({
+                      line: parseInt(matchError[1]),
+                      msg: "Syntax error",
+                      type: "error"
+                    });
+                  }
                 }else{
-let re = /%Error:\s+(\w+\.v):(\d+):(\d+):\s*(syntax error,.*)$/gm;
+                  let re = /%Error:\s+(\w+\.v):(\d+):(\d+):\s*(syntax error,.*)$/gm;
 
-while ((matchError = re.exec(stdout))) {
-  codeErrors.push({
-    line: parseInt(matchError[2]),
-    msg: matchError[4].trim(),
-    type: 'error'
-  });
-}
+                  while ((matchError = re.exec(stdout))) {
+                    codeErrors.push({
+                      line: parseInt(matchError[2]),
+                      msg: matchError[4].trim(),
+                      type: 'error'
+                    });
+                  }
 
-console.log('ERROR_TASK',code);
+                  console.log('ERROR_TASK',code);
                 } 
 
                 // - Yosys errors
@@ -2019,64 +2025,64 @@ console.log('ERROR_TASK',code);
         );
       };
 
-      this.removeAllCollections = function () {
-        utils.removeCollections();
-        collections.loadInternalCollections();
-        alertify.success(gettextCatalog.getString("All collections removed"));
-      };
-      this.checkForNewVersion = function () {
-        if (typeof _package.updatecheck !== "undefined") {
-          $.getJSON(
-            _package.updatecheck + "?_tsi=" + new Date().getTime(),
-            function (result) {
-              var hasNewVersion = false;
-              if (result !== false) {
-                if (
-                  typeof result.version !== "undefined" &&
-                  _package.version < result.version
-                ) {
-                  hasNewVersion = "stable";
-                }
-                if (
-                  typeof result.nightly !== "undefined" &&
-                  _package.version < result.nightly
-                ) {
-                  hasNewVersion = "nightly";
-                }
-                if (hasNewVersion !== false) {
-                  var msg = "";
-                  if (hasNewVersion === "stable") {
-                    msg =
-                      '<div class="new-version-notifier-box"><div class="new-version-notifier-box--icon"><img src="resources/images/confetti.svg"></div>\
-                      <div class="new-version-notifier-box--text">' +
-                      gettextCatalog.getString(
-                        "There is a new stable version available"
-                      ) +
-                      '<br/><a class="action-open-url-external-browser" href="https://icestudio.io" target="_blank">' +
-                      gettextCatalog.getString(
-                        "Click here to install it"
-                      ) +
-                      '</a></div></div>';
-                  } else {
-                    msg =
-                      '<div class="new-version-notifier-box"><div class="new-version-notifier-box--icon"><img src="resources/images/confetti.svg"></div>\
-                      <div class="new-version-notifier-box--text">' +
-                      gettextCatalog.getString(
-                        "There is a new nightly version available"
-                      ) +
-                      '<br/><a class="action-open-url-external-browser" href="https://icestudio.io" target="_blank">' +
-                      gettextCatalog.getString(
-                        "Click here to install it"
-                      ) +
-                      '</a></div></div>';
-                  }
-                  alertify.notify(msg, "notify", 30);
-                }
-              }
+this.removeAllCollections = function () {
+  utils.removeCollections();
+  collections.loadInternalCollections();
+  alertify.success(gettextCatalog.getString("All collections removed"));
+};
+this.checkForNewVersion = function () {
+  if (typeof _package.updatecheck !== "undefined") {
+    $.getJSON(
+      _package.updatecheck + "?_tsi=" + new Date().getTime(),
+      function (result) {
+        var hasNewVersion = false;
+        if (result !== false) {
+          if (
+            typeof result.version !== "undefined" &&
+            _package.version < result.version
+          ) {
+            hasNewVersion = "stable";
+          }
+          if (
+            typeof result.nightly !== "undefined" &&
+            _package.version < result.nightly
+          ) {
+            hasNewVersion = "nightly";
+          }
+          if (hasNewVersion !== false) {
+            var msg = "";
+            if (hasNewVersion === "stable") {
+              msg =
+                '<div class="new-version-notifier-box"><div class="new-version-notifier-box--icon"><img src="resources/images/confetti.svg"></div>\
+                <div class="new-version-notifier-box--text">' +
+                gettextCatalog.getString(
+                  "There is a new stable version available"
+                ) +
+                '<br/><a class="action-open-url-external-browser" href="https://icestudio.io" target="_blank">' +
+                gettextCatalog.getString(
+                  "Click here to install it"
+                ) +
+                '</a></div></div>';
+            } else {
+              msg =
+                '<div class="new-version-notifier-box"><div class="new-version-notifier-box--icon"><img src="resources/images/confetti.svg"></div>\
+                <div class="new-version-notifier-box--text">' +
+                gettextCatalog.getString(
+                  "There is a new nightly version available"
+                ) +
+                '<br/><a class="action-open-url-external-browser" href="https://icestudio.io" target="_blank">' +
+                gettextCatalog.getString(
+                  "Click here to install it"
+                ) +
+                '</a></div></div>';
             }
-          );
+            alertify.notify(msg, "notify", 30);
+          }
         }
-      };
+      }
+    );
+  }
+};
 this.ifDevelopmentMode = function () {
   if (
     typeof _package.development !== "undefined" &&
