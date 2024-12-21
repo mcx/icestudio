@@ -14,7 +14,7 @@ Digital Design for OpenSource FPGAs made easy: [icestudio.io](https://icestudio.
 
 # Platforms
 
-Linux, Mac and Windows
+Linux, OSX and Windows
 
 ![](https://github.com/FPGAwars/icestudio-wiki/raw/main/Logos/icestudio-platforms-small.png)  
 
