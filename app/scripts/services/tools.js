@@ -396,12 +396,12 @@ angular
           );
 
           if (
-            cmd.indexOf("verify") > -1 &&
-            cmd.indexOf("--board") > -1 &&
-            cmd.length === 3
+            cmd.indexOf("lint") > -1 
           ) {
             //only verification
+            console.log('ONLY VERIFY');
           } else {
+
             var archName = common.selectedBoard.info.arch;
             if (archName === "ecp5") {
               // LPF file
@@ -421,6 +421,7 @@ angular
               );
             }
           }
+
           // List files
           var listFiles = compiler.generate("list", project.get());
           for (var i in listFiles) {
@@ -432,7 +433,6 @@ angular
               "utf8"
             );
           }
-
           project.restoreSnapshot();
           resolve({
             code: verilogFile.content,
@@ -517,7 +517,6 @@ angular
       //-- package.json package)
       function checkToolchain(callback, notifyerror = true) {
 
-        iceConsole.log("===> tools.CHECKTOOLCHAIN");
 
 
         //-- Comand to Execute: apio --version
@@ -527,12 +526,10 @@ angular
         //-- apio, version 0.7.dev1
         //-- common.APIO_CMD contains the command for executing APIO
         utils.executeCommand([common.APIO_CMD, '--version'], (error, output) => {
-          iceConsole.log("  Error flag: " + error);
 
           //-- Toolchain not installed (or error executing it)
           if (error) {
 
-            iceConsole.log("  Error: " + error);
 
             //-- No apio version (blank)
             toolchain.apio = "";
@@ -554,7 +551,6 @@ angular
           //-- Toolchain installed  
           else {
 
-            iceConsole.log("  No Errors. Toolchain installed--");
 
             //-- Convert the object received to a string
             let msg = "" + output;
