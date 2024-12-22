@@ -61,7 +61,7 @@ angular.module('icestudio')
             //-- Current view state: Position and Zoom
             //-- It is initialized from VIEWSTATE_INIT
             let state = utils.clone(VIEWSTATE_INIT);
-
+            state.mutateZoom=false;
             //-- Diagram data structure. All the graphics start here
             //-- It is created by the joint.dia.Graph constructor
             //-- Documentation: https://resources.jointjs.com/mmap/joint.html
@@ -380,16 +380,18 @@ angular.module('icestudio')
                         eventsListenerElement: targetElement,
                         onZoom: function (scale) {
                             state.zoom = scale;
+                            state.mutateZoom=true;
                             // Close expanded combo
                             if (document.activeElement.className === 'select2-search__field') {
                                 $('select').select2('close');
                             }
                             updateCellBoxes();
+                            state.mutateZoom=false;
                         },
                         onPan: function (newPan) {
                             state.pan = newPan;
                             graph.trigger('state', state);
-                            updateCellBoxes();
+                             updateCellBoxes();
                         }
                     });
 

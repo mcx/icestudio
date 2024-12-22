@@ -827,7 +827,7 @@ joint.shapes.ice.GenericView = joint.shapes.ice.ModelView.extend({
     var leftPorts = this.model.get("leftPorts");
     var rightPorts = this.model.get("rightPorts");
     var modelId = this.model.id;
-
+if(state.mutateZoom){
     // Render ports width
     var width = WIRE_WIDTH * state.zoom;
     var pwires = this.$el[0].getElementsByClassName("port-wire");
@@ -926,7 +926,7 @@ joint.shapes.ice.GenericView = joint.shapes.ice.ModelView.extend({
         }
       }
     }
-
+}
     return this.place(".generic-content", bbox, state, pendingTasks);
   },
 });
@@ -2619,7 +2619,7 @@ joint.shapes.ice.InfoView = joint.shapes.ice.ModelView.extend({
     var bbox = this.model.getBBox();
     var state = this.model.get("state");
     var data = this.model.get("data");
-
+    if(state.mutateZoom){
     if (data.readonly) {
       // Scale render
       this.renderSelector.css({
@@ -2656,7 +2656,7 @@ joint.shapes.ice.InfoView = joint.shapes.ice.ModelView.extend({
       height: Math.round(bbox.height),
       transform: "scale(" + state.zoom + ")",
     });
-
+}
     // Render block
     this.$box.css({
       left: bbox.x * state.zoom + state.pan.x,
