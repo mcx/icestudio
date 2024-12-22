@@ -857,3 +857,10 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
+
+
+.io-block .io-virtual-content .header svg {
+  stroke: #ffff;
+}
+
+
