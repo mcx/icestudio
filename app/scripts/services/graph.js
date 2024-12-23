@@ -395,24 +395,43 @@ angular.module('icestudio')
                         }
                     });
 
-                function updateCellBoxes() {
-                    let cells = graph.getCells();
-                    selectionView.options.state = state;
+function updateCellBoxes() {
+    let cells = graph.getCells();
+    /* WIP: optimization rendering
+      let viewport = {
+        x: paper.getArea().x,
+        y: paper.getArea().y,
+        width: paper.getArea().width,
+        height: paper.getArea().height
+    };*/
 
-                    for (let i = 0, len = cells.length; i < len; i++) {
+    selectionView.options.state = state;
+    let elementView=false;
+    let bbox=false;
+    //WIP: optimization rendering let isInViewPort=false;
+    for (let i = 0, len = cells.length; i < len; i++) {
+        if (!cells[i].isLink()) {
+            cells[i].attributes.state = state;
+            elementView = paper.findViewByModel(cells[i]);
+            bbox = elementView.getBBox();
 
-                        if (!cells[i].isLink()) {
-                            cells[i].attributes.state = state;
-                            var elementView = paper.findViewByModel(cells[i]);
-                            // Pan blocks
-                            elementView.updateBox();
-                            // Pan selection boxes
-                            selectionView.updateBox(elementView.model);
-
-                        }
-                    }
-
-                }
+                //isInViewPort= isElementInViewport(bbox, viewport);
+                // Pan blocks
+                elementView.updateBox();
+                // Pan selection boxes
+                selectionView.updateBox(elementView.model);
+            
+        }
+    }
+}
+/*
+// WIP: Optimization rendering
+function isElementInViewport(elementBBox, viewport) {
+    return !(elementBBox.x + elementBBox.width < viewport.x ||
+             elementBBox.x > viewport.x + viewport.width ||
+             elementBBox.y + elementBBox.height < viewport.y ||
+             elementBBox.y > viewport.y + viewport.height);
+}*/
                 // Events
 
                 let shiftPressed = false;

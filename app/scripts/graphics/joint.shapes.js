@@ -131,6 +131,7 @@ function placementCssIOTasks(data, bbox, state, queue) {
       queue[i].e.style[queue[i].property] = queue[i].value;
     }
   }
+  
   return queue;
 }
 
@@ -200,13 +201,18 @@ function placementCssTasks(selector, bbox, state, queue) {
     value: `translate3d(${bx}px,${by}px,0) scale( ${state.zoom})`,
   });
 
-  i = queue.length;
+function applyCSSChanges(){
+  let i = queue.length;
   for (i = 0; i < queue.length; i++) {
     if (queue[i].e !== null) {
       queue[i].e.style[queue[i].property] = queue[i].value;
     }
   }
-  return queue;
+ } 
+requestAnimationFrame(applyCSSChanges);
+
+// console.log('CSS Q',queue);
+ return queue;
 }
 
 // Model element
@@ -230,7 +236,7 @@ joint.shapes.ice.Model = joint.shapes.basic.Generic.extend({
                  </g>\
                  <path class="port-wire" id="port-wire-<%= id %>-<%= port.id %>"/>\
                  <text class="port-label"/>\
-                 <circle class="port-body"/>\
+                 <circle class="port-body" r="0"/>\
                </g>',
 
   defaults: joint.util.deepSupplement(
@@ -818,33 +824,41 @@ joint.shapes.ice.GenericView = joint.shapes.ice.ModelView.extend({
   },
   place: placementCssTasks,
   updateBox: function () {
-    var pendingTasks = [];
-    var i, port;
-    var bbox = this.model.getBBox();
-    var data = this.model.get("data");
-    var state = this.model.get("state");
-    var rules = this.model.get("rules");
-    var leftPorts = this.model.get("leftPorts");
-    var rightPorts = this.model.get("rightPorts");
-    var modelId = this.model.id;
+    let pendingTasks = [];
+    let i, port;
+    const bbox = this.model.getBBox();
+    let data = this.model.get("data");
+    const state = this.model.get("state");
+    const rules = this.model.get("rules");
+    const leftPorts = this.model.get("leftPorts");
+    const rightPorts = this.model.get("rightPorts");
+    const modelId = this.model.id;
 if(state.mutateZoom){
     // Render ports width
-    var width = WIRE_WIDTH * state.zoom;
-    var pwires = this.$el[0].getElementsByClassName("port-wire");
-    for (i = 0; i < pwires.length; i++) {
+    let width = WIRE_WIDTH * state.zoom;
+   // var pwires = this.$el[0].getElementsByClassName("port-wire");
+      if(typeof this.pwires === 'undefined') {
+      this.pwires= this.$el[0].getElementsByClassName("port-wire");
+      }
+
+    for (i = 0; i < this.pwires.length; i++) {
       pendingTasks.push({
-        e: pwires[i],
+        e: this.pwires[i],
         property: "stroke-width",
         value: width + "px",
       });
     }
-    var nwidth = width * 3;
-    var tokId = "port-wire-" + modelId + "-";
-    var dome;
+    const nwidth = width * 3;
+    let tokId = "port-wire-" + modelId + "-";
+    let dome;
+    this.cacheDome={};
+    let ckey='--';
     for (i = 0; i < leftPorts.length; i++) {
       port = leftPorts[i];
       if (port.size > 1) {
-        dome = document.getElementById(tokId + port.id);
+        ckey=tokId+port.id;
+        dome = (typeof this.cacheDome[ckey] !== 'undefined') ? this.cacheDome[ckey] : document.getElementById(tokId + port.id);
+        this.cacheDome[ckey]=dome;
 
         pendingTasks.push({
           e: dome,
@@ -857,7 +871,11 @@ if(state.mutateZoom){
     for (i = 0; i < rightPorts.length; i++) {
       port = rightPorts[i];
       if (port.size > 1) {
-        dome = document.getElementById(tokId + port.id);
+        //dome = document.getElementById(tokId + port.id);
+        ckey=tokId+port.id;
+        dome = (typeof this.cacheDome[ckey] !== 'undefined') ? this.cacheDome[ckey] : document.getElementById(tokId + port.id);
+        this.cacheDome[ckey]=dome;
+
 
         pendingTasks.push({
           e: dome,
@@ -874,7 +892,12 @@ if(state.mutateZoom){
       tokId = "port-default-" + modelId + "-";
       for (i = 0; i < data.ports.in.length; i++) {
         port = data.ports.in[i];
-        portDefault = document.getElementById(tokId + port.name);
+        //portDefault = document.getElementById(tokId + port.name);
+        ckey=tokId+port.name;
+        portDefault = (typeof this.cacheDome[ckey] !== 'undefined') ? this.cacheDome[ckey] : document.getElementById(tokId + port.name);
+        this.cacheDome[ckey]=dome;
+
+
         if (
           portDefault !== null &&
           rules &&
@@ -977,7 +1000,7 @@ joint.shapes.ice.InputLabel = joint.shapes.ice.Model.extend({
                </g>\
                <path class="port-wire" id="port-wire-<%= id %>-<%= port.id %>"/>\
                  <text class="port-label"/>\
-                 <circle class="port-body"/>\
+                 <circle class="port-body" r="0"/>\
                </g>',
 
   //<polygon  class="input-virtual-terminator" points="0 -5,0 34,20 16" style="fill:white;stroke:<%= port.fill %>;stroke-width:3" transform="translate(100 -15)"/>\
@@ -1011,7 +1034,7 @@ joint.shapes.ice.OutputLabel = joint.shapes.ice.Model.extend({
                </g>\
                <path class="port-wire" id="port-wire-<%= id %>-<%= port.id %>"/>\
                  <text class="port-label"/>\
-                 <circle class="port-body"/>\
+                 <circle class="port-body" r="0"/>\
                </g>',
 
   //<polygon points="1 0,15 15,0 30,30 30,30 0" style="fill:lime;stroke-width:1" transform="translate(-122 -15)"/>\
@@ -1295,10 +1318,16 @@ joint.shapes.ice.IOView = joint.shapes.ice.ModelView.extend({
     // Set buses
     var nwidth = width * 3;
     tokId = "port-wire-" + modelId + "-";
+    let ckey='--';
+    this.cacheDome={};
     for (i = 0; i < leftPorts.length; i++) {
       port = leftPorts[i];
       if (port.size > 1) {
-        dome = document.getElementById(tokId + port.id);
+        //dome = document.getElementById(tokId + port.id);
+        ckey=tokId+port.id;
+        dome = (typeof this.cacheDome[ckey] !== 'undefined') ? this.cacheDome[ckey] : document.getElementById(ckey);
+        this.cacheDome[ckey]=dome;
+
 
         pendingTasks.push({
           e: dome,
@@ -1311,7 +1340,11 @@ joint.shapes.ice.IOView = joint.shapes.ice.ModelView.extend({
     for (i = 0; i < rightPorts.length; i++) {
       port = rightPorts[i];
       if (port.size > 1) {
-        dome = document.getElementById(tokId + port.id);
+       // dome = document.getElementById(tokId + port.id);
+         ckey=tokId+port.id;
+        dome = (typeof this.cacheDome[ckey] !== 'undefined') ? this.cacheDome[ckey] : document.getElementById(ckey);
+        this.cacheDome[ckey]=dome;
+
 
         pendingTasks.push({
           e: dome,
@@ -1325,7 +1358,12 @@ joint.shapes.ice.IOView = joint.shapes.ice.ModelView.extend({
       tokId = "port-default-" + modelId + "-";
       for (i = 0; i < data.ports.in.length; i++) {
         port = data.ports.in[i];
-        portDefault = document.getElementById(tokId + port.name);
+        ckey=tokId+port.name;
+        portDefault = (typeof this.cacheDome[ckey] !== 'undefined') ? this.cacheDome[ckey] : document.getElementById(ckey);
+        this.cacheDome[ckey]=portDefault;
+
+
+       // portDefault = document.getElementById(tokId + port.name);
         if (
           portDefault !== null &&
           rules &&
@@ -1369,12 +1407,18 @@ joint.shapes.ice.IOView = joint.shapes.ice.ModelView.extend({
   },
 
   drawPendingTasks: function (tasks) {
+    
+let _this=this;
+function applyDrawPendingTasks(){
     var i = tasks.length;
     for (i = 0; i < tasks.length; i++) {
-      if (this.tasks[i].e !== null) {
+      if (_this.tasks[i].e !== null) {
         tasks[i].e.style[tasks[i].property] = tasks[i].value;
       }
     }
+
+}
+    requestAnimationFrame(applyDrawPendingTasks);
   },
 
   removeBox: function () {
@@ -1501,17 +1545,20 @@ joint.shapes.ice.ConstantView = joint.shapes.ice.ModelView.extend({
 
   place: placementCssTasks,
   updateBox: function () {
-    var bbox = this.model.getBBox();
+    let bbox = this.model.getBBox();
     //var data = this.model.get("data");
-    var state = this.model.get("state");
-    var pendingTasks = [];
+    let state = this.model.get("state");
+    let pendingTasks = [];
     // Set wire width
-    var width = WIRE_WIDTH * state.zoom;
-    var pwires = this.$el[0].getElementsByClassName("port-wire");
-    var i;
-    for (i = 0; i < pwires.length; i++) {
+    let width = WIRE_WIDTH * state.zoom;
+    //var pwires = this.$el[0].getElementsByClassName("port-wire");
+    if(typeof this.pwires === 'undefined') {
+      this.pwires= this.$el[0].getElementsByClassName("port-wire");
+      }
+    let i;
+    for (i = 0; i < this.pwires.length; i++) {
       pendingTasks.push({
-        e: pwires[i],
+        e: this.pwires[i],
         property: "stroke-width",
         value: width + "px",
       });
@@ -2698,13 +2745,13 @@ joint.shapes.ice.Wire = joint.dia.Link.extend({
 
   bifurcationMarkup: [
     '<g class="marker-bifurcation-group" transform="translate(<%= x %>, <%= y %>)">',
-    '<circle class="marker-bifurcation" idx="<%= idx %>" r="<%= r %>" fill="#777"/>',
+    //'<circle class="marker-bifurcation" idx="<%= idx %>" r="<%= r %>" fill="#777"/>',
     "</g>",
   ].join(""),
 
   arrowheadMarkup: [
     '<g class="marker-arrowhead-group marker-arrowhead-group-<%= end %>">',
-    '<circle class="marker-arrowhead" end="<%= end %>" r="8"/>',
+    //'<circle class="marker-arrowhead" end="<%= end %>" r="8"/>',
     "</g>",
   ].join(""),
 
@@ -2843,6 +2890,10 @@ joint.shapes.ice.WireView = joint.dia.LinkView.extend({
     _.each(
       labels,
       function (label, idx) {
+        if(typeof idx === 'undefined' || idx === null || idx===false){
+
+            console.log('IDX NULL');
+        }
         var labelNode = labelNodeInstance.clone().node;
         V(labelNode).attr("label-idx", idx);
         this._labelCache[idx] = V(labelNode);
@@ -2899,9 +2950,14 @@ joint.shapes.ice.WireView = joint.dia.LinkView.extend({
   },
 
   updateWireProperties: function (size) {
-    if (size > 1) {
+    if(typeof WIRE_WIDTH ==='undefined' || WIRE_WIDTH===false){
+
+     console.log('ERROR R');
+    }
+   if (size > 1) {
       this.$(".connection").css("stroke-width", WIRE_WIDTH * 3);
       this.model.label(0, { attrs: { text: { text: size } } });
+      
       this.model.bifurcationMarkup = this.model.bifurcationMarkup.replace(
         /<%= r %>/g,
         WIRE_WIDTH * 4
