@@ -1465,7 +1465,7 @@ function isElementInViewport(elementBBox, viewport) {
             };
 
             this.loadDesign = function (design, opt, callback) {
-
+                console.log('DESIGN LOADED');
                 if (design &&
                     design.graph &&
                     design.graph.blocks &&
@@ -1479,8 +1479,10 @@ function isElementInViewport(elementBBox, viewport) {
 
                     self.fitContent();
 
+                    graph.trigger('batch:start');
                     graph.addCells(cells);
 
+                    graph.trigger('batch:stop');
                     self.setState(design.state);
 
                     self.appEnable(!opt.disabled);
@@ -1763,7 +1765,6 @@ function isElementInViewport(elementBBox, viewport) {
             function updateCellAttributes(cell) {
                 cell.attributes.state = state;
                 cell.attributes.rules = profile.get('boardRules');
-                //cell.attributes.zindex = z.index;
             }
 
             function addCell(cell) {
