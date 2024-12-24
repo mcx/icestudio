@@ -28,10 +28,29 @@ angular.module('icestudio')
         ) {
 
             let _this=this;
-            $('body').on('Graph::updateWires',function(){
-                       _this.updateWires();
-            }); 
-        
+            let autorouting=false;
+            let isRouting=false;
+
+          this.enableAutoRouting = function(){
+            if(autorouting===false){
+              $('body').on('Graph::updateWires',function(){
+                  if(!isRouting){
+                      isRouting=true;
+                      _this.updateWires();
+                      isRouting=false;
+                      isRouting=true;
+                  }
+                }); 
+              autorouting=true;
+            }
+          };
+
+          this.disableAutoRouting= function(){
+          $('body').off('Graph::updateWires');     
+          autorouting=false;
+          };
+
+
             //-- ZOOM constants
             const ZOOM_MAX = 2.1;
             const ZOOM_MIN = 0.3;
@@ -484,6 +503,7 @@ function isElementInViewport(elementBBox, viewport) {
                             self.addingDraggableBlock = false;
                             processReplaceBlock(selection.at(0));
                             disableSelected();
+                            graph.trigger('batch:start');
                             updateWiresOnObstacles().then(() => {
                             graph.trigger('batch:stop');
                             }); 
@@ -898,14 +918,21 @@ function isElementInViewport(elementBBox, viewport) {
                     }
                 }
             }
-            function updateWiresOnObstacles() {
+          
+function updateWiresOnObstacles() {
+  return new Promise(resolve => {
+    __updateWiresOnObstacles();
+    resolve();
+  });
+}
+/*function updateWiresOnObstacles() {
   return new Promise(resolve => {
     setTimeout(() => {
       __updateWiresOnObstacles();
       resolve(); // Resuelve la promesa después de ejecutar la función
     }, 1000); // Espera de 1 segundo
   });
-} 
+}*/ 
 
             this.setBoardRules = function (rules) {
                 let cells = graph.getCells();
@@ -1465,15 +1492,16 @@ function isElementInViewport(elementBBox, viewport) {
             };
 
             this.loadDesign = function (design, opt, callback) {
-                console.log('DESIGN LOADED');
                 if (design &&
                     design.graph &&
                     design.graph.blocks &&
                     design.graph.wires) {
 
                     opt = opt || { disabled: false, reset: true };
-                    commandManager.stopListening();
-
+                  this.disableAutoRouting();
+                   commandManager.stopListening();
+                   
+        
                     self.clearAll();
                     let cells = graphToCells(design.graph, opt);
 
@@ -1491,6 +1519,8 @@ function isElementInViewport(elementBBox, viewport) {
                     }
 
                                     self.fitContent();
+
+                                this.enableAutoRouting();
                     if (callback) {
                         callback();
                     }

@@ -453,12 +453,15 @@ joint.ui.SelectionView = Backbone.View.extend({
             });
         }
 
-        i = pendingTasks.length;
+      function applyCSSChanges(){
+        let i = pendingTasks.length;
         for (i = 0; i < pendingTasks.length; i++) {
             if (pendingTasks[i].e !== null) {
                 pendingTasks[i].e.style[pendingTasks[i].property] =
                     pendingTasks[i].value;
             }
         }
+    }
+        requestAnimationFrame(applyCSSChanges);
     },
 });
