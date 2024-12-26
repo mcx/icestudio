@@ -2842,7 +2842,7 @@ joint.shapes.ice.WireView = joint.dia.LinkView.extend({
       }
 
       self.updateWireProperties(size);
-      self.updateBifurcations();i
+      self.updateBifurcations();
     }, 0);
   },
 
