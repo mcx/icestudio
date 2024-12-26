@@ -43,7 +43,7 @@ jobs:
         if: env.skip_build != 'true'
         uses: actions/setup-node@v3
         with:
-          node-version: '21.1.0'
+          node-version: '22.7.0'
       
       - name: Install npm dependencies
         if: env.skip_build != 'true'
