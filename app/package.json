@@ -46,7 +46,6 @@
   "engines": {},
   "node": ">= 21.1.0",
   "dependencies": {
-
     "ace-builds": "~1.4.12",
     "adm-zip": "0.4.7",
     "alertifyjs": "~1.13.1",
@@ -76,6 +75,7 @@
     "node-emoji": "~1.8.1",
     "node-lang-info": "~0.2.1",
     "openurl": "~1.1.1",
+    "proper-lockfile": "^4.1.2",
     "rmdir": "~1.2.0",
     "rsyncwrapper": "~2.0.1",
     "select2": "~4.1.0-rc.0",
@@ -87,9 +87,8 @@
     "sudo-prompt": "~8.2.0",
     "svg-pan-zoom": "~3.4.1",
     "svgo": "~0.7.2",
-    "tmp": "0.0.33",
-    "proper-lockfile": "^4.1.2",
-    "sweetalert2": "^11.14.4"
+    "sweetalert2": "^11.14.4",
+    "tmp": "0.0.33"
   },
   "readme": "../README.md",
   "keywords": [

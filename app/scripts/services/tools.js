@@ -910,7 +910,7 @@ angular
                     });
                   }
                 }else{
-                  let re = /%Error:\s+(\w+\.v):(\d+):(\d+):\s*(syntax error,.*)$/gm;
+                  re = /%Error:\s+(\w+\.v):(\d+):(\d+):\s*(syntax error,.*)$/gm;
 
                   while ((matchError = re.exec(stdout))) {
                     codeErrors.push({
@@ -920,7 +920,16 @@ angular
                     });
                   }
 
-                  console.log('ERROR_TASK',code);
+                   re = /%(Error|Warning)(-[A-Z0-9]+)?: main\.v:(\d+):(\d+): (.*?)[\r\n]/g;
+while ((matchError = re.exec(stdout))) {
+  codeErrors.push({
+    line: parseInt(matchError[3]),
+    msg: matchError[5].trim(),
+    type: matchError[1].toLowerCase() // Convert 'Error' or 'Warning' to lowercase for type
+  });
+}
+                  console.log('ERRORS',codeErrors);
+                  //console.log('ERROR_TASK',code);
                 } 
 
                 // - Yosys errors

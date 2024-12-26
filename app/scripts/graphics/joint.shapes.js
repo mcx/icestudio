@@ -2819,6 +2819,7 @@ joint.shapes.ice.WireView = joint.dia.LinkView.extend({
     joint.dia.LinkView.prototype.initialize.apply(this, arguments);
 
     var self = this;
+
     setTimeout(function () {
       var size = self.model.get("size");
 
@@ -2841,7 +2842,7 @@ joint.shapes.ice.WireView = joint.dia.LinkView.extend({
       }
 
       self.updateWireProperties(size);
-      self.updateBifurcations();
+      self.updateBifurcations();i
     }, 0);
   },
 

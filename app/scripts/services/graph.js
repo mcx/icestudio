@@ -1518,7 +1518,9 @@ function updateWiresOnObstacles() {
                         commandManager.listen();
                     }
 
-                                    self.fitContent();
+
+                                self.updateWires();
+                                self.fitContent();
 
                                 this.enableAutoRouting();
                     if (callback) {
