@@ -31,17 +31,21 @@ angular.module('icestudio')
       let autorouting=false;
       let isRouting=false;
 
-      this.enableAutoRouting = function(){
-        if(autorouting===false){
-          $('body').on('Graph::updateWires',function(){
+      this.route = function(){
             if(!isRouting){
               isRouting=true;
               _this.updateWires();
               isRouting=false;
-              isRouting=true;
             }
-          }); 
+
+      };
+
+      this.enableAutoRouting = function(){
+        if(autorouting===false){
           autorouting=true;
+          $('body').on('Graph::updateWires',function(){
+            _this.route();
+          }); 
         }
       };
 
@@ -55,7 +59,7 @@ angular.module('icestudio')
       const ZOOM_MAX = 2.1;
       const ZOOM_MIN = 0.3;
       const ZOOM_SENS = 0.3;
-      const ZOOM_INI = 1.0;  //-- Initial zoom
+      const ZOOM_INI = 1.1;  //-- Initial zoom
 
       //-----------------------------------------------------------------------
       //-- Circuit constants
@@ -651,7 +655,7 @@ function isElementInViewport(elementBBox, viewport) {
               processReplaceBlock(cellView.model);
               graph.trigger('batch:stop');
               if (paper.options.enabled) {
-                updateWiresOnObstacles();
+              this.updateWires();
               }
             }
           }, 200);
@@ -904,8 +908,8 @@ function isElementInViewport(elementBBox, viewport) {
       };
 
 
-      this.updateWires=function(){
-        updateWiresOnObstacles();
+      this.updateWires= async function(){
+         await updateWiresOnObstacles();
       };
 
       function __updateWiresOnObstacles() {
@@ -951,7 +955,7 @@ function isElementInViewport(elementBBox, viewport) {
         if (!this.addingDraggableBlock) {
           disableSelected();
           commandManager.undo();
-          updateWiresOnObstacles();
+         this.updateWires();
         }
       };
 
@@ -959,7 +963,7 @@ function isElementInViewport(elementBBox, viewport) {
         if (!this.addingDraggableBlock) {
           disableSelected();
           commandManager.redo();
-          updateWiresOnObstacles();
+          this.updateWires();
         }
       };
 
@@ -1381,7 +1385,7 @@ function isElementInViewport(elementBBox, viewport) {
         if (hasSelection()) {
           graph.removeCells(selection.models);
           selectionView.cancelSelection();
-          updateWiresOnObstacles();
+          this.updateWires();
         }
       };
 
@@ -1505,7 +1509,7 @@ function isElementInViewport(elementBBox, viewport) {
           self.clearAll();
           let cells = graphToCells(design.graph, opt);
 
-          self.fitContent();
+          //self.fitContent();
 
           graph.trigger('batch:start');
           graph.addCells(cells);
@@ -1517,9 +1521,9 @@ function isElementInViewport(elementBBox, viewport) {
           if (!opt.disabled) {
             commandManager.listen();
           }
-          self.updateWires();
           self.fitContent();
           self.enableAutoRouting();
+          self.route();
           if (callback) {
             callback();
           }
