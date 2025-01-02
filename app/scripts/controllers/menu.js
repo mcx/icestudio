@@ -59,6 +59,8 @@ angular
             $scope.workingdir = "";
             $scope.snapshotdir = "";
 
+            $scope.recentProjects = profile.get('recentProjects') || [];
+
             let zeroProject = true; // New project without changes
             let resultAlert = null;
             let winCommandOutput = null;
@@ -317,6 +319,49 @@ angular
                 });
             };
 
+            //-------------------------------------------------------------------------//-------------------------------------------------------------------------
+            //-- FILE/Open Recent
+            //-- Show a list of recent projects
+            //-------------------------------------------------------------------------            
+            
+            
+            function addRecentProject(filepath) {
+                const recentProjects = profile.get('recentProjects') || [];
+        
+                // Remove duplicate entries
+                const updatedProjects = recentProjects.filter(p => p.path !== filepath);
+        
+                // Add the new project at the top
+                updatedProjects.unshift({
+                    path: filepath,
+                    lastOpened: new Date().toISOString()
+                });
+        
+                // Limit the list to the last 10 projects
+                profile.set('recentProjects', updatedProjects.slice(0, 10));
+                $scope.recentProjects = updatedProjects.slice(0, 10);
+            }
+
+            $scope.clearRecentProjects = function () {
+                alertify.confirm(
+                    gettextCatalog.getString('Clear Recent Projects'),
+                    gettextCatalog.getString('Are you sure you want to clear the list of recent projects?'),
+                    function () {
+                        profile.set('recentProjects', []);
+                        $scope.recentProjects = [];
+                        alertify.success(gettextCatalog.getString('Recent projects have been cleared.'));
+                    },
+                    function () { }
+                );
+            };              
+
+            $scope.truncatePath = function (path) {
+                if (path.length > 40) {
+                  return '...' + path.slice(-40); 
+                }
+                return path;
+            };
+
             //--------------------------------------------------------------------------
             //-- Open an icestudio File directly (No Dialog)
             //--
@@ -339,6 +384,8 @@ angular
                     // the project in a new window
                     utils.newWindow(filepath);
                 }
+
+                addRecentProject(filepath);
             };
 
 

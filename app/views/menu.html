@@ -104,6 +104,32 @@
                 </a>
               </li>
 
+              <!-- File/Open Recent Sub-menu -->
+              <li class="dropdown-submenu" 
+                  uib-dropdown 
+                  ng-show="recentProjects.length > 0">
+                <a href uib-dropdown-toggle>{{ 'Open Recent' | translate }}</a>
+                <ul uib-dropdown-menu>
+                  <!-- Dynamic list of recently opened projects -->
+                  <li ng-repeat="project in recentProjects track by project.path">
+                    <a href ng-click="openProject(project.path)">
+                      {{ truncatePath(project.path) }}
+                    </a>
+                  </li>
+
+                  <!-- Divider to separate recent projects and the clear option -->
+                  <li class="divider" ng-show="recentProjects.length > 0"></li>
+
+                  <!-- Option to clear the recently opened projects -->
+                  <li>
+                    <a href 
+                       ng-click="clearRecentProjects()">
+                      {{ 'Clear Recently Opened' | translate }}...
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
               <!-- File/Blocks -->
               <!-- Option obsolete... will be removed!
               <li class="dropdown-submenu" uib-dropdown>

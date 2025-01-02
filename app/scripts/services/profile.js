@@ -67,7 +67,8 @@ angular.module('icestudio')
             'lastVersionReview':data.lastVersionReview || false,
             'loggingEnabled':data.loggingEnabled || false,
             'loggingFile':data.loggingFile || '',
-            'pythonEnv':data.pythonEnv || {'python':'','pip':''}
+            'pythonEnv':data.pythonEnv || {'python':'','pip':''},
+            'recentProjects': data.recentProjects || []
           };
           
           if(self.data.pythonEnv.python.length>0){
