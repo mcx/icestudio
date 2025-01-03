@@ -156,8 +156,8 @@ angular.module('icestudio')
         mac: { label: '⌘+B', meta: true, key: 66 }
       },
       uploadCode: {
-        linux: { label: 'Ctrl+U', ctrl: true, key: 85 },
-        mac: { label: '⌘+U', meta: true, key: 85 }
+        linux: { label: 'Ctrl+Shift+U', ctrl: true, shift: true, key: 85 },
+        mac: { label: '⌘+⇧+U', meta: true, shift: true, key: 85 }
       },
       stepUp: {
         linux: { label: 'Arrow up', key: 38 },
