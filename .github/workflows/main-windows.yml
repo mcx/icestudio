@@ -87,7 +87,7 @@ jobs:
         env:
           ICESTUDIO_VERSION: "${{steps.icestudio_json.outputs.icestudio_version}}" 
           TIMESTAMP: "${{steps.build_date.outputs.icestudio_timestamp}}"
-        uses: 'actions/upload-artifact@v3'
+        uses: 'actions/upload-artifact@v4'
         with:
           name: "win64_MSI_${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}"
           path: "dist/icestudio-${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}-win64.exe"
@@ -98,7 +98,7 @@ jobs:
         env:
           ICESTUDIO_VERSION: "${{steps.icestudio_json.outputs.icestudio_version}}" 
           TIMESTAMP: "${{steps.build_date.outputs.icestudio_timestamp}}"
-        uses: 'actions/upload-artifact@v3'
+        uses: 'actions/upload-artifact@v4'
         with:
           name: "win64_ZIP_${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}"
           path: "dist/icestudio-${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}-win64.zip"

@@ -96,7 +96,7 @@ jobs:
         env:
           ICESTUDIO_VERSION: "${{fromJson(steps.icestudio_json.outputs.packageJson).version}}"
           TIMESTAMP: "${{fromJson(steps.build_date.outputs.buildJson).ts}}"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "osxarm64_DMG_${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}"
           path: "dist/icestudio-${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}-osxarm64.dmg"
