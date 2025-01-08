@@ -204,6 +204,9 @@ angular
 
                     //-- Open the file
                     project.open(filepath);
+
+                    //-- Add recent project    
+                    addRecentProject(filepath);
                 }
             }
 
