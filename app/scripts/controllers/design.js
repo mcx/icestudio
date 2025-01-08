@@ -131,12 +131,16 @@ angular
             var p = utils.cellsToProject(graphData.cells);
             tmp = utils.clone(common.allDependencies[block.type]);
             tmp.design.graph = p.design.graph;
-            /*var hId = utils.dependencyID(tmp);*/
             var hId = block.type;
             common.allDependencies[hId] = tmp;
-            $scope.toRestore = hId;
 
-            common.forceBack = true;
+            /* ---------------------------------------- */
+            /* Avoid automatically back on toggle edit  */ 
+            //$scope.toRestore = hId;
+            //common.forceBack = true;
+            /* ---------------------------------------- */
+
+            common.forceBack = false;
           } else {
             lockImg = $('img', btn);
             lockImgSrc = lockImg.attr('data-unlock');
@@ -153,7 +157,8 @@ angular
           $rootScope.$broadcast('navigateProject', {
             update: false,
             project: tmp,
-            editMode: rw
+            editMode: rw,
+            fromDoubleClick:false
           });
           utils.rootScopeSafeApply();
 
@@ -201,7 +206,6 @@ angular
           if ($scope.toRestore !== false &&
             common.submoduleId !== false &&
             design.graph.blocks.length > 0) {
-            //toRestoreLn=$scope.toRestore;
             for (i = 0; i < design.graph.blocks.length; i++) {
               if (common.submoduleUID === design.graph.blocks[i].id) {
                 common.allDependencies[type].design.graph.blocks[i].type =
@@ -280,6 +284,9 @@ angular
             iceStudio.bus.events.publish('Navigation::ReadOnly');
           }
 
+          let flowInfo={ fromDoubleClick:args.fromDoubleClick ?? false };
+          $rootScope.$broadcast('navigateProjectEnded',flowInfo);
+     
       });
 
       $rootScope.$on('breadcrumbsBack', function (/*event*/) {

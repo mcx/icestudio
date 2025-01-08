@@ -647,27 +647,20 @@ angular.module('icestudio')
     }
 
     this.snapshot = function () {
-    console.log('CREATE SNAPSHOT');
       this.backup = utils.clone(project);
     };
 
     this.restoreSnapshot = function (){ 
-    console.log('RESTORE SNAPSHOT');
       project = utils.clone(this.backup);
 
     };
 
     this.update = function (opt, callback) {
-      var graphData = graph.toJSON();
-      var p = utils.cellsToProject(graphData.cells, opt);
+      let graphData = graph.toJSON();
+      let p = utils.cellsToProject(graphData.cells, opt);
       project.design.board = p.design.board;
       project.design.graph = p.design.graph;
       project.dependencies = p.dependencies;
-        console.log('PROJECT::UPDATE',subModuleActive,
-              typeof common.submoduleId,
-              common.submoduleId,
-               typeof common.allDependencies[common.submoduleId],
-               common.allDependencies[common.submoduleId]);
 
 if (subModuleActive && typeof common.submoduleId !== 'undefined' && typeof common.allDependencies[common.submoduleId] !== 'undefined') {
         project.package = common.allDependencies[common.submoduleId].package;

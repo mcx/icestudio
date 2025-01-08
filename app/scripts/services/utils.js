@@ -1536,13 +1536,17 @@ angular.module('icestudio')
             return 'v' + id.substring(0, 6);
         };
 
-        this.beginBlockingTask = function () {
+        this.beginBlockingTask = async function () {
+          console.log('Begin BTask');
             angular.element('#menu').addClass('is-disabled');
-            $('body').addClass('waiting');
+          document.body.classList.add('waiting');  
+
+           await new Promise(requestAnimationFrame);
         };
 
         this.endBlockingTask = function () {
 
+            console.log('End BTask');
             $('body').trigger('Graph::updateWires');
             console.log('EDITORES');
             $(".code-editor.ace_editor").each(function() {
@@ -1552,10 +1556,10 @@ angular.module('icestudio')
                     }, 300); 
             });
 
-            setTimeout(function(){
+           // setTimeout(function(){
                 angular.element('#menu').removeClass('is-disabled');
                 $('body').removeClass('waiting');
-            },1000); 
+           // },1000); 
         };
 
         this.isFunction = function (functionToCheck) {

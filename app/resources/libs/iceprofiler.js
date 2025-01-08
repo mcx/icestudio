@@ -28,6 +28,16 @@ var IceProfiler=function(){
         this.stats[label].acc += this.measures[label].elapsed;
         this.stats[label].n++;
     };
+  this.clear=function(){
+
+      this.measures={};
+    this.stats={};
+  };
+
+  this.print = function(){
+      console.table(this.measures);
+
+  };
 };
 
 var iprof = new IceProfiler();

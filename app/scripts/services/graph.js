@@ -548,28 +548,32 @@ function isElementInViewport(elementBBox, viewport) {
           }
         });
         let isDblClick = false;
+        let  pointerdblclickCellType=false;
         paper.on('cell:pointerdblclick', function (cellView, evt, x, y) {
 
           if (x && y && !checkInsideViewBox(cellView, x, y)) {
             // Out of the view box
             return;
           }
+
           selectionView.cancelSelection();
+          
           if (!utils.hasShift(evt)) {
 
             // Allow dblClick if Shift is not pressed
-            var type = cellView.model.get('blockType');
-            var blockId = cellView.model.get('id');
+            pointerdblclickCellType = cellView.model.get('blockType');
+            let blockId = cellView.model.get('id');
 
 
-            if (type.indexOf('basic.') !== -1) {
+
+            if (pointerdblclickCellType.indexOf('basic.') !== -1) {
               // Edit basic blocks
               if (paper.options.enabled) {
                 const allowInoutPorts = profile.get('allowInoutPorts') || common.allowProjectInoutPorts;
-                blockforms.editBasic(type, allowInoutPorts, cellView, addCell);
+                blockforms.editBasic(pointerdblclickCellType, allowInoutPorts, cellView, addCell);
               }
             }
-            else if (common.allDependencies[type]) {
+            else if (common.allDependencies[pointerdblclickCellType]) {
               if (typeof common.isEditingSubmodule !== 'undefined' &&
                 common.isEditingSubmodule === true) {
                 alertify.warning(gettextCatalog.getString('To enter \"edit mode\" in a deeper block, you need to finish the current level by locking the padlock.'));
@@ -578,22 +582,31 @@ function isElementInViewport(elementBBox, viewport) {
               // Navigate inside generic blocks
               z.index = 1;
               isDblClick = true;
-              let project = common.allDependencies[type];
-              let breadcrumbsLength = self.breadcrumbs.length;
-              utils.beginBlockingTask();
-              setTimeout(function () {
+
+               utils.beginBlockingTask();
+              setTimeout(function(){
                 $rootScope.$broadcast('navigateProject', {
-                  update: breadcrumbsLength === 1,
-                  project: project,
-                  submodule: type,
-                  submoduleId: blockId
+                  update: self.breadcrumbs.length === 1,
+                  project: common.allDependencies[pointerdblclickCellType],
+                  submodule: pointerdblclickCellType,
+                  submoduleId: blockId,
+                  fromDoubleClick:true
                 });
-                self.breadcrumbs.push({ name: project.package.name || '#', type: type });
-                utils.rootScopeSafeApply();
+              },0);
+             setTimeout(function () {
                 isDblClick = false;
-              }, 500);
+              }, 250);
             }
           }
+
+        });
+        $rootScope.$on('navigateProjectEnded',function(event,args){
+          console.log('NPE',args);  
+          if(args.fromDoubleClick){
+                   self.breadcrumbs.push({ name: common.allDependencies[pointerdblclickCellType].package.name || '#', type: pointerdblclickCellType });
+
+              }   
+             utils.rootScopeSafeApply();
 
         });
 
@@ -655,7 +668,7 @@ function isElementInViewport(elementBBox, viewport) {
               processReplaceBlock(cellView.model);
               graph.trigger('batch:stop');
               if (paper.options.enabled) {
-              this.updateWires();
+              _this.updateWires();
               }
             }
           }, 200);
@@ -929,15 +942,7 @@ function isElementInViewport(elementBBox, viewport) {
           resolve();
         });
       }
-      /*function updateWiresOnObstacles() {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      __updateWiresOnObstacles();
-      resolve(); // Resuelve la promesa después de ejecutar la función
-    }, 1000); // Espera de 1 segundo
-  });
-}*/ 
-
+    
       this.setBoardRules = function (rules) {
         let cells = graph.getCells();
         profile.set('boardRules', rules);
