@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="text/x-icestudio">
+    <comment>Icestudio Project</comment>
+    <comment xml:lang="en">Icestudio Project</comment>
+    <comment xml:lang="es">Proyecto de Icestudio</comment>
+    <glob pattern="*.ice"/>
+    <generic-icon name="text-x-icestudio"/>
+  </mime-type>
+</mime-info>
