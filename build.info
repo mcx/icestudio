@@ -1,8 +1,9 @@
-2025-01-08 18:16 (GMT+1)
+2025-01-08 22:08 (GMT+1)
 ========================
 Type: WIP
 App Changes: 
   
+  - Add .ice files opened with double click from file manager to  recent files option by @lmcapacho
   - Accuracy selection and click on items (now is pixel-perfect click and selections) by @cavearr 
   - Speed up UI/load-flow by @cavearr
   - Best Mime file support for Linux Desktops by @lmcapacho
