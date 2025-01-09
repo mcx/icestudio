@@ -494,7 +494,7 @@ joint.shapes.ice.ModelView = joint.dia.ElementView.extend({
     this.model.on("change", this.updateBox, this);
     this.model.on("remove", this.removeBox, this);
 
-    this.updateBox();
+    this.updateBox(true);
 
     this.listenTo(this.model, "process:ports", this.update);
   },
@@ -823,7 +823,7 @@ joint.shapes.ice.GenericView = joint.shapes.ice.ModelView.extend({
     }
   },
   place: placementCssTasks,
-  updateBox: function () {
+  updateBox: function (forceMutate=false) {
     let pendingTasks = [];
     let i, port;
     const bbox = this.model.getBBox();
@@ -833,7 +833,7 @@ joint.shapes.ice.GenericView = joint.shapes.ice.ModelView.extend({
     const leftPorts = this.model.get("leftPorts");
     const rightPorts = this.model.get("rightPorts");
     const modelId = this.model.id;
-if(state.mutateZoom){
+if(state.mutateZoom|| forceMutate){
     // Render ports width
     let width = WIRE_WIDTH * state.zoom;
    // var pwires = this.$el[0].getElementsByClassName("port-wire");
@@ -1169,7 +1169,7 @@ joint.shapes.ice.IOView = joint.shapes.ice.ModelView.extend({
       }
     });
 
-    this.updateBox();
+    this.updateBox(true);
 
     this.updating = false;
 
@@ -2666,6 +2666,7 @@ joint.shapes.ice.InfoView = joint.shapes.ice.ModelView.extend({
     var bbox = this.model.getBBox();
     var state = this.model.get("state");
     var data = this.model.get("data");
+    
     if(state.mutateZoom){
     if (data.readonly) {
       // Scale render
