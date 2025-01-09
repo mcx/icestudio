@@ -2745,13 +2745,13 @@ joint.shapes.ice.Wire = joint.dia.Link.extend({
 
   bifurcationMarkup: [
     '<g class="marker-bifurcation-group" transform="translate(<%= x %>, <%= y %>)">',
-    //'<circle class="marker-bifurcation" idx="<%= idx %>" r="<%= r %>" fill="#777"/>',
+    '<circle class="marker-bifurcation" idx="<%= idx %>" r="<%= r %>" fill="#777"/>',
     "</g>",
   ].join(""),
 
   arrowheadMarkup: [
     '<g class="marker-arrowhead-group marker-arrowhead-group-<%= end %>">',
-    //'<circle class="marker-arrowhead" end="<%= end %>" r="8"/>',
+    '<circle class="marker-arrowhead" end="<%= end %>" r="8"/>',
     "</g>",
   ].join(""),
 
@@ -2951,14 +2951,10 @@ joint.shapes.ice.WireView = joint.dia.LinkView.extend({
   },
 
   updateWireProperties: function (size) {
-    if(typeof WIRE_WIDTH ==='undefined' || WIRE_WIDTH===false){
-
-     console.log('ERROR R');
-    }
    if (size > 1) {
       this.$(".connection").css("stroke-width", WIRE_WIDTH * 3);
       this.model.label(0, { attrs: { text: { text: size } } });
-      
+       
       this.model.bifurcationMarkup = this.model.bifurcationMarkup.replace(
         /<%= r %>/g,
         WIRE_WIDTH * 4
@@ -3071,7 +3067,9 @@ joint.shapes.ice.WireView = joint.dia.LinkView.extend({
                   var point = vA[i];
                   if (!contains(point, points)) {
                     points.push(point);
-                    markersA.append(V(markupTemplate(point)).node);
+                    let mt =markupTemplate(point);
+                    mt=mt.replace('r=""','r="1.5"');
+                    markersA.append(V(mt).node);
                   }
                 }
               }

@@ -304,7 +304,7 @@ angular
             .then(function () {
               var hostname = profile.get("remoteHostname");
               var command = commands[0];
-              if (command === "build" || command === "upload") {
+              if (command === "build") {
                 if (profile.get("showFPGAResources")) {
                   commands = commands.concat("--verbose-pnr");
                 }
@@ -805,6 +805,7 @@ angular
                     // TinyFPGA-B2 programmer errors
                   case "TinyFPGA-B2":
                   case "TinyFPGA-BX":
+                    console.log('UPLOAD OUT',stdout);
                     var match = stdout.match(/Bootloader\snot\sactive/g);
                     if (match && match.length === 3) {
                       resultAlert = alertify.error(
