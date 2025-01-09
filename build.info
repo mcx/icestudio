@@ -2,7 +2,8 @@
 ========================
 Type: WIP
 App Changes: 
-  
+
+  - Fix not showing wires bifurcations marks.
   - Add .ice files opened with double click from file manager to  recent files option by @lmcapacho
   - Accuracy selection and click on items (now is pixel-perfect click and selections) by @cavearr 
   - Speed up UI/load-flow by @cavearr
