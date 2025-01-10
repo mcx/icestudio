@@ -1567,7 +1567,7 @@ angular
                     '  <div class="col-sm-7" style="margin-left: 45px;">',
                     '    <h4>Icestudio</h4>',
                     '    <p><i>Visual editor for open FPGA boards</i></p>',
-                    '    <p>Version: ' + $scope.version + '</p>',
+                    '    <p>Version: <span style="user-select: text;">' + $scope.version + '</span></p>',
                     '    <p>License: GPL-2.0</p>',
                     '  </div>',
                     '</div>',
