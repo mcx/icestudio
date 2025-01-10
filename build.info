@@ -3,8 +3,9 @@
 Type: WIP
 App Changes: 
 
-  - Fix non visible clk in block insertion
-  - Fix not showing wires bifurcations marks.
+  - Fix non visible clk in wire remove or attach action by @cavearr
+  - Fix non visible clk in block insertion by @cavearr
+  - Fix not showing wires bifurcations marks by @cavearr
   - Add .ice files opened with double click from file manager to  recent files option by @lmcapacho
   - Accuracy selection and click on items (now is pixel-perfect click and selections) by @cavearr 
   - Speed up UI/load-flow by @cavearr
