@@ -1,8 +1,9 @@
-2025-01-10 00:58 (GMT+1)
+2025-01-10 21:13 (GMT+1)
 ========================
 Type: WIP
 App Changes: 
-
+  - Fix some display clock block errors by @cavearr
+  - Allow selecting Icestudio version number for copying (#717) by @lmcapacho
   - Fix non visible clk in wire remove or attach action by @cavearr
   - Fix non visible clk in block insertion by @cavearr
   - Fix not showing wires bifurcations marks by @cavearr
