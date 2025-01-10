@@ -821,6 +821,7 @@ joint.shapes.ice.GenericView = joint.shapes.ice.ModelView.extend({
         );
       }
     }
+    this.updateBox(true);
   },
   place: placementCssTasks,
   updateBox: function (forceMutate=false) {
@@ -1484,7 +1485,7 @@ joint.shapes.ice.ConstantView = joint.shapes.ice.ModelView.extend({
       event.stopPropagation();
     });
 
-    this.updateBox();
+    this.updateBox(true);
 
     this.updating = false;
 
@@ -1980,7 +1981,7 @@ joint.shapes.ice.CodeView = joint.shapes.ice.ModelView.extend({
       event.stopPropagation();
     });
 
-    this.updateBox();
+    this.updateBox(true);
 
     this.updating = false;
     this.prevZoom = 0;
@@ -2456,7 +2457,7 @@ joint.shapes.ice.InfoView = joint.shapes.ice.ModelView.extend({
       event.stopPropagation();
     });
 
-    this.updateBox();
+    this.updateBox(true);
 
     this.updating = false;
     this.deltas = [];
@@ -2657,17 +2658,18 @@ joint.shapes.ice.InfoView = joint.shapes.ice.ModelView.extend({
   },
 
   update: function () {
+  
     this.editor.setReadOnly(this.model.get("disabled"));
     joint.dia.ElementView.prototype.update.apply(this, arguments);
   },
 
 
-  updateBox: function () {
+  updateBox: function (forceMutate=false) {
     var bbox = this.model.getBBox();
     var state = this.model.get("state");
     var data = this.model.get("data");
     
-    if(state.mutateZoom){
+    if(state.mutateZoom || forceMutate){
     if (data.readonly) {
       // Scale render
       this.renderSelector.css({

@@ -1781,6 +1781,7 @@ function isElementInViewport(elementBBox, viewport) {
               }
               selection.add(cell);
               selectionView.createSelectionBox(cell);
+              cellView.updateBox(true);
             }
           });
         }
