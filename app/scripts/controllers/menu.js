@@ -1416,6 +1416,10 @@ angular
                     );
                 }
             };
+           $scope.takeSnapshotPNG = function () {
+                tools.takeSnapshotPNG();
+            };
+
 
             $scope.verifyCode = function () {
                 var startMessage = gettextCatalog.getString("Start verification");
@@ -1686,7 +1690,7 @@ angular
             shortcuts.method("verifyCode", $scope.verifyCode);
             shortcuts.method("buildCode", $scope.buildCode);
             shortcuts.method("uploadCode", $scope.uploadCode);
-
+            shortcuts.method("takeSnapshotPNG", $scope.takeSnapshotPNG);
             // -- Misc
             shortcuts.method("stepUp", graph.stepUp);
             shortcuts.method("stepDown", graph.stepDown);

@@ -23,7 +23,8 @@ angular
       nodeRSync,
       nodeAdmZip,
       _package,
-      $rootScope
+      $rootScope,
+      gui
     ) {
       //-- Flag that indicates if there is an apio command already running
       var taskRunning = false;
@@ -2147,5 +2148,50 @@ this.initializePluginManager = function (callbackOnRun) {
 
   }
 };
+
+ function generateScreenshotName() {
+    // Obtener la fecha actual
+    const now = new Date();
+
+    // Formatear fecha y hora
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Mes empieza en 0
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    // Crear el nombre del archivo
+    return `icestudio_${year}-${month}-${day}_${hours}.${minutes}.${seconds}.png`;
 }
-        );
+
+this.takeSnapshotPNG = function() {
+   
+  // Current NWJS Window
+  const win = gui.Window.get();
+
+  setTimeout(function(){
+  
+    win.capturePage((base64Data) => {
+       try {
+            const imageBuffer = Buffer.from(base64Data, 'base64');
+
+            // Image saved to Destkop as OSX style
+            const fileName = generateScreenshotName();
+            const userHome = process.env.HOME || process.env.USERPROFILE; 
+            const savePath = nodePath.join(userHome, 'Desktop', fileName); 
+            nodeFs.writeFileSync(savePath, imageBuffer);
+            alertify.success( gettextCatalog.getString("Snapshot saved as "+savePath),100000);
+
+
+        } catch (err) {
+            console.error('Error taking snapshot', err);
+        }
+    }, { format: 'png', datatype: 'raw' }); 
+},500);
+};
+
+
+
+
+});

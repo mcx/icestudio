@@ -598,7 +598,7 @@ joint.shapes.ice.ModelView = joint.dia.ElementView.extend({
   render: function () {
     joint.dia.ElementView.prototype.render.apply(this, arguments);
     this.paper.$el.append(this.$box);
-    this.updateBox();
+    this.updateBox(true);
     return this;
   },
 
@@ -1665,7 +1665,7 @@ joint.shapes.ice.MemoryView = joint.shapes.ice.ModelView.extend({
       event.stopPropagation();
     });
 
-    this.updateBox();
+    this.updateBox(true);
 
     this.updating = false;
     this.prevZoom = 0;
@@ -2644,7 +2644,7 @@ joint.shapes.ice.InfoView = joint.shapes.ice.ModelView.extend({
   apply: function (opt) {
     this.applyValue(opt);
     this.applyReadonly();
-    this.updateBox();
+    this.updateBox(true);
     if (this.editor) {
       this.editor.resize();
     }
@@ -2653,7 +2653,7 @@ joint.shapes.ice.InfoView = joint.shapes.ice.ModelView.extend({
   render: function () {
     joint.dia.ElementView.prototype.render.apply(this, arguments);
     this.paper.$el.append(this.$box);
-    this.updateBox();
+    this.updateBox(true);
     return this;
   },
 
