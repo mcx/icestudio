@@ -904,7 +904,7 @@ function isElementInViewport(elementBBox, viewport) {
                     break;
                   }
                 }
-                paper.findViewByModel(block.id).updateBox();
+                paper.findViewByModel(block.id).updateBox(true);
               }
             }
           }
@@ -1387,6 +1387,7 @@ function isElementInViewport(elementBBox, viewport) {
       };
 
       this.removeSelected = function () {
+        console.log('RemoveSelected');
         if (hasSelection()) {
           graph.removeCells(selection.models);
           selectionView.cancelSelection();

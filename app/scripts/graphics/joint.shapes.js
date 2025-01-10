@@ -2246,7 +2246,7 @@ joint.shapes.ice.CodeView = joint.shapes.ice.ModelView.extend({
         });
       }
     }
-
+    
     // Render rules
     if (data && data.ports && data.ports.in) {
       tokId = "port-default-" + modelId + "-";
@@ -2894,7 +2894,6 @@ joint.shapes.ice.WireView = joint.dia.LinkView.extend({
       function (label, idx) {
         if(typeof idx === 'undefined' || idx === null || idx===false){
 
-            console.log('IDX NULL');
         }
         var labelNode = labelNodeInstance.clone().node;
         V(labelNode).attr("label-idx", idx);
