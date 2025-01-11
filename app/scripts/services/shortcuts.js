@@ -160,7 +160,7 @@ angular.module('icestudio')
         mac: { label: '⌘+⇧+U', meta: true, shift: true, key: 85 }
       },
       takeSnapshotPNG: {
-        linux: { label: 'Ctrl+Shift+P', ctrl: true, shift:true, key: 88 },
+        linux: { label: 'Ctrl+Shift+P', ctrl: true, shift:true, key: 80 },
         mac: { label: '⌘+⇧+P', meta: true, shift:true, key: 80 }
       },
 
