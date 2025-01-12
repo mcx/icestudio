@@ -2201,10 +2201,8 @@ this.takeSnapshotPNG = function() {
         isRecording=true;
     try {
 
-
         const videoChunks = [];
 
-        const win = gui.Window.get();
         const displayMediaOptions = {
             video: {
                 cursor:"always"
