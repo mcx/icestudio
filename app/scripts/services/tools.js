@@ -2201,7 +2201,7 @@ this.takeSnapshotPNG = function() {
         isRecording=true;
     try {
 
-        const videoChunks = [];
+        let videoChunks = [];
 
         const displayMediaOptions = {
             video: {
@@ -2233,7 +2233,8 @@ this.takeSnapshotPNG = function() {
         };
 
         // Inicia la grabación
-        mediaRecorder.start();
+        setTimeout(function(){ mediaRecorder.start();},750);
+
         const wrapper = document.getElementById('main-icestudio-wrapper');
         wrapper.classList.add('icestudio-taking-snapshot-video'); // Añade la clase 'new-class'
     } catch (error) {
