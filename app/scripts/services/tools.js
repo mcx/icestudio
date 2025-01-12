@@ -2193,6 +2193,8 @@ this.takeSnapshotPNG = function() {
 
 
   let isRecording=false;
+  let mediaRecorder=false;
+  let stream=false;
    this.takeSnapshotVideo = async function () {
      if(!isRecording){
 
@@ -2200,7 +2202,7 @@ this.takeSnapshotPNG = function() {
     try {
 
 
-       /* const videoChunks = [];
+        const videoChunks = [];
 
         const win = gui.Window.get();
         const displayMediaOptions = {
@@ -2210,9 +2212,9 @@ this.takeSnapshotPNG = function() {
             audio: false
         };
 
-        const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+        stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
 
-        const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+        mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
 
         mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
@@ -2233,19 +2235,19 @@ this.takeSnapshotPNG = function() {
         };
 
         // Inicia la grabación
-        mediaRecorder.start();*/
+        mediaRecorder.start();
         const wrapper = document.getElementById('main-icestudio-wrapper');
         wrapper.classList.add('icestudio-taking-snapshot-video'); // Añade la clase 'new-class'
     } catch (error) {
-        console.error('Error al iniciar la grabación:', error);
+        console.error('MediaRecorder::ERROR', error);
 
         isRecording=false;
-            alertify.success( gettextCatalog.getString("Recording screen error, review your perms"),100000);
+            alertify.error( gettextCatalog.getString("Recording screen error, review your permissions"),100000);
     }
      }else{
           const wrapper = document.getElementById('main-icestudio-wrapper');
-           /*   mediaRecorder.stop();
-            stream.getTracks().forEach((track) => track.stop());*/
+            mediaRecorder.stop();
+            stream.getTracks().forEach((track) => track.stop());
          wrapper.classList.remove('icestudio-taking-snapshot-video');
         isRecording=false;
       
