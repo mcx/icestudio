@@ -2225,18 +2225,17 @@ this.takeSnapshotPNG = function() {
             const arrayBuffer = await blob.arrayBuffer();
 
             const fileName = generateSnapshotName('webm');
-            const userHome = process.env.HOME || process.env.USERPROFILE; // Carpeta del usuario
+            const userHome = process.env.HOME || process.env.USERPROFILE; 
             const savePath = nodePath.join(userHome, 'Desktop', fileName);
             nodeFs.writeFileSync(savePath, Buffer.from(arrayBuffer));
 
             alertify.success( gettextCatalog.getString("Video saved as "+savePath),100000);
         };
 
-        // Inicia la grabación
         setTimeout(function(){ mediaRecorder.start();},750);
 
         const wrapper = document.getElementById('main-icestudio-wrapper');
-        wrapper.classList.add('icestudio-taking-snapshot-video'); // Añade la clase 'new-class'
+        wrapper.classList.add('icestudio-taking-snapshot-video'); 
     } catch (error) {
         console.error('MediaRecorder::ERROR', error);
 
