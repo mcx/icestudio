@@ -2149,7 +2149,7 @@ this.initializePluginManager = function (callbackOnRun) {
   }
 };
 
- function generateScreenshotName() {
+ function generateSnapshotName(extension) {
     // Obtener la fecha actual
     const now = new Date();
 
@@ -2162,7 +2162,7 @@ this.initializePluginManager = function (callbackOnRun) {
     const seconds = String(now.getSeconds()).padStart(2, '0');
 
     // Crear el nombre del archivo
-    return `icestudio_${year}-${month}-${day}_${hours}.${minutes}.${seconds}.png`;
+    return `icestudio_${year}-${month}-${day}_${hours}.${minutes}.${seconds}.${extension}`;
 }
 
 this.takeSnapshotPNG = function() {
@@ -2177,7 +2177,7 @@ this.takeSnapshotPNG = function() {
             const imageBuffer = Buffer.from(base64Data, 'base64');
 
             // Image saved to Destkop as OSX style
-            const fileName = generateScreenshotName();
+            const fileName = generateSnapshotName('png');
             const userHome = process.env.HOME || process.env.USERPROFILE; 
             const savePath = nodePath.join(userHome, 'Desktop', fileName); 
             nodeFs.writeFileSync(savePath, imageBuffer);
@@ -2189,6 +2189,68 @@ this.takeSnapshotPNG = function() {
         }
     }, { format: 'png', datatype: 'raw' }); 
 },500);
+};
+
+
+  let isRecording=false;
+   this.takeSnapshotVideo = async function () {
+     if(!isRecording){
+
+        isRecording=true;
+    try {
+
+
+       /* const videoChunks = [];
+
+        const win = gui.Window.get();
+        const displayMediaOptions = {
+            video: {
+                cursor:"always"
+            },
+            audio: false
+        };
+
+        const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+
+        const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+
+        mediaRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) {
+                videoChunks.push(event.data);
+            }
+        };
+
+        mediaRecorder.onstop = async () => {
+            const blob = new Blob(videoChunks, { type: 'video/webm' });
+            const arrayBuffer = await blob.arrayBuffer();
+
+            const fileName = generateSnapshotName('webm');
+            const userHome = process.env.HOME || process.env.USERPROFILE; // Carpeta del usuario
+            const savePath = nodePath.join(userHome, 'Desktop', fileName);
+            nodeFs.writeFileSync(savePath, Buffer.from(arrayBuffer));
+
+            alertify.success( gettextCatalog.getString("Video saved as "+savePath),100000);
+        };
+
+        // Inicia la grabación
+        mediaRecorder.start();*/
+        const wrapper = document.getElementById('main-icestudio-wrapper');
+        wrapper.classList.add('icestudio-taking-snapshot-video'); // Añade la clase 'new-class'
+    } catch (error) {
+        console.error('Error al iniciar la grabación:', error);
+
+        isRecording=false;
+            alertify.success( gettextCatalog.getString("Recording screen error, review your perms"),100000);
+    }
+     }else{
+          const wrapper = document.getElementById('main-icestudio-wrapper');
+           /*   mediaRecorder.stop();
+            stream.getTracks().forEach((track) => track.stop());*/
+         wrapper.classList.remove('icestudio-taking-snapshot-video');
+        isRecording=false;
+      
+
+    }
 };
 
 

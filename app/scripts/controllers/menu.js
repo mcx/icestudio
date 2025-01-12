@@ -1419,6 +1419,10 @@ angular
            $scope.takeSnapshotPNG = function () {
                 tools.takeSnapshotPNG();
             };
+          $scope.takeSnapshotVideo = function () {
+                tools.takeSnapshotVideo();
+            };
+
 
 
             $scope.verifyCode = function () {
@@ -1691,6 +1695,7 @@ angular
             shortcuts.method("buildCode", $scope.buildCode);
             shortcuts.method("uploadCode", $scope.uploadCode);
             shortcuts.method("takeSnapshotPNG", $scope.takeSnapshotPNG);
+            shortcuts.method("takeSnapshotVideo", $scope.takeSnapshotVideo);
             // -- Misc
             shortcuts.method("stepUp", graph.stepUp);
             shortcuts.method("stepDown", graph.stepDown);
@@ -1721,8 +1726,6 @@ angular
                     // $rootScope.$broadcast("breadcrumbsBack");
                 }
             });
-
-            shortcuts.method("takeSnapshot", takeSnapshot);
 
             //-- Shortcut for Testing and Debugging
             shortcuts.method("testing", testing);
@@ -2216,34 +2219,6 @@ $(document).delegate('.js-shortcut--action', 'click', function (e) {
 function testing() {
     console.log("--> TESTING!!!!! ");
     alertify.alert('<b>Ready!</b> ' + process.platform);
-}
-
-function takeSnapshot() {
-    win.capturePage(function (img) {
-        var base64Data = img.replace(
-            /^data:image\/(png|jpg|jpeg);base64,/,
-            ""
-        );
-        saveSnapshot(base64Data);
-    }, "png");
-}
-
-function saveSnapshot(base64Data) {
-    utils.saveDialog("#input-save-snapshot", ".png", function (filepath) {
-        fs.writeFile(filepath, base64Data, "base64", function (err) {
-            $scope.snapshotdir = utils.dirname(filepath) + utils.sep;
-            $scope.$apply();
-            if (!err) {
-                alertify.success(
-                    gettextCatalog.getString("Image {{name}} saved", {
-                        name: utils.bold(utils.basename(filepath)),
-                    })
-                );
-            } else {
-                throw err;
-            }
-        });
-    });
 }
 
 var menu;

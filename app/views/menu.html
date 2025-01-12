@@ -26,10 +26,7 @@
 
     <input id="input-save-project" type="file" accept=".ice" class="hidden" 
            nwworkingdir="{{workingdir}}" nwsaveas="{{project.name}}.ice"/>
-    <input id="input-save-snapshot" type="file" accept=".png" class="hidden"  
-           nwworkingdir="{{ snapshotdir ? snapshotdir : workingdir }}" 
-           nwsaveas="{{project.name }}.png"/>
-
+   
     <input id="input-add-as-block" type="file" 
            accept=".ice,.iceb" 
            class="hidden" multiple/>
@@ -776,6 +773,13 @@
                    <span class="shortcut">
                       {{ 'takeSnapshotPNG' | shortcut }}</span></a>
               </li>
+<li>
+                <a href ng-click="takeSnapshotVideo()">
+                   {{ 'Take Video' | translate }}
+                   <span class="shortcut">
+                      {{ 'takeSnapshotVideo' | shortcut }}</span></a>
+              </li>
+
 
 
             </ul>

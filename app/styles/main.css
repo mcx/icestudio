@@ -448,4 +448,7 @@ button:focus {
 }
 /* END embedded plugin global css */
 
+.icestudio-taking-snapshot-video{
 
+  border:1px solid blue;
+}

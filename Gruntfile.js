@@ -163,7 +163,7 @@ module.exports = function (grunt) {
   //-- Command for executing the NW. You should add the folder where
   //-- your app (index.html) is placed
   //-- Ej. nw app
-  const NWJS_EXEC_CMD = ["nw", APPDIR].join(" ");
+  const NWJS_EXEC_CMD = ["nw",'--enable-usermedia-screen-capturing', '--disable-backgrounding-occluded-windows', APPDIR].join(" ");
 
   //-- Command for stoping NWjs on Windows
   const NWJS_WIN_STOP = "taskkill /F /IM nw.exe >NUL 2>&1";
