@@ -1,7 +1,8 @@
-2025-01-12 01:48 (GMT+1)
+2025-01-12 19:47 (GMT+1)
 ========================
 Type: WIP
 App Changes: 
+  - Testing screen recording capatabilities by @cavearr
   - Verilator rules linter support by @cavearr
   - Snapshotter to PNG to take screenshots easily by @cavearr
   - Fix some display clock and I/O block errors by @cavearr
