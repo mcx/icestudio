@@ -31,7 +31,8 @@ angular.module('icestudio')
       'loggingEnabled': false,
       'loggingFile':'',
       'displayVersionInfoWindow': 'yes',
-      'pythonEnv':{'python':'','pip':''}
+      'pythonEnv':{'python':'','pip':''},
+      'recentProjects': [],
     };
 
     //-- Property added to the MACs

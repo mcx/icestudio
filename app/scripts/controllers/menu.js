@@ -59,7 +59,7 @@ angular
             $scope.workingdir = "";
             $scope.snapshotdir = "";
 
-            $scope.recentProjects = profile.get('recentProjects') || [];
+            $scope.recentProjects = $scope.profile.get('recentProjects');
 
             let zeroProject = true; // New project without changes
             let resultAlert = null;
