@@ -5,7 +5,6 @@ angular.module('icestudio')
         gettextCatalog,
         common,
         blocks,
-        forms,
         _package,
         window,
         nodeFs,
@@ -568,7 +567,7 @@ angular.module('icestudio')
                             if (err) {
                                 reject(err.toString());
                             } else {
-
+                                
                                 var data = false;
                                 data = isJSON(content);
 
@@ -861,42 +860,6 @@ angular.module('icestudio')
                     // Restore onshow
                     alertify.confirm().set('onshow', prevOnshow);
                 });
-        };
-
-        this.selectBoardPrompt = function (callback) {
-
-            // Disable user events
-            this.disableKeyEvents();
-
-            // Hide Cancel button
-            $('.ajs-cancel').addClass('hidden');
-
-            //-- Create the form
-            let form = new forms.FormSelectBoard();
-
-            //-- Display the form
-            form.display((evt) => {
-
-                //-- Process the information in the form
-                form.process(evt);
-
-                //-- Read the selected board
-                let selectedBoard = form.values[0];
-
-                if (selectedBoard) {
-
-                    evt.cancel = false;
-
-                    //-- Execute the callback
-                    if (callback) {
-                        callback(selectedBoard);
-                    }
-
-                    // Enable user events
-                    this.enableKeyEvents();
-                }
-            });
-
         };
 
         this.copySync = function (orig, dest) {

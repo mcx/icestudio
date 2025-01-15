@@ -180,7 +180,7 @@ angular
 
                 utils.loadLanguage(profile, function () {
                     if (profile.get("board") === "") {
-                        utils.selectBoardPrompt(function (selectedBoard) {
+                        tools.selectBoardPrompt(function (selectedBoard) {
                             var newBoard = boards.selectBoard(selectedBoard);
                             profile.set("board", newBoard.name);
 
