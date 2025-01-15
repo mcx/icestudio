@@ -483,6 +483,10 @@ angular.module('icestudio')
             form.inoutLeftPortsInfo,
             form.inoutRightPortsInfo
           );
+          
+          if(form.code.trim() != "") {
+            blockInstance.data.code = form.code;
+          }
 
           //-- Build the cell
           let cell = loadBasicCode(blockInstance);
@@ -1489,7 +1493,11 @@ angular.module('icestudio')
           blockInstance.position = block.position;
           blockInstance.size = block.size;
           blockInstance.id = block.id;
-          blockInstance.data.code = block.data.code;
+          if(form.code.trim() != "") {
+            blockInstance.data.code = form.code;
+          } else {
+            blockInstance.data.code = block.data.code;
+          }
 
           //-- Build the cell
           let cell = loadBasicCode(blockInstance);

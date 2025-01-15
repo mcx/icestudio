@@ -12,6 +12,7 @@ angular
       drivers,
       graph,
       utils,
+      forms,
       common,
       gettextCatalog,
       nodeGettext,
@@ -2253,7 +2254,41 @@ this.takeSnapshotPNG = function() {
     }
 };
 
+this.selectBoardPrompt = function (callback) {
 
+  // Disable user events
+  utils.disableKeyEvents();
+
+  // Hide Cancel button
+  $('.ajs-cancel').addClass('hidden');
+
+  //-- Create the form
+  let form = new forms.FormSelectBoard();
+
+  //-- Display the form
+  form.display((evt) => {
+
+      //-- Process the information in the form
+      form.process(evt);
+
+      //-- Read the selected board
+      let selectedBoard = form.values[0];
+
+      if (selectedBoard) {
+
+          evt.cancel = false;
+
+          //-- Execute the callback
+          if (callback) {
+              callback(selectedBoard);
+          }
+
+          // Enable user events
+          utils.enableKeyEvents();
+      }
+  });
+
+};
 
 
 });
