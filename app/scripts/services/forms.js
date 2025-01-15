@@ -612,6 +612,64 @@ angular.module('icestudio')
 
       }
 
+      //---------------------------------------------------------
+      //-- BUTTONFIELD. It represents a button in a Form
+      //---------------------------------------------------------
+      //-- This is how this field is rendered in the Form
+      //
+      //    [ Button Text ]
+      //---------------------------------------------------------  
+      class ButtonField {
+
+        //-----------------------------------------------------------------------
+        //-- Input parameters:
+        //--   * text: Text displayed on the button
+        //--   * callback: Function to execute when the button is pressed
+        //--   * formId: Form identification number
+        //-----------------------------------------------------------------------
+        constructor(text, callback, formId) {
+
+          //-- Properties
+          this.text = text;
+          this.callback = callback;
+          this.formId = formId;
+
+          //-- Html template for building the button
+          //-- The parameters are:
+          //--  %TEXT% : Text displayed on the button
+          //--  %ID% : Form identification number
+          this.htmlTemplate = 
+            `<label id="form%ID%" class="btn">%TEXT%</label>`;
+
+          //-- Attach the callback directly
+          $(document).on("click", `#form${this.formId}`, (event) => {
+            event.preventDefault();
+            this.callback();
+          });
+        }
+
+        //---------------------------------------------------------
+        //-- Return a string with the HTML code for this button
+        //---------------------------------------------------------
+        html() {
+
+          //-- Generate the HTML code
+
+          //-- Insert the parameters in the html code template
+          let html = this.htmlTemplate.replace("%TEXT%", this.text);
+          html = html.replace("%ID%", this.formId);
+
+          return html;
+        }
+
+        //---------------------------------------------
+        //-- Read the Field value
+        //-- For a button, this always returns an empty string
+        //---------------------------------------------
+        read() {
+          return "";
+        }
+      }
 
       class Form {
 
