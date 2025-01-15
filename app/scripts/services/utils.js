@@ -1690,4 +1690,53 @@ angular.module('icestudio')
             }, 50);
         };
 
+        this.parseVerilog = function(code) {
+            let codeClean = code.replace(/\/\/.*$/gm, "");
+            codeClean = codeClean.replace(/\/\*[\s\S]*?\*\//g, "");
+            
+            const inputRegex = /\binput\s+(wire\s+|signed\s+|wire signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\boutput\b|,?\s*\binput\b|$)/gm;
+            const outputRegex = /\boutput\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*$)/gm;
+            const moduleRegex = /module\s+(\w+)\s*(#\([\s\S]*?\))?\s*\(([\s\S]*?)\)\s*;/;
+            
+            const inputs = [];
+            const outputs = [];
+            let moduleName = "";
+            let moduleBody = "";
+            
+            let match;
+            while ((match = inputRegex.exec(codeClean)) !== null) {
+                const size = match[2]?.trim() || "";
+                const names = match[3].split(",").map(name => name.trim());
+                names.forEach(name => {
+                    if (name) inputs.push(size ? `${name} ${size}` : name);
+                });
+            }
+            
+            while ((match = outputRegex.exec(codeClean)) !== null) {
+                const size = match[2]?.trim() || "";
+                const names = match[3].split(",").map(name => name.trim());
+                names.forEach(name => {
+                    if (name) outputs.push(size ? `${name} ${size}` : name);
+                });
+            }
+            
+            const moduleMatch = moduleRegex.exec(code);
+            if (moduleMatch) {
+                moduleName = moduleMatch[1];
+                const moduleStartIndex = moduleMatch.index;
+                const moduleEndIndex = code.indexOf("endmodule", moduleStartIndex);
+                moduleBody = code
+                    .slice(moduleStartIndex, moduleEndIndex)
+                    .replace(moduleRegex, "")
+                    .trim();
+            }
+            
+            return {
+                moduleName: moduleName || "",
+                inputs: inputs.length > 0 ? inputs.join(", ") : "",
+                outputs: outputs.length > 0 ? outputs.join(", ") : "",
+                moduleBody: moduleBody || ""
+            };
+        }
+
     });
