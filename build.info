@@ -1,7 +1,9 @@
-2025-01-12 19:47 (GMT+1)
+2025-01-16 01:14 (GMT+1)
 ========================
 Type: WIP
 App Changes: 
+  - Add inouts and parameters automatic loading verilog code and improve code by @cavearr
+  - Automatic code block from verilog file by @lmcapacho
   - Video Screen recording capatabilities by @cavearr
   - Verilator rules linter support by @cavearr
   - Snapshotter to PNG to take screenshots easily by @cavearr
