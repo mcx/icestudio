@@ -484,7 +484,7 @@ angular.module('icestudio')
             form.inoutRightPortsInfo
           );
           
-          if(form.code.trim() != "") {
+          if(form.code.trim() !== "") {
             blockInstance.data.code = form.code;
           }
 
@@ -1493,7 +1493,7 @@ angular.module('icestudio')
           blockInstance.position = block.position;
           blockInstance.size = block.size;
           blockInstance.id = block.id;
-          if(form.code.trim() != "") {
+          if(form.code.trim() !== "") {
             blockInstance.data.code = form.code;
           } else {
             blockInstance.data.code = block.data.code;
