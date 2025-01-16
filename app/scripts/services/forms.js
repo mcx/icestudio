@@ -1749,12 +1749,14 @@ angular.module('icestudio')
                     const result = utils.parseVerilog(content);
                     portsIn = result.inputs;
                     portsOut = result.outputs;
-                    portsInOutLeft = result.inouts;
                     paramsIn = result.parameters;
                     field0.write(result.inputs);
                     field1.write(result.outputs);
                     field2.write(result.parameters);
-                    field3.write(result.inouts);
+                    if (portsInOutLeft !== undefined) {
+                      portsInOutLeft = result.inouts;
+                      field3.write(result.inouts);
+                    }
                     self.code = result.moduleBody;
                   }
                 });
