@@ -1,7 +1,9 @@
-2025-01-16 01:14 (GMT+1)
+2025-01-18 22:38 (GMT+1)
 ========================
 Type: WIP
+
 App Changes: 
+
   - Header comments and multiple module per file support for verilog importer by @cavearr
   - Add inouts and parameters automatic loading verilog code and improve code by @cavearr
   - Automatic code block from verilog file by @lmcapacho
