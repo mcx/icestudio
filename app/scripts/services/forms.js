@@ -11,6 +11,7 @@ angular.module('icestudio')
     function (
       gettextCatalog,
       common,
+      profile,
       blocks,
       utils,
       nodeFs
@@ -867,7 +868,6 @@ angular.module('icestudio')
 
           //-- Create the HTML
           let html = this.html();
-
           //-- Display the Form
           alertify.confirm(html)
 
@@ -1674,6 +1674,8 @@ angular.module('icestudio')
         //-----------------------------------------------------------------
         constructor(portsIn = '', portsOut = '', paramsIn = '', portsInOutLeft = undefined, portsInOutRight = undefined) {
 
+          console.log('FORM',portsIn);
+            
           //-- Create a blank Form (calling the upper Class)
           super();
 
@@ -1703,35 +1705,33 @@ angular.module('icestudio')
           this.addField(field0);
           this.addField(field1);
           this.addField(field2);
+          let field3=false;
+          let field4=false;
 
-          //-- Optional fields
-          let field3;
-          let field4;
 
-          //-- Field 3: InputOutput port names at the left
-          if (portsInOutLeft !== undefined) {
-            field3 = new TextField(
-              gettextCatalog.getString('\"Inout\" Left ports'), //-- Top message
-              portsInOutLeft,   //-- Default InputOutput port names at the left
-              3                 //-- Field id
-            );
+          const allowInoutPorts = profile.get('allowInoutPorts') || common.allowProjectInoutPorts;
+          if(allowInoutPorts){
+            //-- Optional fields
+                  //-- Field 3: InputOutput port names at the left
+              field3 = new TextField(
+                gettextCatalog.getString('\"Inout\" Left ports'), //-- Top message
+                portsInOutLeft,   //-- Default InputOutput port names at the left
+                3                 //-- Field id
+              );
 
-            //-- Add the field to the form
-            this.addField(field3);
+              //-- Add the field to the form
+              this.addField(field3);
+
+            //-- Field 4: InputOutput port names at the right
+              field4 = new TextField(
+                gettextCatalog.getString('\"Inout\" Right ports'), //-- Top message
+                portsInOutRight,  //-- Default InputOutput port names at the right
+                4                 //-- Field id
+              );
+
+              //-- Add the field to the form
+              this.addField(field4);
           }
-
-          //-- Field 4: InputOutput port names at the right
-          if (portsInOutRight !== undefined) {
-            field4 = new TextField(
-              gettextCatalog.getString('\"Inout\" Right ports'), //-- Top message
-              portsInOutRight,  //-- Default InputOutput port names at the right
-              4                 //-- Field id
-            );
-
-            //-- Add the field to the form
-            this.addField(field4);
-          }
-
           this.code = '';
           let self = this;  
           //-- Field 5: Import code
@@ -1754,7 +1754,13 @@ angular.module('icestudio')
                     field0.write(result.inputs);
                     field1.write(result.outputs);
                     field2.write(result.parameters);
-                    field3.write(result.inouts);
+                    if(results.inouts.length>0){
+                     if(field3){ field3.write(result.inouts);}
+                      else{
+
+                          alertify.error(gettextCatalog.getString('Import incomplete, this design contains tristate IO, you need to enable tristate IO in <b>Edit->Preferences->Advanced features->Enable tri-state connections</b> and reimport the block'));
+                      }
+                    }
                     self.code = result.moduleBody;
                   }
                 });

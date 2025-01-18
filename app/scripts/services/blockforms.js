@@ -128,11 +128,10 @@ angular.module('icestudio')
           case blocks.BASIC_CODE:
 
             //-- Inout ports are present or not, and if present, the value is just initialized to empty string
-            if (allowInoutPorts) {
-              inoutDefault = '';
-            }
-            form = new forms.FormBasicCode('', '', '', inoutDefault, inoutDefault);
-            newBasicCode(form, callback);
+            //if (allowInoutPorts) {
+             // inoutDefault = '';
+            //}
+            newBasicCode(callback);
             break;
 
           case blocks.BASIC_INFO:
@@ -405,7 +404,6 @@ angular.module('icestudio')
         form.display((evt) => {
 
           //-- The callback is executed when the user has pressed the OK button
-
           //-- Process the inforation in the form
           //-- The results are stored inside the form
           //-- In case of error the corresponding notifications are raised
@@ -455,8 +453,11 @@ angular.module('icestudio')
       }
 
 
-      function newBasicCode(form, callback) {
+      function newBasicCode(callback) {
 
+        
+        let form = new forms.FormBasicCode('', '', '', '', '');
+        $('.ajs-input').val('');
         //-- Display the form
         form.display((evt) => {
 
@@ -474,8 +475,7 @@ angular.module('icestudio')
           }
 
           //-- OK. There are no duplicated names. Proceed!!
-
-          //-- Create a blank block
+                    //-- Create a blank block
           let blockInstance = new blocks.CodeBlock(
             form.inPortsInfo,
             form.outPortsInfo,
@@ -490,7 +490,6 @@ angular.module('icestudio')
 
           //-- Build the cell
           let cell = loadBasicCode(blockInstance);
-
           //-- Execute the callback function passing the
           //-- new cell as an argument (An array of one cell)
           callback([cell]);
