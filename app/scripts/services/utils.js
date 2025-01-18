@@ -918,7 +918,7 @@ angular.module('icestudio')
     //--   * callback(filepath): It is called when the user has pressed the 
     //--        ok button. The chosen file is passed as a parameter
     //-----------------------------------------------------------------------
-    this.openDialog = function (inputID, callback) {
+    this.openDialog =  function (inputID, callback) {
 
       //-- Get the file chooser element (from the DOM)
       let chooser = $(inputID);
@@ -1692,68 +1692,194 @@ angular.module('icestudio')
 
 
     function processSignals(regex, block) {
-          return [...block.matchAll(regex)].map(match => {
-            const range = match[2]?.trim() || ''; 
-            const names = match[3].split(',').map(name => name.trim()); 
-            return names.map(name => (range ? `${name}${range}` : name)); // icestudio swap range
-          }).flat(); }
+      return [...block.matchAll(regex)].map(match => {
+        const range = match[2]?.trim() || ''; 
+        const names = match[3].split(',').map(name => name.trim()); 
+        return names.map(name => (range ? `${name}${range}` : name)); // icestudio swap range
+      }).flat(); }
 
-this.parseVerilog = function (code) {
+    function processModule(moduleCode, headerComments, moduleHeaderComments) {
+      const inputRegex = /\binput\s+(wire\s+|signed\s+|wire signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\boutput\b|,?\s*\binput\b|$)/gm;
+      const outputRegex = /\boutput\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*\s*$)/gm;
+      const inoutRegex = /\binout\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*\boutput\b|,?\s*\binout\b|,?\s*$)/gm;
+      const paramRegex = /parameter\s+(\w+)(?:\s*=\s*([^,;]+))?;?/g;
 
+      const headerParamRegex = /#\(\s*parameter\s+(\w+)\s*=\s*([^,;]+)\s*\)/g;
 
-  const inputRegex = /\binput\s+(wire\s+|signed\s+|wire signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\boutput\b|,?\s*\binput\b|$)/gm;
-  const outputRegex = /\boutput\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*$)/gm;
-  const moduleRegex = /module\s+(\w+)\s*(#\([\s\S]*?\))?\s*\(([\s\S]*?)\)\s*;\s*([\s\S]*?)\s*endmodule/;
-  const inoutRegex = /\binout\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*\boutput\b|,?\s*\binout\b|,?\s*$)/gm;
+      const metaBlock = {
+        moduleName: "",
+        inputs: "",
+        outputs: "",
+        inouts: "",
+        parameters: "",
+        moduleBody: "",
+        headerComments: headerComments
+      };
 
-  const paramRegex = /parameter\s+(\w+)(?:\s*=\s*([^,;]+))?;?/g;
+      const moduleRegex = /module\s+(\w+)\s*(#\([\s\S]*?\))?\s*\(([\s\S]*?)\)\s*;\s*([\s\S]*?)\s*endmodule/;
+      const moduleMatch = moduleCode.match(moduleRegex);
 
-  const metaBlock = {
-    moduleName: "",
-    inputs: "",
-    outputs: "",
-    inouts: "",
-    parameters: "",
-    moduleBody: "",
-  };
+      if (moduleMatch) {
+        metaBlock.moduleName = moduleMatch[1];
+        metaBlock.moduleBody = moduleMatch[4]?.trim() || "";
 
-  const moduleMatch = code.match(moduleRegex);
+        const headerParamBlock = moduleMatch[2] || "";
+        const headerParameters = [...headerParamBlock.matchAll(headerParamRegex)].map((match) => ({
+          name: match[1].trim()
+        }));
 
-  if (moduleMatch) {
-    metaBlock.moduleName = moduleMatch[1];
-    metaBlock.moduleBody = moduleMatch[4]?.trim() || "";
+        const bodyParameters = [...metaBlock.moduleBody.matchAll(paramRegex)].map((match) => ({
+          name: match[1].trim()
+        }));
 
-    const paramBlock = moduleMatch[2] || "";
-    const headerParameters = [...paramBlock.matchAll(paramRegex)].map((match) => ({
-      name: match[1].trim(),
-      value: match[2]?.trim() || null,
-    }));
+        metaBlock.moduleBody = metaBlock.moduleBody.replace(paramRegex, "").trim();
 
-    const bodyParameters = [...metaBlock.moduleBody.matchAll(paramRegex)].map((match) => ({
-      name: match[1].trim(),
-      value: match[2]?.trim() || null,
-    }));
-    // - Body parameters should be cleaned because Icestudio generate the code always in they
-    // module header
-    metaBlock.moduleBody = metaBlock.moduleBody.replace(paramRegex, "").trim();
+        const allParameters = [...headerParameters, ...bodyParameters];
 
-    const allParameters = [...headerParameters, ...bodyParameters];
+        const ioBlock = moduleMatch[3] || "";
+        const inputs = processSignals(inputRegex, ioBlock);
+        const outputs = processSignals(outputRegex, ioBlock);
+        const inouts = processSignals(inoutRegex, ioBlock);
 
-    const ioBlock = moduleMatch[3] || "";
-    const inputs = processSignals(inputRegex, ioBlock);
-    const outputs = processSignals(outputRegex, ioBlock);
-    const inouts = processSignals(inoutRegex, ioBlock);
+        if (inputs.length > 0) {metaBlock.inputs = inputs.join(", ");}
+        if (outputs.length > 0) {metaBlock.outputs = outputs.join(", ");}
+        if (inouts.length > 0) {metaBlock.inouts = inouts.join(", ");}
+        if (allParameters.length > 0) {
+          metaBlock.parameters = allParameters.map((param) => param.name).join(", ");
+        }
 
-    if (inputs.length > 0) metaBlock.inputs = inputs.join(", ");
-    if (outputs.length > 0) metaBlock.outputs = outputs.join(", ");
-    if (inouts.length > 0) metaBlock.inouts = inouts.join(", ");
-    if (allParameters.length > 0) {
-      metaBlock.parameters = allParameters.map((param) => param.name).join(", ");
+        let fullModuleBody = headerComments; 
+        if (moduleHeaderComments) {
+          fullModuleBody += "\n\n" + moduleHeaderComments; 
+        }
+        fullModuleBody += "\n\n" + metaBlock.moduleBody;
+        metaBlock.moduleBody = fullModuleBody; 
+
+      }
+
+      return metaBlock;
     }
-  }
 
-  return metaBlock;
-};
 
+    this.parseVerilog = async function (code) {
+      const headerCommentsRegex = /^(\/\/.*$|\/\*[\s\S]*?\*\/)(?:\r?\n(\/\/.*$|\/\*[\s\S]*?\*\/))*/gm;
+      const moduleRegex = /module\s+(\w+)\s*(#\([\s\S]*?\))?\s*\(([\s\S]*?)\)\s*;\s*([\s\S]*?)\s*endmodule/gm;
+
+      const metaBlock = {
+        moduleName: "",
+        inputs: "",
+        outputs: "",
+        inouts: "",
+        parameters: "",
+        moduleBody: "",
+        headerComments: ""
+      };
+
+      const allHeaderMatches = code.matchAll(headerCommentsRegex);
+      const headerCommentsMatch = allHeaderMatches.next().value; 
+
+      if (headerCommentsMatch) {
+        metaBlock.headerComments = headerCommentsMatch[0].trim();
+        code = code.replace(headerCommentsMatch[0], "").trim();
+      }
+
+      let moduleMatches;
+      const modules = [];
+      while ((moduleMatches = moduleRegex.exec(code)) !== null) {
+        const moduleName = moduleMatches[1]; 
+
+        const startOfModule = moduleMatches.index;
+        const endOfModule = code.indexOf('endmodule', startOfModule) + 'endmodule'.length;
+        const moduleContent = code.substring(startOfModule, endOfModule);
+
+        const preModuleContent = code.substring(0, startOfModule).trim();
+        const moduleHeaderCommentsRegex = /((?:\/\/.*(?:\r?\n|$))+|\/\*[\s\S]*?\*\/)\s*$/gm;
+        const moduleHeaderCommentsMatch = [...preModuleContent.matchAll(moduleHeaderCommentsRegex)];
+        const moduleHeaderComments = (moduleHeaderCommentsMatch.length > 0) ? moduleHeaderCommentsMatch[moduleHeaderCommentsMatch.length - 1][0].trim() : "";
+
+        modules.push({
+          name: moduleName,
+          headerComments: moduleHeaderComments,
+          content: moduleContent
+        });
+      }
+
+      if (modules.length > 1) {
+        const selectedModule = await showModuleSelectionModal(modules);
+        const headerComments = metaBlock.headerComments; //+ "\n\n" + selectedModule.headerComments;
+
+        const parsedModule = processModule(selectedModule.content, headerComments, selectedModule.headerComments);
+
+        return parsedModule;
+
+      } else if (modules.length === 1) {
+        const selectedModule = modules[0];
+
+        const headerComments = metaBlock.headerComments; // + "\n\n" + selectedModule.headerComments;
+
+        const parsedModule = processModule(selectedModule.content, headerComments, selectedModule.headerComments);
+
+        return parsedModule;
+      }
+
+      return metaBlock; 
+    };
+
+
+
+    async function showModuleSelectionModal(modules) {
+      return new Promise((resolve) => {
+        const modalDiv = document.createElement('div');
+        modalDiv.id = 'moduleSelectorModal';
+        modalDiv.style.position = 'fixed';
+        modalDiv.style.top = '0';
+        modalDiv.style.left = '0';
+        modalDiv.style.width = '100%';
+        modalDiv.style.height = '100%';
+        modalDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        modalDiv.style.zIndex = '999999999999';
+        modalDiv.style.display = 'flex';
+        modalDiv.style.justifyContent = 'center';
+        modalDiv.style.alignItems = 'center';
+
+        const modalContent = document.createElement('div');
+        modalContent.style.backgroundColor = '#fff';
+        modalContent.style.padding = '20px';
+        modalContent.style.borderRadius = '8px';
+        modalContent.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+        modalContent.style.maxWidth = '500px';
+        modalContent.style.width = '100%';
+
+        const title = document.createElement('h3');
+        title.innerText = 'Select a Module to Import';
+        modalContent.appendChild(title);
+
+        const moduleList = document.createElement('ul');
+        moduleList.style.listStyleType = 'none';
+        moduleList.style.padding = '0';
+        moduleList.style.margin = '0';
+
+        modules.forEach((module, index) => {
+          const listItem = document.createElement('li');
+          listItem.style.padding = '10px';
+          listItem.style.cursor = 'pointer';
+          listItem.style.borderBottom = '1px solid #ddd';
+          listItem.style.transition = 'background-color 0.3s';
+
+          listItem.innerText = module.name;
+
+          listItem.addEventListener('click', function () {
+            resolve(modules[index]);
+            document.body.removeChild(modalDiv); 
+          });
+
+          moduleList.appendChild(listItem);
+        });
+
+        modalContent.appendChild(moduleList);
+        modalDiv.appendChild(modalContent);
+        document.body.appendChild(modalDiv);
+      });
+    }
 
   });
