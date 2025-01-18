@@ -2,6 +2,7 @@
 ========================
 Type: WIP
 App Changes: 
+  - Header comments and multiple module per file support for verilog importer by @cavearr
   - Add inouts and parameters automatic loading verilog code and improve code by @cavearr
   - Automatic code block from verilog file by @lmcapacho
   - Video Screen recording capatabilities by @cavearr
