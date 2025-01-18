@@ -1753,11 +1753,11 @@ angular.module('icestudio')
                     field0.write(result.inputs);
                     field1.write(result.outputs);
                     field2.write(result.parameters);
-                    if(results.inouts.length>0){
+                    if(result.inouts.length>0){
                       if(field3){ field3.write(result.inouts);}
                       else{
 
-                        alertify.error(gettextCatalog.getString('Import incomplete, this design contains tristate IO, you need to enable tristate IO in <b>Edit->Preferences->Advanced features->Enable tri-state connections</b> and reimport the block'));
+                        alertify.error(gettextCatalog.getString('Import incomplete, this design contains tristate IO, you need to enable tristate IO in <b>Edit->Preferences->Advanced features->Enable tri-state connections</b> and reimport the block'),20000);
                       }
                     }
                     self.code = result.moduleBody;

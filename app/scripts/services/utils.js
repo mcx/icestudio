@@ -1698,54 +1698,62 @@ angular.module('icestudio')
             return names.map(name => (range ? `${name}${range}` : name)); // icestudio swap range
           }).flat(); }
 
+this.parseVerilog = function (code) {
 
-    this.parseVerilog = function(code) {
 
-      let codeClean = code.replace(/\/\/.*$/gm, "");
-      codeClean = codeClean.replace(/\/\*[\s\S]*?\*\//g, "");
+  const inputRegex = /\binput\s+(wire\s+|signed\s+|wire signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\boutput\b|,?\s*\binput\b|$)/gm;
+  const outputRegex = /\boutput\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*$)/gm;
+  const moduleRegex = /module\s+(\w+)\s*(#\([\s\S]*?\))?\s*\(([\s\S]*?)\)\s*;\s*([\s\S]*?)\s*endmodule/;
+  const inoutRegex = /\binout\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*\boutput\b|,?\s*\binout\b|,?\s*$)/gm;
 
-        const inputRegex = /\binput\s+(wire\s+|signed\s+|wire signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\boutput\b|,?\s*\binput\b|$)/gm;
-        const outputRegex = /\boutput\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*$)/gm;
-        const moduleRegex = /module\s+(\w+)\s*(#\([\s\S]*?\))?\s*\(([\s\S]*?)\)\s*;\s*([\s\S]*?)\s*endmodule/;
+  const paramRegex = /parameter\s+(\w+)(?:\s*=\s*([^,;]+))?;?/g;
 
-        const inoutRegex = /\binout\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*\boutput\b|,?\s*\binout\b|,?\s*$)/gm;
-        const paramRegex = /parameter\s+(\w+)\s*=\s*([^,]+),?/g;
+  const metaBlock = {
+    moduleName: "",
+    inputs: "",
+    outputs: "",
+    inouts: "",
+    parameters: "",
+    moduleBody: "",
+  };
 
-        const metaBlock = {
+  const moduleMatch = code.match(moduleRegex);
 
-          moduleName:  "",
-          inputs:  "",
-          outputs:"",
-          inouts: "",
-          parameters:"",
-          moduleBody: ""
-        };
+  if (moduleMatch) {
+    metaBlock.moduleName = moduleMatch[1];
+    metaBlock.moduleBody = moduleMatch[4]?.trim() || "";
 
-      const moduleMatch = codeClean.match(moduleRegex);
-      if (moduleMatch) {
-        metaBlock.moduleName = moduleMatch[1];
-        metaBlock.moduleBody = moduleMatch[4]?.trim() || '';
+    const paramBlock = moduleMatch[2] || "";
+    const headerParameters = [...paramBlock.matchAll(paramRegex)].map((match) => ({
+      name: match[1].trim(),
+      value: match[2]?.trim() || null,
+    }));
 
-        const paramBlock = moduleMatch[2] || '';
-        const parameters = [...paramBlock.matchAll(paramRegex)].map(match => ({
-          name: match[1].trim(),
-          value: match[2].trim()
-        }));
+    const bodyParameters = [...metaBlock.moduleBody.matchAll(paramRegex)].map((match) => ({
+      name: match[1].trim(),
+      value: match[2]?.trim() || null,
+    }));
+    // - Body parameters should be cleaned because Icestudio generate the code always in they
+    // module header
+    metaBlock.moduleBody = metaBlock.moduleBody.replace(paramRegex, "").trim();
 
-            const ioBlock = moduleMatch[3] || '';
-        const inputs = processSignals(inputRegex, ioBlock);
-        const outputs = processSignals(outputRegex, ioBlock);
-        const inouts = processSignals(inoutRegex, ioBlock);
+    const allParameters = [...headerParameters, ...bodyParameters];
 
-        if(inputs.length>0) { metaBlock.inputs   = inputs.join(", "); }
-        if(outputs.length>0){ metaBlock.outputs = outputs.join(", "); }
-        if(inouts.length>0) { metaBlock.inouts   = inouts.join(", "); }
-        if (parameters.length > 0) {
-          metaBlock.parameters = parameters.map(param => param.name).join(", ");
-        }
-      }
+    const ioBlock = moduleMatch[3] || "";
+    const inputs = processSignals(inputRegex, ioBlock);
+    const outputs = processSignals(outputRegex, ioBlock);
+    const inouts = processSignals(inoutRegex, ioBlock);
 
-      return metaBlock;
-    };
+    if (inputs.length > 0) metaBlock.inputs = inputs.join(", ");
+    if (outputs.length > 0) metaBlock.outputs = outputs.join(", ");
+    if (inouts.length > 0) metaBlock.inouts = inouts.join(", ");
+    if (allParameters.length > 0) {
+      metaBlock.parameters = allParameters.map((param) => param.name).join(", ");
+    }
+  }
+
+  return metaBlock;
+};
+
 
   });
