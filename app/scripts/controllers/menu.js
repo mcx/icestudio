@@ -230,7 +230,6 @@ angular
 
                 //-- Display the version notes, if the option is enabled or
                 //-- if this is a newer version
-                console.log('VWINDOW',versionW,hasNewVersion,lastversionReview,_package.version);
                 if (versionW === "yes" || hasNewVersion) {
 
                     $scope.openVersionInfoWindow();
@@ -279,7 +278,6 @@ angular
                     ":checked"
                 );
 
-                console.log('VERSIONINFO',nodisplay);
                 //-- Write the option to the profile file (so that it is remembered
                 //--  after icestudio is closed)
                 let option = (nodisplay) ? "no" : "yes";
@@ -299,7 +297,6 @@ angular
                 //-- A non-existent file is passed as a parameters
                 //-- It let us distinguish if the new window was created because of
                 //-- a new file, or it was the first window opened
-                iceConsole.log("---> NEW PROJECT!!");
                 utils.newWindow("Untitled.ice");
             };
 
@@ -1049,7 +1046,6 @@ angular
 
             function getProjectInformation() {
                 var p = false;
-                console.log('INFO:',subModuleActive,common);
                 if (
                     typeof common.submoduleHeap !== 'undefined' &&
                     common.submoduleHeap.length>0
@@ -1123,7 +1119,6 @@ angular
                 if (profile.get("uiTheme") !== theme) {
                     const modalWait = new WafleModal();
                     modalWait.waitingSeconds(3,gettextCatalog.getString('UI Theme'),gettextCatalog.getString('Wait for <b></b> seconds') );
-                    console.log('[UITHEME]==>'+theme);
                     profile.set("uiTheme", theme);
                     setTimeout(function(){
                         //-- Shared variable for ace-editor blocks in "profile.js"
@@ -1436,8 +1431,6 @@ angular
             };
 
             $scope.buildCode = function () {
-                console.log('BUILDCODE', common);
-                console.log('STACK', graph.breadcrumbs);
                 if (graph.breadcrumbs.length > 1) {
                     alertify.alert(
                         gettextCatalog.getString("Build"),
@@ -1715,7 +1708,6 @@ angular
                 if (graph.isEnabled()) {
                     graph.removeSelected();
                 } else {
-                    console.log("--------> BACK!!!!");
                     //-- When inside a block in non-edit mode
                     //-- the back key causes it to return to 
                     //-- the top-main module
@@ -2217,7 +2209,6 @@ $(document).delegate('.js-shortcut--action', 'click', function (e) {
 //-- testing. Function for Debugging
 //---------------------------------------------------------------------
 function testing() {
-    console.log("--> TESTING!!!!! ");
     alertify.alert('<b>Ready!</b> ' + process.platform);
 }
 
@@ -2282,7 +2273,6 @@ $(document).click(".dropdown-submenu", function (event) {
 });
 
 function ebusCollection(args) {
-    //console.log(args);
     if (typeof args.status !== "undefined") {
         switch (args.status) {
             case "enable":

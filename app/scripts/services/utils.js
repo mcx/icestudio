@@ -107,7 +107,6 @@ angular.module('icestudio')
         }
 
       } catch (e) {
-        console.error(e);
       }
       return false;
     }
@@ -365,7 +364,6 @@ angular.module('icestudio')
     //
     this.installOnlineApio = function (callback) {
 
-      console.log("InstallOnlineApio: " + this.printApioVersion(common.APIO_VERSION));
 
       //-- Get the pip executable
       let pipExec = this.getPythonPipExecutable();
@@ -376,10 +374,8 @@ angular.module('icestudio')
       //-- Get the pip parameters needed for installing apio
       //-- The needed apio version is also added
       const params = this.getApioParameters();
-      console.log(pipExec, executable, params);
       //-- Run the pip command!
       this.executeCommand([executable, params], null, true, callback);
-      console.log('Finished InstallOnlineApio');
 
     };
 
@@ -425,7 +421,6 @@ angular.module('icestudio')
       const params = "install -U " + apio + extraPackagesString +
         versionString;
 
-      console.log("--> DEBUG: Params passed to pip: " + params);
 
       return params;
     };
@@ -1046,7 +1041,6 @@ angular.module('icestudio')
     //-----------------------------------------------------------------------
     this.newWindow = function (filepath) {
 
-      console.log("(DEBUG): Executing app/scripts/services/utils.js --> newWindow()");
 
       //-- If there are parameters to pass or not
       //-- No parameters by default
@@ -1103,8 +1097,6 @@ angular.module('icestudio')
       //--   #windowopenurl-options-callback
       //-----------------------------------------------------------
       //nw.Window.open(url, window);
-      console.log("(DEBUG) Calling: nw.Window.open(url)");
-      console.log(`Url: ${url}`);
       nw.Window.open(url);
 
 
@@ -1191,7 +1183,6 @@ angular.module('icestudio')
             if (block.version === common.VERSION) {
               _this.approveProjectBlock(profile, block).then((result) => {
                 if (result === 'cancel') {
-                  console.log('cancelPaste');
                   return;
                 }
 
@@ -1500,7 +1491,6 @@ angular.module('icestudio')
     };
 
     this.beginBlockingTask = async function () {
-      console.log('Begin BTask');
       angular.element('#menu').addClass('is-disabled');
       document.body.classList.add('waiting');  
 
@@ -1509,9 +1499,7 @@ angular.module('icestudio')
 
     this.endBlockingTask = function () {
 
-      console.log('End BTask');
       $('body').trigger('Graph::updateWires');
-      console.log('EDITORES');
       $(".code-editor.ace_editor").each(function() {
         const editor = ace.edit(this); 
         setTimeout(() => {
@@ -1814,10 +1802,6 @@ angular.module('icestudio')
       });
     }
 
-
-
-
-
     this.parseVerilog = async function (code) {
       const headerCommentsRegex = /^(\/\/.*$|\/\*[\s\S]*?\*\/)(?:\r?\n(\/\/.*$|\/\*[\s\S]*?\*\/))*/gm;
       const moduleRegex = /module\s+(\w+)\s*(#\([\s\S]*?\))?\s*\(([\s\S]*?)\)\s*;\s*([\s\S]*?)\s*endmodule/gm;
@@ -1872,8 +1856,7 @@ angular.module('icestudio')
       } else if (modules.length === 1) {
         const selectedModule = modules[0];
 
-        const headerComments = metaBlock.headerComments; // + "\n\n" + selectedModule.headerComments;
-
+        const headerComments = metaBlock.headerComments; 
         const parsedModule = processModule(selectedModule.content, headerComments, selectedModule.headerComments);
 
         return parsedModule;
@@ -1881,8 +1864,6 @@ angular.module('icestudio')
 
       return metaBlock; 
     };
-
-
 
     async function showModuleSelectionModal(modules) {
       return new Promise((resolve) => {

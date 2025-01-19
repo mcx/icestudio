@@ -53,6 +53,7 @@ joint.dia.CommandManager = Backbone.Model.extend({
 
   addCommand: function (cmdName, cell, graph, options) {
 
+
     if (cmdName === 'change:labels' ||
       cmdName === 'change:z') {
       return;
@@ -69,7 +70,6 @@ joint.dia.CommandManager = Backbone.Model.extend({
     var push = _.bind(function (cmd) {
 
       this.redoStack = [];
-
       if (!cmd.batch) {
         this.undoStack.push(cmd);
         this.changesStack.push(cmd);
@@ -119,6 +119,7 @@ joint.dia.CommandManager = Backbone.Model.extend({
 
     // In a batch: delete an "add-*-remove" sequence if it is applied to the same cell
     if (cmdName === 'remove' && this.batchCommand && this.lastCmdIndex > 0) {
+
       for (var i = 0; i < this.lastCmdIndex; i++) {
         var prevCommand = this.batchCommand[i];
         if (prevCommand.action === 'add' && prevCommand.data.id === cell.id) {
@@ -416,6 +417,7 @@ joint.dia.CommandManager = Backbone.Model.extend({
   },
 
   triggerChange: function () {
+    
     var currentUndoStack = _.clone(this.changesStack);
     $(document).trigger('stackChanged', [currentUndoStack]);
   },

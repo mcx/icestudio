@@ -1520,7 +1520,6 @@ function isElementInViewport(elementBBox, viewport) {
 
           graph.trigger('batch:stop');
           self.setState(design.state);
-
           self.appEnable(!opt.disabled);
           if (!opt.disabled) {
             commandManager.listen();

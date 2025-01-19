@@ -18,7 +18,6 @@ angular
       //----------------------------------------------------------------
       //-- Module initialization
       //----------------------------------------------------------------
-      console.log("->DEBUG: design.js: START!");
 
       $scope.graph = graph;
       $scope.common = common;
@@ -35,7 +34,6 @@ angular
       let htmlElement = $('.paper');
       graph.createPaper(htmlElement);
 
-      console.log("->DEBUG: design.js: STOP!");
 
       //-------------------------------------------------------------
       //-- FUNCTIONS
