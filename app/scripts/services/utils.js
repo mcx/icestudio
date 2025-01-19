@@ -1690,20 +1690,15 @@ angular.module('icestudio')
       }, 50);
     };
 
-
-    function processSignals(regex, block) {
-      return [...block.matchAll(regex)].map(match => {
-        const range = match[2]?.trim() || ''; 
-        const names = match[3].split(',').map(name => name.trim()); 
-        return names.map(name => (range ? `${name}${range}` : name)); // icestudio swap range
-      }).flat(); }
-
     function processModule(moduleCode, headerComments, moduleHeaderComments) {
-      const inputRegex = /\binput\s+(wire\s+|signed\s+|wire signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\boutput\b|,?\s*\binput\b|$)/gm;
-      const outputRegex = /\boutput\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*\s*$)/gm;
-      const inoutRegex = /\binout\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*\boutput\b|,?\s*\binout\b|,?\s*$)/gm;
-      const paramRegex = /parameter\s+(\w+)(?:\s*=\s*([^,;]+))?;?/g;
+      const inputRegex = /\binput\s+(wire\s+|signed\s+|wire signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+)(?=\s*[,;])/gm;
+      const inputANSIRegex = /\binput\s+(wire\s+|signed\s+|wire signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\boutput\b|,?\s*\binput\b|$)/gm;
+      const outputRegex = /\boutput\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+)(?=\s*[,;])/gm;
+      const outputANSIRegex = /\boutput\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*\s*$)/gm;
 
+      const inoutRegex = /\binout\s+(wire\s+|signed\s+|wire signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+)(?=\s*[,;])/gm;
+      const inoutANSIRegex = /\binout\s+(reg\s+|wire\s+|signed\s+|wire signed\s+|reg signed\s+)?(\[[^\]]+\]\s+)?([\w\s,]+?)(?=,?\s*\binput\b|,?\s*\boutput\b|,?\s*\binout\b|,?\s*$)/gm;
+      const paramRegex = /parameter\s+(\w+)(?:\s*=\s*([^,;]+))?;?/g;
       const headerParamRegex = /#\(\s*parameter\s+(\w+)\s*=\s*([^,;]+)\s*\)/g;
 
       const metaBlock = {
@@ -1713,7 +1708,7 @@ angular.module('icestudio')
         inouts: "",
         parameters: "",
         moduleBody: "",
-        headerComments: headerComments
+        headerComments: headerComments,
       };
 
       const moduleRegex = /module\s+(\w+)\s*(#\([\s\S]*?\))?\s*\(([\s\S]*?)\)\s*;\s*([\s\S]*?)\s*endmodule/;
@@ -1721,44 +1716,106 @@ angular.module('icestudio')
 
       if (moduleMatch) {
         metaBlock.moduleName = moduleMatch[1];
-        metaBlock.moduleBody = moduleMatch[4]?.trim() || "";
+        let moduleBody = moduleMatch[4]?.trim() || "";
 
         const headerParamBlock = moduleMatch[2] || "";
         const headerParameters = [...headerParamBlock.matchAll(headerParamRegex)].map((match) => ({
-          name: match[1].trim()
+          name: match[1].trim(),
+          value: match[2]?.trim() || null,
         }));
 
-        const bodyParameters = [...metaBlock.moduleBody.matchAll(paramRegex)].map((match) => ({
-          name: match[1].trim()
+        const bodyParameters = [...moduleBody.matchAll(paramRegex)].map((match) => ({
+          name: match[1].trim(),
+          value: match[2]?.trim() || null,
         }));
 
-        metaBlock.moduleBody = metaBlock.moduleBody.replace(paramRegex, "").trim();
+        // Remove extracted parameter definitions from body
+        moduleBody = moduleBody.replace(paramRegex, "").trim();
 
         const allParameters = [...headerParameters, ...bodyParameters];
-
-        const ioBlock = moduleMatch[3] || "";
-        const inputs = processSignals(inputRegex, ioBlock);
-        const outputs = processSignals(outputRegex, ioBlock);
-        const inouts = processSignals(inoutRegex, ioBlock);
-
-        if (inputs.length > 0) {metaBlock.inputs = inputs.join(", ");}
-        if (outputs.length > 0) {metaBlock.outputs = outputs.join(", ");}
-        if (inouts.length > 0) {metaBlock.inouts = inouts.join(", ");}
         if (allParameters.length > 0) {
           metaBlock.parameters = allParameters.map((param) => param.name).join(", ");
         }
 
-        let fullModuleBody = headerComments; 
-        if (moduleHeaderComments) {
-          fullModuleBody += "\n\n" + moduleHeaderComments; 
-        }
-        fullModuleBody += "\n\n" + metaBlock.moduleBody;
-        metaBlock.moduleBody = fullModuleBody; 
 
+        // For future use:
+        //const ioNames = ( moduleMatch[3] )? moduleMatch[3].split(",").map((name) => name.trim()) : [];
+
+        // ANSI Verilog IO Definitios
+        const ansiInputs = extractIO(inputANSIRegex, moduleMatch[3]);
+        const ansiOutputs = extractIO(outputANSIRegex, moduleMatch[3]);
+        const ansiInouts = extractIO(inoutANSIRegex, moduleMatch[3]);
+
+        // Verilog 1995 IO definitions
+        const bodyInputs = processSignals(inputRegex, moduleBody);
+        const bodyOutputs = processSignals(outputRegex, moduleBody);
+        const bodyInouts = processSignals(inoutRegex, moduleBody);
+
+        const inputs = [...ansiInputs, ...bodyInputs].filter(signal => !ansiOutputs.includes(signal) && !ansiInouts.includes(signal));
+        const outputs = [...ansiOutputs, ...bodyOutputs].filter(signal => !ansiInputs.includes(signal) && !ansiInouts.includes(signal));
+        const inouts = [...ansiInouts, ...bodyInouts].filter(signal => !ansiInputs.includes(signal) && !ansiOutputs.includes(signal));
+
+        if (inputs.length > 0) {
+          metaBlock.inputs = inputs.join(", ");
+        }
+        if (outputs.length > 0) {
+          metaBlock.outputs = outputs.join(", ");
+        }
+        if (inouts.length > 0) {
+          metaBlock.inouts = inouts.join(", ");
+        }
+
+        // Remove IO definitions from module body
+        const allIORegex = /\b(input|output|inout)\s+[^\n;]+;/g;
+        moduleBody = moduleBody.replace(allIORegex, "").trim();
+
+        let fullModuleBody = headerComments;
+        if (moduleHeaderComments) {
+          fullModuleBody += "\n\n" + moduleHeaderComments;
+        }
+        fullModuleBody += "\n\n" + moduleBody;
+        metaBlock.moduleBody = fullModuleBody;
       }
 
       return metaBlock;
     }
+
+    //-- Verilog 1995 IO definition from module body
+    function processSignals(regex, block) {
+      return [...block.matchAll(regex)].flatMap((match) => {
+        const range = match[2]?.trim() || ""; 
+        const names = match[3]
+          .split(/,\s*/)
+          .map((name) => name.trim())
+          .flatMap((name) =>
+            ( name.includes("\n") )? name.split(/\s+/).filter((n) => n) : [name]
+          );
+        return names.map((name) => (range ? `${name}${range}` : name)); // swap name and range for Icestudio conventions
+      });
+    }
+
+    //-- ANSI Verilog IO definition extractor from module header
+    function extractIO(regex, header) {
+      if (!header) { return []; }
+      const matches = [...header.matchAll(regex)];
+      return matches.map((match) => {
+        const range = match[2]?.trim() || ""; 
+        const names = match[3].split(/,\s*/).map((name) => name.trim());
+        return names.map((name) => {
+          if (range) {
+            return `${name}${range}`.trim(); // swap name and range for Icestudio conventions
+          } else {
+            return name.trim();
+          }
+        });
+      }).flat().map((name) => {
+        // Remove keywords input/output/inout
+        return name.replace(/\b(input|output|inout)\b/g, "").trim();
+      });
+    }
+
+
+
 
 
     this.parseVerilog = async function (code) {
