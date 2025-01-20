@@ -70,7 +70,7 @@
     "getos": "~3.0.1",
     "glob": "^7.1.4",
     "jexcel": "^3.9.1",
-    "jquery": "~3.6.3",
+    "jquery": "~3.7.1",
     "jsuites": "^2.7.1",
     "lodash": "~3.10.1",
     "lodash.debounce": "~3.1.1",
