@@ -8,6 +8,17 @@
     border-bottom: 1px solid #e7e7e7;
 }
 
+.ice-button {
+  border: 1px solid #ddd;
+  background: white;
+  color: #333;
+  min-height: 31px;
+  min-width: 88px;
+  margin: 4px;
+  border-radius: 4px;
+  font-weight: 700;    
+}
+
 .footer {
     color: #333;
     background: #f5f6f7;
