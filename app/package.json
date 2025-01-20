@@ -90,7 +90,7 @@
     "sudo-prompt": "~8.2.0",
     "svg-pan-zoom": "~3.4.1",
     "svgo": "~0.7.2",
-    "sweetalert2": "^11.14.4",
+    "sweetalert2": "^11.15.10",
     "tmp": "0.0.33"
   },
   "readme": "../README.md",
