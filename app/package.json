@@ -74,7 +74,7 @@
     "lodash": "~3.10.1",
     "lodash.debounce": "~3.1.1",
     "marked": "~0.3.19",
-    "mustache": "^4.0.0",
+    "mustache": "^4.2.0",
     "node-emoji": "~1.8.1",
     "node-lang-info": "~0.2.1",
     "openurl": "~1.1.1",
