@@ -3,6 +3,8 @@
 Type: WIP
 
 App Changes: 
+  - Refactor modules and update versions of node modules by @cavearr
+  - Enhance modal window for verilog module import selector by @lmcapacho
   - Verilog importer supports ANSI and 1995 Verilog coding style by @cavearr
   - Header comments and multiple module per file support for verilog importer by @cavearr
   - Add inouts and parameters automatic loading verilog code and improve code by @cavearr
