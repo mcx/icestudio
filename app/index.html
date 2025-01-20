@@ -30,6 +30,20 @@
     <!-- https://nwjs.readthedocs.io/en/latest/                            -->
     <!----------------------------------------------------------------------->
 
+    <!----------------------------------------------------------------------->
+    <!-- OVERRIDE NPM PACKAGES WITH LOCAL COPY OF OBSOLETE PACKAGES        -->
+    <!----------------------------------------------------------------------->
+    <!--                                                                   -->
+    <!-- Only needed files are copied from npm package. The code are       -->
+    <!-- copied to resources/libs/vendor/package_dir  directory            -->
+    <!--                                                                   -->
+    <!--  NPM Package and version             Local package_dir            -->
+    <!--  -----------------------             -----------------            -->
+    <!--                                                                   -->
+    <!-- "jointjs": "~2.0.1"           ==>    jointjs                      -->  
+    <!--                                                                   -->
+    <!----------------------------------------------------------------------->
+    
     <head>
         <title>Icestudio</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -168,7 +182,7 @@ body{
 
         <!-- Jointjs: Visualize and interact with diagrams and graphs       -->
         <!-- https://www.jointjs.com/opensource                             -->
-        <link rel="stylesheet" href="node_modules/jointjs/dist/joint.css" />
+        <link rel="stylesheet" href="resources/libs/vendor/jointjs/joint.css" />
 
         <!-- Bootstrap: Build fast, responsive sites with Bootstrap         -->
         <!-- https://getbootstrap.com/                                      -->
@@ -331,7 +345,7 @@ body{
 
         <!-- Jointjs: Visualize and interact with diagrams and graphs       -->
         <!-- https://www.jointjs.com/opensource                             -->
-        <script src="node_modules/jointjs/dist/joint.js"></script>
+        <script src="resources/libs/vendor/jointjs/joint.js"></script>
 
         <!-- Bootstrap: Build fast, responsive sites with Bootstrap         -->
         <!-- https://getbootstrap.com/                                      -->
