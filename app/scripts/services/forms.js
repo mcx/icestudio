@@ -48,13 +48,13 @@ angular.module('icestudio')
           //--  %ID% : Form identification number
           //--  %VALUE%: Default text value
           this.htmlTemplate = `
-        <p> %TEXT% </p>
-        <input class="ajs-input" 
-               type="text" 
-               id="form%ID%" 
-               value="%VALUE%"
-               autocomplete="off"/>
-      `;
+            <p> %TEXT% </p>
+            <input class="ajs-input" 
+                  type="text" 
+                  id="form%ID%" 
+                  value="%VALUE%"
+                  autocomplete="off"/>
+          `;
         }
 
         //---------------------------------------------------------
@@ -651,7 +651,7 @@ angular.module('icestudio')
           //--  %TEXT% : Text displayed on the button
           //--  %ID% : Form identification number
           this.htmlTemplate = 
-            `<label id="form%ID%" class="btn">%TEXT%</label>`;
+            `<button id="form%ID%" class="ice-button">%TEXT%</button>`;
 
           //-- Attach the callback directly
           $(document).off("click", `#form${this.formId}`).on("click", `#form${this.formId}`, (event) => {
@@ -1737,51 +1737,47 @@ angular.module('icestudio')
           //-- Field 5: Import code
           let field5 = new ButtonField(
             gettextCatalog.getString('Import code'), //-- Button text
-           function(){ //-- Callback
+            function(){ //-- Callback
               //-- Open the file Dialog
               //-- The selector is passed as a parameter
               //-- The html element is located in the menu.html file              
               utils.openDialog("#input-import-verilog", async function (filepath) {
                try{ 
-             
+                  // Leer el archivo de forma asíncrona
+                  const content = await nodeFs.promises.readFile(filepath, 'utf8');
 
- // Leer el archivo de forma asíncrona
-    const content = await nodeFs.promises.readFile(filepath, 'utf8');
-    
-    // Parsear el contenido del archivo
-    const result = await utils.parseVerilog(content);
-    
-    console.log('RESULT', result);
-    
-    // Actualizar los campos con los resultados del parseo
-    portsIn = result.inputs;
-    portsOut = result.outputs;
-    paramsIn = result.parameters;
-    field0.write(result.inputs);
-    field1.write(result.outputs);
-    field2.write(result.parameters);
+                  // Parsear el contenido del archivo
+                  const result = await utils.parseVerilog(content);
 
-    if (result.inouts.length > 0) {
-      if (field3) {
-        field3.write(result.inouts);
-      } else {
-        alertify.error(
-          gettextCatalog.getString(
-            'Import incomplete, this design contains tristate IO, you need to enable tristate IO in <b>Edit->Preferences->Advanced features->Enable tri-state connections</b> and reimport the block'
-          ),
-          20000
-        );
-      }
-    }
+                  console.log('RESULT', result);
 
-    // Almacenar el cuerpo del módulo
-    self.code = result.moduleBody;
+                  // Actualizar los campos con los resultados del parseo
+                  portsIn = result.inputs;
+                  portsOut = result.outputs;
+                  paramsIn = result.parameters;
+                  field0.write(result.inputs);
+                  field1.write(result.outputs);
+                  field2.write(result.parameters);
 
-               }catch(err){
-                   alertify.error(gettextCatalog.getString('Error reading the file: {{error}}', { error: err.message }));
-               }  
+                  if (result.inouts.length > 0) {
+                    if (field3) {
+                      field3.write(result.inouts);
+                    } else {
+                      alertify.error(
+                        gettextCatalog.getString(
+                          'Import incomplete, this design contains tristate IO, you need to enable tristate IO in <b>Edit->Preferences->Advanced features->Enable tri-state connections</b> and reimport the block'
+                        ),
+                        20000
+                      );
+                    }
+                  }
 
+                  // Almacenar el cuerpo del módulo
+                  self.code = result.moduleBody;
 
+                } catch (err) {
+                  alertify.error(gettextCatalog.getString('Error reading the file: {{error}}', { error: err.message }));
+                }
               });
             },   
             5
