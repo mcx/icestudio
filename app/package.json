@@ -70,7 +70,6 @@
     "jspreadsheet-ce": "^4.15.0",
     "jquery": "~3.7.1",
     "jsuites": "^4.15.0",
-    "lodash": "~3.10.1",
     "lodash.debounce": "~3.1.1",
     "marked": "~0.3.19",
     "mustache": "^4.2.0",
