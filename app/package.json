@@ -51,7 +51,7 @@
   "engines": {},
   "node": ">= 21.1.0",
   "dependencies": {
-    "ace-builds": "~1.4.12",
+    "ace-builds": "~1.37.5",
     "adm-zip": "0.4.7",
     "alertifyjs": "~1.13.1",
     "angular": "~1.6.9",
