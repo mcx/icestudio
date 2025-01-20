@@ -1868,41 +1868,19 @@ angular.module('icestudio')
     async function showModuleSelectionModal(modules) {
       return new Promise((resolve) => {
         const modalDiv = document.createElement('div');
-        modalDiv.id = 'moduleSelectorModal';
-        modalDiv.style.position = 'fixed';
-        modalDiv.style.top = '0';
-        modalDiv.style.left = '0';
-        modalDiv.style.width = '100%';
-        modalDiv.style.height = '100%';
-        modalDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        modalDiv.style.zIndex = '999999999999';
-        modalDiv.style.display = 'flex';
-        modalDiv.style.justifyContent = 'center';
-        modalDiv.style.alignItems = 'center';
-
+        modalDiv.className = 'modal';
+        
         const modalContent = document.createElement('div');
-        modalContent.style.backgroundColor = '#fff';
-        modalContent.style.padding = '20px';
-        modalContent.style.borderRadius = '8px';
-        modalContent.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-        modalContent.style.maxWidth = '500px';
-        modalContent.style.width = '100%';
-
-        const title = document.createElement('h3');
+        modalContent.className = 'modal-content';
+        
+        const title = document.createElement('h4');
         title.innerText = 'Select a Module to Import';
         modalContent.appendChild(title);
 
         const moduleList = document.createElement('ul');
-        moduleList.style.listStyleType = 'none';
-        moduleList.style.padding = '0';
-        moduleList.style.margin = '0';
 
         modules.forEach((module, index) => {
           const listItem = document.createElement('li');
-          listItem.style.padding = '10px';
-          listItem.style.cursor = 'pointer';
-          listItem.style.borderBottom = '1px solid #ddd';
-          listItem.style.transition = 'background-color 0.3s';
 
           listItem.innerText = module.name;
 
