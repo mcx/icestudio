@@ -634,9 +634,9 @@ angular
                     setup: function () {
                         return {
                             buttons: [
-                            { text: gettextCatalog.getString("Save"), className: 'ajs-ok' }, 
-                            { text: gettextCatalog.getString("Discard"), className: 'ajs-ok' },
-                            { text: gettextCatalog.getString("Cancel"), className: 'ajs-cancel', key: 27 }
+                            { text: gettextCatalog.getString("Save and exit"), className: 'ajs-ok' }, 
+                            { text: gettextCatalog.getString("Discard changes and exit"), className: 'ajs-ok' },
+                            { text: gettextCatalog.getString("Return to iceStudio"), className: 'ajs-cancel', key: 27 }
                             ],
                             focus: { element: 3 },
                             options: { 
