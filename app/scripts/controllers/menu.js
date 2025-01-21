@@ -52,14 +52,12 @@ angular
             $scope.project = project;
             $scope.tools = tools;
             $scope.common = common;
-
+            
             $scope.version = _package.version;
             $scope.toolchain = tools.toolchain;
-
+            
             $scope.workingdir = "";
             $scope.snapshotdir = "";
-
-            $scope.recentProjects = $scope.profile.get('recentProjects');
 
             let zeroProject = true; // New project without changes
             let resultAlert = null;
@@ -236,6 +234,10 @@ angular
                 }
             }, 500);
 
+
+            utils.loadProfile(profile, function () {
+                $scope.recentProjects = $scope.profile.get('recentProjects');
+            });
 
             //-------------------------------------------------------------------------
             //--  FUNCTIONS
