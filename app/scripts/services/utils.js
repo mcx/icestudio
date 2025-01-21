@@ -968,7 +968,7 @@ angular.module('icestudio')
       if (!$rootScope.$$phase) {
         $rootScope.$apply();
       }
-    };
+         };
 
     this.parsePortLabel = function (data, pattern) {
       // e.g: name[x:y]

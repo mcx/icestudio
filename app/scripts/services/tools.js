@@ -1843,12 +1843,13 @@ while ((matchError = re.exec(stdout))) {
                       if (!name) {
                         return false;
                       }
-                      collection.name = name;
+                     collection.name = name;
 
                       var destPath = nodePath.join(
                         common.INTERNAL_COLLECTIONS_DIR,
                         name
                       );
+                      console.log('EE:',destPath);
                       if (nodeFs.existsSync(destPath)) {
                         alertify.confirm(
                           gettextCatalog.getString(
@@ -1872,6 +1873,7 @@ while ((matchError = re.exec(stdout))) {
                                 }
                               )
                             );
+                            console.log('NEXT COLLECTION');
                             next(name);
                           },
                           function () {
@@ -1996,11 +1998,11 @@ while ((matchError = re.exec(stdout))) {
             common.INTERNAL_COLLECTIONS_DIR,
             dest.replace(/\.po$/, ".json")
           );
-          var content = nodeFs.readFileSync(sourcePath).toString();
+        var content = nodeFs.readFileSync(sourcePath).toString();
           var json = compiler.convertPo([content]);
           nodeFs.writeFileSync(targetPath, json);
           // Add strings to gettext
-          gettextCatalog.loadRemote(targetPath);
+          gettextCatalog.loadRemote('file://'+targetPath);
         }
         if (collection.package) {
           dest = collection.package.replace(pattern, collection.name);
