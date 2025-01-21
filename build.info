@@ -1,8 +1,11 @@
-2025-01-21 00:06 (GMT+1)
+2025-01-21 23:39 (GMT+1)
 ========================
 Type: WIP
 
 App Changes: 
+  - Improve exit iceStudio dialog by @lmcapacho
+  - Fixed locale loading error at collection installer by @cavearr
+  - Fixed recent files blank loading at startup by @lmcapacho
   - Refactor modules and update versions of node modules by @cavearr
   - Enhance modal window for verilog module import selector by @lmcapacho
   - Verilog importer supports ANSI and 1995 Verilog coding style by @cavearr
