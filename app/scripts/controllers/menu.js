@@ -625,13 +625,43 @@ angular
                 exit();
             };
 
-            function exit() {
+
+            alertify.dialog('closeDialog', function factory() {
+                return {
+                    main: function (message) {
+                        this.setContent(message);
+                    },
+                    setup: function () {
+                        return {
+                            buttons: [
+                            { text: gettextCatalog.getString("Save"), className: 'ajs-ok' }, 
+                            { text: gettextCatalog.getString("Discard"), className: 'ajs-ok' },
+                            { text: gettextCatalog.getString("Cancel"), className: 'ajs-cancel', key: 27 }
+                            ],
+                            focus: { element: 3 },
+                            options: { 
+                                movable: false, maximizable: false,
+                                closable: false, resizable: false
+                            }             
+                        };
+                    },       
+                    callback: function (closeEvent) {
+                        switch (closeEvent.index) {
+                            case 0:
+                                $scope.saveProject();
+                                win.close(true);
+                                break;
+                            case 1:
+                                win.close(true);
+                                break;
+                        }
+                    }
+                };
+            });
+
+            function exit() {                
                 if (project.changed) {
-                    alertify.set("confirm", "labels", {
-                        ok: gettextCatalog.getString("Close"),
-                    });
-                    alertify.set("confirm", "defaultFocus", "cancel");
-                    alertify.confirm(
+                    alertify.closeDialog(
                         utils.bold(
                             gettextCatalog.getString("Do you want to close " +
                                 "the application?")
@@ -639,20 +669,7 @@ angular
                         "<br>" +
                         gettextCatalog.getString(
                             "Your changes will be lost if you don’t save them"
-                        ),
-                        function () {
-                            // Close
-                            _exit();
-                        },
-                        function () {
-                            // Cancel
-                            setTimeout(function () {
-                                alertify.set("confirm", "labels", {
-                                    ok: gettextCatalog.getString("OK"),
-                                });
-                                alertify.set("confirm", "defaultFocus", "ok");
-                            }, 200);
-                        }
+                        )
                     );
                 } else {
                     _exit();
