@@ -1752,9 +1752,10 @@ angular.module('icestudio')
           metaBlock.inouts = inouts.join(", ");
         }
 
-        // Remove IO definitions from module body
-        const allIORegex = /\b(input|output|inout)\s+[^\n;]+;/g;
-        moduleBody = moduleBody.replace(allIORegex, "").trim();
+        // Remove IO definitions from module body, including adjacent comments
+        const allIORegex = /^\s*\b(input|output|inout)\b[^\n]*$/gm;
+ 
+       moduleBody = moduleBody.replace(allIORegex, "").trim();
 
         let fullModuleBody = headerComments;
         if (moduleHeaderComments) {
@@ -1767,8 +1768,12 @@ angular.module('icestudio')
       return metaBlock;
     }
 
+    function removeComments(code) {
+      return code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
+    }
     //-- Verilog 1995 IO definition from module body
     function processSignals(regex, block) {
+      block=removeComments(block);
       return [...block.matchAll(regex)].flatMap((match) => {
         const range = match[2]?.trim() || ""; 
         const names = match[3]
@@ -1784,6 +1789,7 @@ angular.module('icestudio')
     //-- ANSI Verilog IO definition extractor from module header
     function extractIO(regex, header) {
       if (!header) { return []; }
+      header=removeComments(header);
       const matches = [...header.matchAll(regex)];
       return matches.map((match) => {
         const range = match[2]?.trim() || ""; 
