@@ -3,6 +3,9 @@
 Type: WIP
 
 App Changes: 
+
+  - Support for comments in IO definitions in verilog importer by @cavearr
+  - Safe save at -save & quit- dialog on window close by @cavearr
   - Improve exit iceStudio dialog by @lmcapacho
   - Fixed locale loading error at collection installer by @cavearr
   - Fixed recent files blank loading at startup by @lmcapacho
