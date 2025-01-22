@@ -4,7 +4,7 @@ var os = require("os");
 var sha1 = require("sha1");
 var marked = require("marked");
 var openurl = require("openurl");
-var emoji = require("node-emoji");
+// var emoji = require("node-emoji");
 var domCache = {};
 const WIRE_WIDTH = 1.5;
 const DARWIN = Boolean(os.platform().indexOf("darwin") > -1);
@@ -2584,7 +2584,7 @@ joint.shapes.ice.InfoView = joint.shapes.ice.ModelView.extend({
     var markdown = data.text || data.info || "";
 
     // Replace emojis
-    markdown = markdown.replace(/(:.*:)/g, function (match) {
+    /*markdown = markdown.replace(/(:.*:)/g, function (match) {
       return emoji.emojify(match, null, function (code, name) {
         var source =
           "https://github.global.ssl.fastly.net/images/icons/emoji/" +
@@ -2598,7 +2598,7 @@ joint.shapes.ice.InfoView = joint.shapes.ice.ModelView.extend({
           "</object>"
         );
       });
-    });
+    });*/
 
     // Apply Marked to convert from Markdown to HTML
     this.renderSelector.html(marked(markdown));

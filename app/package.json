@@ -69,7 +69,6 @@
     "lodash.debounce": "~3.1.1",
     "marked": "~0.3.19",
     "mustache": "^4.2.0",
-    "node-emoji": "~2.2.0",
     "node-lang-info": "~0.2.1",
     "openurl": "~1.1.1",
     "proper-lockfile": "^4.1.2",
