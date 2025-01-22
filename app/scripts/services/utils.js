@@ -587,7 +587,6 @@ angular.module('icestudio')
             // If not exists we need to create empty file to block it until write it
             nodeFs.writeFileSync(filepath, '');
           }
-
           // Try to get the file ownership
           const release = await fsLock.lock(filepath, { retries: 10 }); // Retry 10 times if is locked
 

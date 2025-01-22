@@ -69,7 +69,6 @@ angular.module('icestudio')
       utils.beginBlockingTask();
       //-- Timeout needed in windows systems
         if(this.waitForIcestudioReady()){
-      //setTimeout(function(){
         _this._decoupledOpen(filepath,emptyPath);
         }else{
             setTimeout(function(){
@@ -77,7 +76,6 @@ angular.module('icestudio')
                 _this.open(filepath,emptyPath);
             },300);
         } 
-       //},500);
     };
 
     this._decoupledOpen = function(filepath,emptyPath){
@@ -93,6 +91,8 @@ angular.module('icestudio')
 
         })
         .catch(function () {
+
+          utils.endBlockingTask();
           alertify.error(gettextCatalog.getString('Invalid project format'), 30);
         });
     };
@@ -394,7 +394,23 @@ angular.module('icestudio')
     this.save = function (filepath, callback) {
       var backupProject = false;
       var name = utils.basename(filepath);
-     
+      let self=this;
+      const doSaveProject = ()=>{
+        utils.saveFile(filepath, pruneProject(project))
+          .then(() =>{
+            let bdir=utils.filepath2buildpath(self.filepath);
+            common.setBuildDir(bdir);
+            alertify.success(gettextCatalog.getString('Project {{name}} saved', { name: utils.bold(name) }));
+            if (callback) {
+              callback();
+            }
+
+          })
+          .catch(function (error) {
+            alertify.error(error, 30);
+          });
+      };//doSaveProject
+
       if (subModuleActive) {
 
         backupProject = utils.clone(project);
@@ -452,21 +468,7 @@ angular.module('icestudio')
         this.path = filepath;
         this.filepath = filepath;
       }
-      let self=this;
-      function doSaveProject() {
-        utils.saveFile(filepath, pruneProject(project))
-          .then(function () {
-            if (callback) {
-              callback();
-            }
-            let bdir=utils.filepath2buildpath(self.filepath);
-            common.setBuildDir(bdir);
-            alertify.success(gettextCatalog.getString('Project {{name}} saved', { name: utils.bold(name) }));
-          })
-          .catch(function (error) {
-            alertify.error(error, 30);
-          });
-      }
+    
 
     };
 

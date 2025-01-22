@@ -196,9 +196,9 @@ angular
 
             //-- If there was a .ice file given
             if (filepath) {
-
                 //-- Check the filepath
                 if (fs.existsSync(filepath)) {
+                console.log('OPEN PROJECT',filepath);
 
                     //-- Open the file
                     project.open(filepath);
@@ -392,7 +392,7 @@ angular
 
 
 
-            $scope.saveProject = function () {
+            $scope.saveProject = function (afterSaveProjectAction) {
                 if (
                     (typeof common.isEditingSubmodule !== "undefined" &&
                         common.isEditingSubmodule === true) || graph.breadcrumbs.length > 1
@@ -412,10 +412,16 @@ angular
 
                 var filepath = project.path;
                 if (filepath) {
-                    project.save(filepath, function () {
-                        reloadCollectionsIfRequired(filepath);
-                    });
-                    resetChangedStack();
+                    project.save(filepath, () => {
+                          reloadCollectionsIfRequired(filepath);
+                          resetChangedStack();
+                          if(afterSaveProjectAction){
+                            afterSaveProjectAction();
+
+                          }
+
+                                         });
+                    
                 } else {
                     $scope.saveProjectAs();
                 }
@@ -428,6 +434,7 @@ angular
 
                     project.save(filepath, function () {
                         reloadCollectionsIfRequired(filepath);
+                        
                     });
                     resetChangedStack();
                     if (localCallback) {
@@ -650,8 +657,9 @@ angular
                     callback: function (closeEvent) {
                         switch (closeEvent.index) {
                             case 0:
-                                $scope.saveProject();
-                                win.close(true);
+                                $scope.saveProject(()=>{
+                                        win.close(true);
+                                });
                                 break;
                             case 1:
                                 win.close(true);
