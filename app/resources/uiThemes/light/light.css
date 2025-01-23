@@ -176,6 +176,7 @@
 }
 
 .ajs-button {
+    border: 1px solid #ddd !important; 
     color: #333 !important;
     background: #fff !important;
     border-radius: 4px;
