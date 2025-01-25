@@ -711,11 +711,11 @@ angular.module('icestudio')
           let text = names.trim();
 
           //-- Second: Remove the spaces around the commas (,) 
-          text = text.replace(/\s*,\s*/g, ',');
+          //text = text.replace(/\s*,\s*/g, ',');
+          text = text.replace(' ','');
 
           //-- Third: Get the Input block names as a list of strings
           let finalNames = text.split(',');
-          console.log(finalNames);
           //-- Return an array with the names
           return finalNames;
         }
@@ -762,7 +762,7 @@ angular.module('icestudio')
               //-- Get the name and rangestr
               portInfo.name = match[1] || '';
               portInfo.rangestr = match[2];
-
+              
               //-- Let's calculate the size
 
               //-- If it is a bus...
@@ -771,14 +771,16 @@ angular.module('icestudio')
                 //-- Get the range left and right numbers
                 let left = parseInt(match[3]);
                 let right = parseInt(match[4]);
-
-                portInfo.size = Math.abs(left - right) + 1;
+                if (/\D/.test(left) || (/\D/.test(right)) ) {
+                  portInfo.size = 9999;
+                }else{
+                  portInfo.size = Math.abs(left - right) + 1;
+                } 
               }
               //-- It is an isolated wire
               else {
                 portInfo.size = 1;
               }
-
               //-- No more checkings....
               //-- TODO: Size checking
               return portInfo;
@@ -936,7 +938,6 @@ angular.module('icestudio')
           //-- Values[0]: Input pin names
           //-- Parse the input names
           this.names = Form.parseNames(this.values[0]);
-          console.log('NAMES', this.names);
           //-- Values[1] indicates if it is a virtual pin or not
           this.virtual = !this.values[1];
         }
@@ -1391,7 +1392,6 @@ angular.module('icestudio')
         //------------------------------------------------
         process(evt) {
 
-          console.log("PROCESS THE FORM!!");
 
           //-- If there was a previous notification, dismiss it
           if (this.resultAlert) {
@@ -1672,9 +1672,8 @@ angular.module('icestudio')
         //--   * portsInOutRight: If undefined, InputOutput port names field is hidden
         //       Otherwise, it is string of port names (separated by commas) to populate the field
         //-----------------------------------------------------------------
-        constructor(portsIn = '', portsOut = '', paramsIn = '', portsInOutLeft = undefined, portsInOutRight = undefined) {
+        constructor(portsIn = '', portsOut = '', paramsIn = '', portsInOutLeft = '', portsInOutRight = '') {
 
-          console.log('FORM',portsIn);
             
           //-- Create a blank Form (calling the upper Class)
           super();
@@ -1749,8 +1748,6 @@ angular.module('icestudio')
                   // Parsear el contenido del archivo
                   const result = await utils.parseVerilog(content);
 
-                  console.log('RESULT', result);
-
                   // Actualizar los campos con los resultados del parseo
                   portsIn = result.inputs;
                   portsOut = result.outputs;
@@ -1814,10 +1811,8 @@ angular.module('icestudio')
 
           //-- Check all the port names
           for (let name of names) {
-
             //-- Get the port Info: port name, size...
             portInfo = Form.parsePortName(name);
-
             //-- No portInfo... The was a syntax error
             if (!portInfo) {
               //-- Do not close the form
@@ -1857,26 +1852,26 @@ angular.module('icestudio')
 
           //-- Values[0]: Input port names
           //-- Parse the input port names
-          this.inPorts = Form.parseNames(this.values[0]);
+          this.inPorts = Form.parseNames(this.values[0].replace(/\s+/g, ''));
 
           //-- Values[1]: Output port names
           //-- Parse the output port names
-          this.outPorts = Form.parseNames(this.values[1]);
+          this.outPorts = Form.parseNames(this.values[1].replace(/\s+/g, ''));
 
           //-- Values[2]: Input parameters
           //-- Parse the input parameters
-          this.inParams = Form.parseNames(this.values[2]);
+          this.inParams = Form.parseNames(this.values[2].replace(/\s+/g, ''));
 
           //-- Values[3]: InputOutput port names at the left of the block
           //-- If field is present in Values, then parse the inout port names
           if (this.values[3]) {
-            this.inoutLeftPorts = Form.parseNames(this.values[3]);
+            this.inoutLeftPorts = Form.parseNames(this.values[3].replace(/\s+/g, ''));
           }
 
           //-- Values[4]: InputOutput port names at the right of the block
           //-- If field is present in Values, then parse the inout port names
           if (this.values[4]) {
-            this.inoutRightPorts = Form.parseNames(this.values[4]);
+            this.inoutRightPorts = Form.parseNames(this.values[4].replace(/\s+/g, ''));
           }
 
         }
