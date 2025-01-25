@@ -1,9 +1,10 @@
-2025-01-22 22:33 (GMT+1)
+2025-01-25 23:46 (GMT+1)
 ========================
 Type: WIP
 
 App Changes: 
 
+  - Support for parametric buses by @cavearr
   - Remove obsolete emoji-node package with unavailable third party resources by @cavearr
   - Support for comments in IO definitions in verilog importer by @cavearr
   - Safe save at -save & quit- dialog on window close by @cavearr
