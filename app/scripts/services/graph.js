@@ -348,7 +348,10 @@ angular.module('icestudio')
             }
             tsize = tsize || 1;
             lsize = lsize || 1;
-            if (tsize !== lsize) {
+            if (lsize === 9999 || tsize===9999){
+              tsize=lsize;
+            }
+              if (tsize !== lsize) {
               warning(gettextCatalog.getString('Invalid connection: {{a}} → {{b}}', { a: lsize, b: tsize }));
               return false;
             }
