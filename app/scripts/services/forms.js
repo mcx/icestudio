@@ -963,7 +963,6 @@ angular.module('icestudio')
               //common.PATTERN_GLOBAL_PORT_LABEL
               common.PATTERN_PORT_LABEL
             );
-            console.log('Pinfo',portInfo);
             //-- No portInfo... The was a syntax error
             if (!portInfo) {
               //-- Do not close the form
@@ -1161,11 +1160,9 @@ angular.module('icestudio')
           //-- Create all the blocks defined
           let portInfo = this.portInfos[n];
 
-          console.log('D1');
           //-- Create an array of empty pins (with name and values 
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
-          console.log('D2',portInfo,pins);
           let block = new blocks.InputPortBlock(
             portInfo.name,
             this.virtual,
@@ -1175,8 +1172,6 @@ angular.module('icestudio')
             this.inout,
             portInfo.isParametric
           );
-
-          console.log('D3',block);
 
           return block;
         }

@@ -159,7 +159,6 @@ angular.module('icestudio')
 
 
           
-          console.log('(F)newBasicPort');
           //-- The callback is executed when the user has pressed the OK button
 
           //-- Process the inforation in the form
@@ -167,7 +166,6 @@ angular.module('icestudio')
           //-- In case of error the corresponding notifications are raised
           form.process(evt);
 
-          console.log('MODIFICADO');
           //-- If there were errors, the form is not closed
           //-- Return without clossing
           if (evt.cancel) {

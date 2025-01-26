@@ -352,7 +352,6 @@ angular.module('icestudio')
             // Could be parametric
             let sport = false;
             if(lsize===2 || tsize===2){
-              console.log('Checking parametric',sRightPorts,sourcePortId);
               for (i in sRightPorts) {
                 sport = sRightPorts[i];
                 if (sourcePortId === sport.id) {
@@ -366,13 +365,8 @@ angular.module('icestudio')
                   !noParametricParam.test(tport.srange) 
               ){
                 isParametric=true;
-
               }
-              
-
             }
-
-
             tsize = tsize || 1;
             lsize = lsize || 1;
 
