@@ -708,11 +708,11 @@ angular.module('icestudio')
         static parseNames(names) {
 
           //-- First: remove the initial and ending spaces, if any
-          let text = names.trim();
+          let text = names.trim().replace(/\s+/g, '');
 
           //-- Second: Remove the spaces around the commas (,) 
-          //text = text.replace(/\s*,\s*/g, ',');
-          text = text.replace(' ','');
+          text = text.replace(/\s*,\s*/g, ',');
+          //text = text.replace(' ','');
 
           //-- Third: Get the Input block names as a list of strings
           let finalNames = text.split(',');
@@ -744,7 +744,6 @@ angular.module('icestudio')
 
           //-- Parse the name
           let match = pattern.exec(portName);
-
           //-- match[0]: global match
           //-- match[1]: Initial word: name
           //-- match[2]: Range (Ex. [7:0])
@@ -772,9 +771,11 @@ angular.module('icestudio')
                 let left = parseInt(match[3]);
                 let right = parseInt(match[4]);
                 if (/\D/.test(left) || (/\D/.test(right)) ) {
-                  portInfo.size = 9999;
+                  portInfo.size = 2;
+                  portInfo.isParametric=true;
                 }else{
                   portInfo.size = Math.abs(left - right) + 1;
+                  portInfo.isParametric=false;
                 } 
               }
               //-- It is an isolated wire
@@ -959,9 +960,10 @@ angular.module('icestudio')
             //-- Get the port Info: port name, size...
             portInfo = Form.parseNameWithPattern(
               name,
-              common.PATTERN_GLOBAL_PORT_LABEL
+              //common.PATTERN_GLOBAL_PORT_LABEL
+              common.PATTERN_PORT_LABEL
             );
-
+            console.log('Pinfo',portInfo);
             //-- No portInfo... The was a syntax error
             if (!portInfo) {
               //-- Do not close the form
@@ -1159,18 +1161,22 @@ angular.module('icestudio')
           //-- Create all the blocks defined
           let portInfo = this.portInfos[n];
 
+          console.log('D1');
           //-- Create an array of empty pins (with name and values 
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
-
+          console.log('D2',portInfo,pins);
           let block = new blocks.InputPortBlock(
             portInfo.name,
             this.virtual,
             portInfo.rangestr,
             pins,
             this.clock,
-            this.inout
+            this.inout,
+            portInfo.isParametric
           );
+
+          console.log('D3',block);
 
           return block;
         }
@@ -2068,7 +2074,7 @@ angular.module('icestudio')
 
           //-- Values[0]: Memory names
           //-- Parse the memory names
-          this.names = Form.parseNames(this.values[0]);
+          this.names = Form.parseNames(this.values[0].replace(/\s+/g, ''));
 
           //-- Values[1] is the combobox value
           this.value = parseInt(this.values[1]);
@@ -2255,7 +2261,7 @@ angular.module('icestudio')
 
           //-- Values[0]: Constant names
           //-- Parse the Constant names
-          this.names = Form.parseNames(this.values[0]);
+          this.names = Form.parseNames(this.values[0].replace(/\s+/g, ''));
 
           //-- Values[1] is the checkbox that indicates if the memory
           //-- is a local parameter or not

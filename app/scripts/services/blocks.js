@@ -90,7 +90,6 @@ angular.module('icestudio')
 
           //-- Build the block common fields
           super(type);
-
           //-- Particular information
           this.data.name = name;         //-- Port name. A String
           this.data.virtual = virtual;   //-- Type of port: Real or virtual
@@ -114,7 +113,7 @@ angular.module('icestudio')
       //-------------------------------------------------------------------------
       class InputPortBlock extends PortBlock {
 
-        constructor(name, virtual, range, pins, clock, inout = false) {
+        constructor(name, virtual, range, pins, clock, inout = false,isParametric=false) {
 
           //-- Build the port common fields
           super(BASIC_INPUT, name, virtual, range, pins);
@@ -122,6 +121,7 @@ angular.module('icestudio')
           //-- Particular information
           this.data.clock = clock;    //-- Optional. Is the port a clock input?
           this.data.inout = inout;
+          this.data.isParametric=isParametric;
         }
       }
 

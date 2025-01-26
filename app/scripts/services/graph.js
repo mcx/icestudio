@@ -337,21 +337,50 @@ angular.module('icestudio')
             let tsize = 0;
             let lsize = linkView.model.get('size');
             let portId = magnetT.getAttribute('port');
+            let sourcePortId = magnetS.getAttribute('port');
             let tLeftPorts = cellViewT.model.get('leftPorts');
-            let port = false;
+            let sRightPorts = cellViewS.model.get('rightPorts');
+            let isParametric=false;
+            let tport = false;
             for (i in tLeftPorts) {
-              port = tLeftPorts[i];
-              if (portId === port.id) {
-                tsize = port.size;
+              tport = tLeftPorts[i];
+              if (portId === tport.id) {
+                tsize = tport.size;
                 break;
               }
             }
+            // Could be parametric
+            let sport = false;
+            if(lsize===2 || tsize===2){
+              console.log('Checking parametric',sRightPorts,sourcePortId);
+              for (i in sRightPorts) {
+                sport = sRightPorts[i];
+                if (sourcePortId === sport.id) {
+                  lsize = sport.size;
+                  break;
+                }
+              }
+
+              const noParametricParam = /^\s*\[\s*\d+\s*:\s*\d+\s*\]\s*$/;
+              if (!noParametricParam.test(sport.srange) || 
+                  !noParametricParam.test(tport.srange) 
+              ){
+                isParametric=true;
+
+              }
+              
+
+            }
+
+
             tsize = tsize || 1;
             lsize = lsize || 1;
-            if (lsize === 9999 || tsize===9999){
-              tsize=lsize;
+
+            if (isParametric){
+              lsize=tsize;
             }
-              if (tsize !== lsize) {
+
+            if (tsize !== lsize) {
               warning(gettextCatalog.getString('Invalid connection: {{a}} → {{b}}', { a: lsize, b: tsize }));
               return false;
             }
