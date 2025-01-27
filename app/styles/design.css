@@ -420,7 +420,7 @@ g {
 
 .bigdrop {
   font-size: 13px;
-  width: 92px !important;
+  width: auto !important;
 }
 
 .constant-block {
