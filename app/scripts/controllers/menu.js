@@ -644,7 +644,7 @@ angular
                         return {
                             buttons: [
                             { text: gettextCatalog.getString("Save"), className: 'ajs-ok' }, 
-                            { text: gettextCatalog.getString("Dont Save"), className: 'ajs-ok' },
+                            { text: gettextCatalog.getString("Don't Save"), className: 'ajs-ok' },
                             { text: gettextCatalog.getString("Cancel"), className: 'ajs-cancel', key: 27 }
                             ],
                             focus: { element: 3 },

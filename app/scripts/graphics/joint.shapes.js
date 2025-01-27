@@ -327,6 +327,28 @@ joint.shapes.ice.Model = joint.shapes.basic.Generic.extend({
       this,
       arguments
     );
+    this.updateSize();
+    this.on('change:data', this.updateSize, this);
+  },
+
+  updateSize: function () {   
+    const fontSize = 14; 
+    
+    const name = this.get('data').name;
+    const pins = this.get('data').pins;
+
+    let text = name;
+
+    for (var i in pins) {
+      if( pins[i].name.length > text.length)
+        text = pins[i].name;
+    }
+  
+    const context = document.createElement('canvas').getContext('2d');
+    context.font = `${fontSize}px Monaco`;
+    const textWidth = context.measureText(text).width;
+    const newWidth = Math.round(Math.max(textWidth + 50, 96));
+    this.resize(newWidth, this.size().height);
   },
 
   updatePortsAttrs: function (/*eventName*/) {
@@ -1295,6 +1317,9 @@ joint.shapes.ice.IOView = joint.shapes.ice.ModelView.extend({
   place: placementCssIOTasks,
   pendingRender: false,
   updateBox: function () {
+    const size = this.model.get('size');
+    this.virtualContentSelector.width(size.width);
+  
     var pendingTasks = [];
     var i, j, port;
     var bbox = this.model.getBBox();
@@ -1546,6 +1571,9 @@ joint.shapes.ice.ConstantView = joint.shapes.ice.ModelView.extend({
 
   place: placementCssTasks,
   updateBox: function () {
+    const size = this.model.get('size');
+    this.contentSelector.width(size.width);
+    this.inputSelector.width(Math.round(size.width*0.8));
     let bbox = this.model.getBBox();
     //var data = this.model.get("data");
     let state = this.model.get("state");
