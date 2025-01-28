@@ -340,8 +340,9 @@ joint.shapes.ice.Model = joint.shapes.basic.Generic.extend({
     let text = name;
 
     for (var i in pins) {
-      if( pins[i].name.length > text.length)
+      if( pins[i].name.length > text.length){
         text = pins[i].name;
+      }
     }
   
     const context = document.createElement('canvas').getContext('2d');
