@@ -1,5 +1,5 @@
-<!-- HTML file for rendering the Edit/Preferences/UI theme menu 
-     It is included in the menu.html file 
+<!-- HTML file for rendering the Edit/Preferences/UI theme menu
+     It is included in the menu.html file
 -->
 
 <!-- The theme selected by the user is located in the profile.data.uiTheme
@@ -11,18 +11,16 @@
 <!DOCTYPE html>
 
 <li>
-  <!-- Edit/Preferences/UI Theme/Dark -->
+  <!-- Edit/Preferences/UI theme/Dark -->
   <a href ng-click="selectTheme('dark')">
     {{ 'Dark (default)' | translate }}&ensp;
-
     <span ng-show="profile.data.uiTheme == 'dark'" class="glyphicon glyphicon-ok-circle"></span>
   </a>
 </li>
 
 <li>
-  <!-- Edit/Preferences/UI Theme/light -->
+  <!-- Edit/Preferences/UI theme/Light -->
   <a href ng-click="selectTheme('light')">
-
     {{ 'Light' | translate }}&ensp;
     <span ng-show="profile.data.uiTheme == 'light'" class="glyphicon glyphicon-ok-circle"></span>
   </a>

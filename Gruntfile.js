@@ -33,6 +33,10 @@
 //-- * When 'grunt compiletext' is invoked, the .po files are converted into
 //--   .json
 //-- * When Icestudio starts ('grunt serve'), the .json files are read
+//--
+//-- Developer info on preptext, compiletext, update_translations.sh:
+//--   https://github.com/FPGAwars/icestudio/wiki/Translating-Icestudio
+//--
 //--------------------------------------------------------------------
 
 //--------------------------------------------------------------------

@@ -39,7 +39,7 @@ angular
 
       //-- tools.toolchain Global Object
       //-- tools.toolchain.apio -> Apio version
-      //-- tools.toolchain.installed -> Boolean. 
+      //-- tools.toolchain.installed -> Boolean.
       //--    True if the toolchains is installed
       //-- tools.toolchain.disable -> Boolean.
       //--    True if the toolchain is disabled
@@ -98,7 +98,7 @@ angular
 
       };
 
-      //-- Execute the apio upload command. It uploads the bitstream to the  
+      //-- Execute the apio upload command. It uploads the bitstream to the
       //-- current board
       this.uploadCode = function (startMessage, endMessage) {
 
@@ -128,7 +128,7 @@ angular
 
         return new Promise(function (resolve) {
 
-          //-- Variable for storing the verilog source code of 
+          //-- Variable for storing the verilog source code of
           //-- the current circuit
           let sourceCode = "";
 
@@ -227,7 +227,7 @@ angular
         console.log('Checks for APIO project integrity');
         //Check if build dir exists
         if (!nodeFs.existsSync(common.BUILD_DIR)) {
-          console.log('Build dir not exists',common.BUILD_DIR);  
+          console.log('Build dir not exists',common.BUILD_DIR);
           nodeFs.mkdirSync(common.BUILD_DIR, { recursive: true });
 
         }//-- if buildir exists
@@ -235,13 +235,13 @@ angular
 
         if(iceStudio.toolchain.apio >= '0.9.6'){
           if (!nodeFs.existsSync(hd.joinPath(common.BUILD_DIR, 'Apio.ini'))) {
-            console.log('Apio.ini not found');  
+            console.log('Apio.ini not found');
             test=false;
 
           }//-- if buildir exists
 
 
-        } 
+        }
 
         return test;
 
@@ -269,7 +269,7 @@ angular
 
 
 
-          //-- Variable for storing the verilog source code of 
+          //-- Variable for storing the verilog source code of
           //-- the current circuit
           let sourceCode = "";
 
@@ -354,7 +354,7 @@ angular
 
       //------------------------------------------------------------------------
       //-- Check if the toolchain has been installed
-      //-- We know if it has been already installed by watching the   
+      //-- We know if it has been already installed by watching the
       //-- toolchain.installed flag.
       //-- If it is not installed an Alert windows is shown
       function checkToolchainInstalled() {
@@ -398,7 +398,7 @@ angular
           );
 
           if (
-            cmd.indexOf("lint") > -1 
+            cmd.indexOf("lint") > -1
           ) {
             //only verification
             console.log('ONLY VERIFY');
@@ -515,7 +515,7 @@ angular
       //----------------------------------------------------------------------------------
       //-- Check if Apio is available. The Apio version is read and stored in the
       //-- toolchain.apio global object
-      //-- It is also checked if the version is correct (with the version given in the  
+      //-- It is also checked if the version is correct (with the version given in the
       //-- package.json package)
       function checkToolchain(callback, notifyerror = true) {
 
@@ -550,7 +550,7 @@ angular
             }
           }
 
-          //-- Toolchain installed  
+          //-- Toolchain installed
           else {
 
 
@@ -933,7 +933,7 @@ while ((matchError = re.exec(stdout))) {
 }
                   console.log('ERRORS',codeErrors);
                   //console.log('ERROR_TASK',code);
-                } 
+                }
 
                 // - Yosys errors
                 // ERROR: ... main.v:#...
@@ -1470,7 +1470,7 @@ while ((matchError = re.exec(stdout))) {
       };
 
       //---------------------------------------------------------
-      //-- Install the toolchain according to the given version  
+      //-- Install the toolchain according to the given version
       //-- Values for the version parameter:
       //--  * common.APIO_VERSION_STABLE
       //--  * common.APIO_VERSION_LATEST_STABLE
@@ -1614,7 +1614,7 @@ while ((matchError = re.exec(stdout))) {
       //---------------------------------------------------
       //-- Create the Python virtual environment
       //-- Apio and other python packages are installed in the virtual env
-      //-- so that they do not interfere with the rest of the packages  
+      //-- so that they do not interfere with the rest of the packages
       //-- installed in your system
       //--
       function createVirtualenv(callback) {
@@ -1660,7 +1660,7 @@ while ((matchError = re.exec(stdout))) {
 
       //-------------------------------------------
       //-- Install the apio oss-cad-suite package
-      //-- 
+      //--
       function apioInstallOssCadSuite(callback) {
 
         iceConsole.log("**** STEP: APIO install oss-cad-suite");
@@ -1707,7 +1707,7 @@ while ((matchError = re.exec(stdout))) {
         //------- Create the CACHE folders
         //------- They were removed before installing the toolchain
         //------- It is necesarry to create them again in order to display
-        //------- the blocks correctly  
+        //------- the blocks correctly
         let storage = new IceHD();
 
         //-- Cache and Image cache dir
@@ -2169,28 +2169,28 @@ this.initializePluginManager = function (callbackOnRun) {
 }
 
 this.takeSnapshotPNG = function() {
-   
+
   // Current NWJS Window
   const win = gui.Window.get();
 
   setTimeout(function(){
-  
+
     win.capturePage((base64Data) => {
        try {
             const imageBuffer = Buffer.from(base64Data, 'base64');
 
             // Image saved to Destkop as OSX style
             const fileName = generateSnapshotName('png');
-            const userHome = process.env.HOME || process.env.USERPROFILE; 
-            const savePath = nodePath.join(userHome, 'Desktop', fileName); 
+            const userHome = process.env.HOME || process.env.USERPROFILE;
+            const savePath = nodePath.join(userHome, 'Desktop', fileName);
             nodeFs.writeFileSync(savePath, imageBuffer);
-            alertify.success( gettextCatalog.getString("Snapshot saved as "+savePath),100000);
+            alertify.success( gettextCatalog.getString('Snapshot saved: {{name}}', { name: savePath }),100000);
 
 
         } catch (err) {
             console.error('Error taking snapshot', err);
         }
-    }, { format: 'png', datatype: 'raw' }); 
+    }, { format: 'png', datatype: 'raw' });
 },500);
 };
 
@@ -2228,22 +2228,22 @@ this.takeSnapshotPNG = function() {
             const arrayBuffer = await blob.arrayBuffer();
 
             const fileName = generateSnapshotName('webm');
-            const userHome = process.env.HOME || process.env.USERPROFILE; 
+            const userHome = process.env.HOME || process.env.USERPROFILE;
             const savePath = nodePath.join(userHome, 'Desktop', fileName);
             nodeFs.writeFileSync(savePath, Buffer.from(arrayBuffer));
 
-            alertify.success( gettextCatalog.getString("Video saved as "+savePath),100000);
+            alertify.success( gettextCatalog.getString('Video saved: {{name}}', { name: savePath }),100000);
         };
 
         setTimeout(function(){ mediaRecorder.start();},750);
 
         const wrapper = document.getElementById('main-icestudio-wrapper');
-        wrapper.classList.add('icestudio-taking-snapshot-video'); 
+        wrapper.classList.add('icestudio-taking-snapshot-video');
     } catch (error) {
         console.error('MediaRecorder::ERROR', error);
 
         isRecording=false;
-            alertify.error( gettextCatalog.getString("Recording screen error, review your permissions"),100000);
+            alertify.error( gettextCatalog.getString('Screen recording error. Review your permissions.'),100000);
     }
      }else{
           const wrapper = document.getElementById('main-icestudio-wrapper');
@@ -2251,7 +2251,7 @@ this.takeSnapshotPNG = function() {
             stream.getTracks().forEach((track) => track.stop());
          wrapper.classList.remove('icestudio-taking-snapshot-video');
         isRecording=false;
-      
+
 
     }
 };

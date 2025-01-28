@@ -25,8 +25,8 @@ angular.module('icestudio')
       //    text message
       //    +-----------------+
       //    | Input text      |
-      //    +-----------------+ 
-      //----------------------------------------------------------  
+      //    +-----------------+
+      //----------------------------------------------------------
       class TextField {
 
         //-----------------------------------------------------------------------
@@ -49,9 +49,9 @@ angular.module('icestudio')
           //--  %VALUE%: Default text value
           this.htmlTemplate = `
             <p> %TEXT% </p>
-            <input class="ajs-input" 
-                  type="text" 
-                  id="form%ID%" 
+            <input class="ajs-input"
+                  type="text"
+                  id="form%ID%"
                   value="%VALUE%"
                   autocomplete="off"/>
           `;
@@ -176,7 +176,7 @@ angular.module('icestudio')
       //      Text message
       //      +-----------------+
       //      | o Color       v |
-      //      +-----------------+  
+      //      +-----------------+
       //
       //-------------------------------------------------------------------------
 
@@ -208,176 +208,176 @@ angular.module('icestudio')
           <label style ="font-weight:normal"> %TEXT% </label>
           <div class="lb-color--dropdown">
             <div class="lb-dropdown-title">
-      
+
               <!-- The current color is the one found in spec.color -->
               <span class="lb-selected-color color-%COLOR%"
                 data-color="%COLOR%"
-                data-name="%COLOR_NAME%"> 
-              </span> 
+                data-name="%COLOR_NAME%">
+              </span>
               %COLOR_NAME%
               <span class="lb-dropdown-icon"></span>
             </div>
-          
+
             <div class="lb-dropdown-menu">
-      
-            <div class="lb-dropdown-option" 
-              data-color="indianred" 
+
+            <div class="lb-dropdown-option"
+              data-color="indianred"
               data-name="${this.getColorName("indianred")}">
                 <span class="lb-option-color color-indianred">
                 </span>
                 ${this.getColorName("indianred")}
             </div>
-            
-            <div class="lb-dropdown-option" 
-              data-color="red" 
+
+            <div class="lb-dropdown-option"
+              data-color="red"
               data-name="${this.getColorName("red")}">
                 <span class="lb-option-color color-red">
                 </span>
                 ${this.getColorName("red")}
             </div>
-      
-            <div class="lb-dropdown-option" 
-              data-color="deeppink" 
+
+            <div class="lb-dropdown-option"
+              data-color="deeppink"
               data-name="${this.getColorName("deeppink")}">
                 <span class="lb-option-color color-deeppink">
                 </span>
                 ${this.getColorName("deeppink")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="mediumvioletred"
               data-name="${this.getColorName("mediumvioletred")}">
                 <span class="lb-option-color color-mediumvioletred">
                 </span>
                 ${this.getColorName("mediumvioletred")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="coral"
               data-name="${this.getColorName("coral")}">
                 <span class="lb-option-color color-coral"></span>
                 ${this.getColorName("coral")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="orangered"
               data-name="${this.getColorName("orangered")}">
                 <span class="lb-option-color color-orangered"></span>
                 ${this.getColorName("orangered")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="darkorange"
               data-name="${this.getColorName("darkorange")}">
                 <span class="lb-option-color color-darkorange"></span>
                 ${this.getColorName("darkorange")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="gold"
               data-name="${this.getColorName("gold")}">
                 <span class="lb-option-color color-gold"></span>
                 ${this.getColorName("gold")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="yellow"
               data-name="${this.getColorName("yellow")}">
                 <span class="lb-option-color color-yellow"></span>
                 ${this.getColorName("yellow")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="fuchsia"
               data-name=" ${this.getColorName("fuchsia")}">
                 <span class="lb-option-color color-fuchsia"></span>
                 ${this.getColorName("fuchsia")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="slateblue"
               data-name="${this.getColorName("slateblue")}">
                 <span class="lb-option-color color-slateblue"></span>
                 ${this.getColorName("slateblue")}
             </div>
-            <div class="lb-dropdown-option" 
+            <div class="lb-dropdown-option"
               data-color="greenyellow"
               data-name="${this.getColorName("greenyellow")}">
                 <span class="lb-option-color color-greenyellow"></span>
                 ${this.getColorName("greenyellow")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="springgreen"
               data-name="${this.getColorName("springgreen")}">
                 <span class="lb-option-color color-springgreen"></span>
                 ${this.getColorName("springgreen")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="darkgreen"
               data-name="${this.getColorName("darkgreen")}">
                 <span class="lb-option-color color-darkgreen"></span>
                 ${this.getColorName("darkgreen")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="olivedrab"
               data-name="${this.getColorName("olivedrab")}">
                 <span class="lb-option-color color-olivedrab">
                 </span>
                 ${this.getColorName("olivedrab")}
             </div>
-      
-            <div class="lb-dropdown-option" 
-              data-color="lightseagreen" 
+
+            <div class="lb-dropdown-option"
+              data-color="lightseagreen"
               data-name="${this.getColorName("lightseagreen")}">
                 <span class="lb-option-color color-lightseagreen"></span>
                 ${this.getColorName("lightseagreen")}
-            </div> 
-      
-            <div class="lb-dropdown-option" 
+            </div>
+
+            <div class="lb-dropdown-option"
               data-color="turquoise"
               data-name="${this.getColorName("turquioise")}">
                 <span class="lb-option-color color-turquoise"></span>
                 ${this.getColorName("turquoise")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="steelblue"
               data-name="${this.getColorName("steelblue")}">
                 <span class="lb-option-color color-steelblue"></span>
                 ${this.getColorName("steelblue")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="deepskyblue"
               data-name="${this.getColorName("deepskyblue")}">
                 <span class="lb-option-color color-deepskyblue"></span>
                 ${this.getColorName("deepskyblue")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="royalblue"
               data-name="${this.getColorName("royalblue")}">
                 <span class="lb-option-color color-royalblue"></span>
                 ${this.getColorName("royalblue")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="navy"
               data-name="${this.getColorName("navy")}">
                 <span class="lb-option-color color-navy"></span>
                 ${this.getColorName("navy")}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="lightgray"
               data-name="${this.getColorName("lightgray")}">
                 <span class="lb-option-color color-lightgray"></span>
                 ${this.getColorName("lightgray")}
             </div>
-            
+
             </div>
           </div>
         </div>
@@ -484,7 +484,7 @@ angular.module('icestudio')
         //---------------------------------------------
         read() {
 
-          //-- Read the value 
+          //-- Read the value
           let value = $('.lb-selected-color').data('color');
 
           return value;
@@ -500,7 +500,7 @@ angular.module('icestudio')
             Label
            +-----------------+
            | Option        v |
-           +-----------------+  
+           +-----------------+
      */
       class ComboboxField {
 
@@ -630,7 +630,7 @@ angular.module('icestudio')
       //-- This is how this field is rendered in the Form
       //
       //    [ Button Text ]
-      //---------------------------------------------------------  
+      //---------------------------------------------------------
       class ButtonField {
 
         //-----------------------------------------------------------------------
@@ -650,7 +650,7 @@ angular.module('icestudio')
           //-- The parameters are:
           //--  %TEXT% : Text displayed on the button
           //--  %ID% : Form identification number
-          this.htmlTemplate = 
+          this.htmlTemplate =
             `<button id="form%ID%" class="ice-button">%TEXT%</button>`;
 
           //-- Attach the callback directly
@@ -693,11 +693,11 @@ angular.module('icestudio')
         }
 
         //------------------------------------------------------
-        //-- Parse the block names. The spaces are removed  
+        //-- Parse the block names. The spaces are removed
         //-- and the individual names obtained (if they are
         //-- separated by comas)
         //--
-        //-- INPUT: 
+        //-- INPUT:
         //--   * value: String introduced by the user
         //-- Returns:
         //--   An array of string with the names of the ports
@@ -710,7 +710,7 @@ angular.module('icestudio')
           //-- First: remove the initial and ending spaces, if any
           let text = names.trim().replace(/\s+/g, '');
 
-          //-- Second: Remove the spaces around the commas (,) 
+          //-- Second: Remove the spaces around the commas (,)
           text = text.replace(/\s*,\s*/g, ',');
           //text = text.replace(' ','');
 
@@ -729,7 +729,7 @@ angular.module('icestudio')
 
         //---------------------------------------------------
         //-- Parse the Port names
-        //-- 
+        //--
         //-- INPUT:
         //--   * name: String (Ex: "a[7:0]")
         //--
@@ -761,7 +761,7 @@ angular.module('icestudio')
               //-- Get the name and rangestr
               portInfo.name = match[1] || '';
               portInfo.rangestr = match[2];
-              
+
               //-- Let's calculate the size
 
               //-- If it is a bus...
@@ -776,7 +776,7 @@ angular.module('icestudio')
                 }else{
                   portInfo.size = Math.abs(left - right) + 1;
                   portInfo.isParametric=false;
-                } 
+                }
               }
               //-- It is an isolated wire
               else {
@@ -806,7 +806,7 @@ angular.module('icestudio')
         //------------------------------------------------------------------
         readFields() {
 
-          //-- Array were the values will be stored 
+          //-- Array were the values will be stored
           let values = [];
 
           //-- Read the values from the Form fields
@@ -878,7 +878,7 @@ angular.module('icestudio')
             .set('onok', callback)
 
             //-- Set the callback for the Candel button:
-            //--   Do nothing... 
+            //--   Do nothing...
             .set('oncancel', function ( /*evt*/) { });
 
         }
@@ -923,7 +923,7 @@ angular.module('icestudio')
           this.addField(field0);
           this.addField(field1);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
@@ -1148,7 +1148,7 @@ angular.module('icestudio')
         //-------------------------------------------------------------
         //-- Create the block define in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -1160,7 +1160,7 @@ angular.module('icestudio')
           //-- Create all the blocks defined
           let portInfo = this.portInfos[n];
 
-          //-- Create an array of empty pins (with name and values 
+          //-- Create an array of empty pins (with name and values
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
           let block = new blocks.InputPortBlock(
@@ -1254,7 +1254,7 @@ angular.module('icestudio')
         //-------------------------------------------------------------
         //-- Create the block define in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -1266,7 +1266,7 @@ angular.module('icestudio')
           //-- Create all the blocks defined
           let portInfo = this.portInfos[n];
 
-          //-- Create an array of empty pins (with name and values 
+          //-- Create an array of empty pins (with name and values
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
 
@@ -1313,7 +1313,7 @@ angular.module('icestudio')
 
           //-- Field 1: Color Selector. Label color
           let field1 = new ColorField(
-            gettextCatalog.getString("Choose a color:"),
+            gettextCatalog.getString('Choose a color:'),
             color    //-- Default color
           );
 
@@ -1321,7 +1321,7 @@ angular.module('icestudio')
           this.addField(field0);
           this.addField(field1);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
 
@@ -1490,7 +1490,7 @@ angular.module('icestudio')
         //-------------------------------------------------------------
         //-- Create the block define in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -1502,7 +1502,7 @@ angular.module('icestudio')
           //-- Get the info of the label n
           let portInfo = this.portInfos[n];
 
-          //-- Create an array of empty pins (with name and values 
+          //-- Create an array of empty pins (with name and values
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
 
@@ -1571,7 +1571,7 @@ angular.module('icestudio')
         //-------------------------------------------------------------
         //-- Create the block define in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -1583,7 +1583,7 @@ angular.module('icestudio')
           //-- Get the info of the label n
           let portInfo = this.portInfos[n];
 
-          //-- Create an array of empty pins (with name and values 
+          //-- Create an array of empty pins (with name and values
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
 
@@ -1618,7 +1618,7 @@ angular.module('icestudio')
         //-------------------------------------------------------------
         //-- Create the block define in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -1630,7 +1630,7 @@ angular.module('icestudio')
           //-- Get the info of the label n
           let portInfo = this.portInfos[n];
 
-          //-- Create an array of empty pins (with name and values 
+          //-- Create an array of empty pins (with name and values
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
 
@@ -1675,7 +1675,7 @@ angular.module('icestudio')
         //-----------------------------------------------------------------
         constructor(portsIn = '', portsOut = '', paramsIn = '', portsInOutLeft = '', portsInOutRight = '') {
 
-            
+
           //-- Create a blank Form (calling the upper Class)
           super();
 
@@ -1733,16 +1733,16 @@ angular.module('icestudio')
               this.addField(field4);
           }
           this.code = '';
-          let self = this;  
+          let self = this;
           //-- Field 5: Import code
           let field5 = new ButtonField(
             gettextCatalog.getString('Import code'), //-- Button text
             function(){ //-- Callback
               //-- Open the file Dialog
               //-- The selector is passed as a parameter
-              //-- The html element is located in the menu.html file              
+              //-- The html element is located in the menu.html file
               utils.openDialog("#input-import-verilog", async function (filepath) {
-               try{ 
+               try{
                   // Leer el archivo de forma asíncrona
                   const content = await nodeFs.promises.readFile(filepath, 'utf8');
 
@@ -1763,7 +1763,7 @@ angular.module('icestudio')
                     } else {
                       alertify.error(
                         gettextCatalog.getString(
-                          'Import incomplete, this design contains tristate IO, you need to enable tristate IO in <b>Edit->Preferences->Advanced features->Enable tri-state connections</b> and reimport the block'
+						  'Design contains tri-state I/O. You need to update your Preferences:<br />&nbsp;&nbsp;&nbsp;<b>Advanced features → Allow tri-state connections</b>,<br />and reimport the block.'
                         ),
                         20000
                       );
@@ -1777,18 +1777,18 @@ angular.module('icestudio')
                   alertify.error(gettextCatalog.getString('Error reading the file: {{error}}', { error: err.message }));
                 }
               });
-            },   
+            },
             5
           );
 
-          this.addField(field5);          
+          this.addField(field5);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
 
           //-- Store the initial values used for creating the form
-          //-- They will be used later for detecting a change in 
+          //-- They will be used later for detecting a change in
           //-- the values introduced by the user
           this.iniPortsIn = portsIn;
           this.iniPortsOut = portsOut;
@@ -2033,7 +2033,7 @@ angular.module('icestudio')
             1          //-- Field id
           );
 
-          //-- Field 2: Checkbox for selecting if the memory is a 
+          //-- Field 2: Checkbox for selecting if the memory is a
           //-- local parameter or not
           let field2 = new CheckboxField(
             gettextCatalog.getString('Local parameter'),
@@ -2047,7 +2047,7 @@ angular.module('icestudio')
           this.addField(field1);
           this.addField(field2);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
 
@@ -2163,7 +2163,7 @@ angular.module('icestudio')
         //-------------------------------------------------------------
         //-- Create the block defined in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -2223,7 +2223,7 @@ angular.module('icestudio')
             0        //-- Field id
           );
 
-          //-- Field 1: Checkbox for selecting if the constant is a 
+          //-- Field 1: Checkbox for selecting if the constant is a
           //-- local parameter or not
           let field1 = new CheckboxField(
             gettextCatalog.getString('Local parameter'),
@@ -2235,7 +2235,7 @@ angular.module('icestudio')
           this.addField(field0);
           this.addField(field1);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
 
@@ -2347,7 +2347,7 @@ angular.module('icestudio')
         //-------------------------------------------------------------
         //-- Create the block defined in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -2415,7 +2415,7 @@ angular.module('icestudio')
           //-- Add the fields to the form
           this.addField(field0);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
@@ -2460,7 +2460,7 @@ angular.module('icestudio')
           //-- Add the fields to the form
           this.addField(field0);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
@@ -2507,7 +2507,7 @@ angular.module('icestudio')
           //-- Add the fields to the form
           this.addField(field0);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
@@ -2564,7 +2564,7 @@ angular.module('icestudio')
           this.addField(field0);
           this.addField(field1);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
@@ -2610,7 +2610,7 @@ angular.module('icestudio')
           //-- Add the fields to the form
           this.addField(field0);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
