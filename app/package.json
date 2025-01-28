@@ -31,7 +31,6 @@
     "resizable": true,
     "position": "center",
     "icon": "resources/images/icestudio-logo.png",
-     "resizable": true,
     "frame": true,
     "show": true
   },

@@ -24,12 +24,12 @@ angular.module('icestudio')
           enableDriversFTDI();
           break;
 
-        //-- Serial boards  
+        //-- Serial boards
         case 'Serial':
           enableDriversSerial();
           break;
 
-        //-- Board with no interface! (Error!)  
+        //-- Board with no interface! (Error!)
         default:
           console.warn('No valid selected board interface');
       }
@@ -49,12 +49,12 @@ angular.module('icestudio')
           disableDriversFTDI();
           break;
 
-        //-- Serial Boards  
+        //-- Serial Boards
         case 'Serial':
           disableDriversSerial();
           break;
 
-        //-- Board wiht no interface! (Error!)  
+        //-- Board wiht no interface! (Error!)
         default:
           console.warn('No valid selected board interface');
       }
@@ -129,7 +129,7 @@ angular.module('icestudio')
     //------------------------------------------------
     //-- Disable the Drivers for the serial boards
     //-- It depends on the operating system
-    //-- 
+    //--
     function disableDriversSerial() {
 
       //-- Disable the serial boards on windows
@@ -233,7 +233,7 @@ angular.module('icestudio')
 
     //------------------------------------
     //-- Disable the FTDI Drivers
-    //-- The corresponding .rules file is removed and the  
+    //-- The corresponding .rules file is removed and the
     //-- command for relaunching the udev system executed
     //--
     function disableLinuxDriversFTDI() {
@@ -291,7 +291,7 @@ angular.module('icestudio')
 
     //------------------------------------
     //-- Disable the Serial Drivers
-    //-- The corresponding .rules file is removed and the  
+    //-- The corresponding .rules file is removed and the
     //-- command for relaunching the udev system executed
     //--
     function disableLinuxDriversSerial() {
@@ -415,7 +415,7 @@ angular.module('icestudio')
         brewCommands = brewCommands.concat(brewInstall(brewExec,brewPackages[i]));
       }
       utils.beginBlockingTask();
-      
+
       if (typeof common.DEBUGMODE !== 'undefined' &&
         common.DEBUGMODE === 1) {
         const fs = require('fs');
@@ -542,7 +542,7 @@ angular.module('icestudio')
      * Windows drivers
      */
 
-    
+
     /* -- Messages ----*/
 
     const ENABLE_DRV_FTDI_MSG = `
@@ -551,13 +551,13 @@ angular.module('icestudio')
       <li>Connect the FPGA board to the USB and wait until Windows
           finishes the default installation of the driver</li>
 
-      <li>When the OK button is clicked, the FTDI driver 
+      <li>When the OK button is clicked, the FTDI driver
           installer will be launched in a new window</li>
 
-      <li>In the installer, replace the <b>(Interface 0)</b> 
+      <li>In the installer, replace the <b>(Interface 0)</b>
           driver of the board by <b>libusbK</b></li>
       <li>Unplug and reconnect the board</li>
-    </ol> 
+    </ol>
     `;
 
     const DISABLE_DRV_FTDI_MSG = `
@@ -571,7 +571,7 @@ angular.module('icestudio')
     const ENABLE_DRV_SERIAL_MSG = `
     <h4>Serial driver installation instructions</h4>
     <ol>
-      <li>Connect the FPGA board to the USB and wait until Windows 
+      <li>Connect the FPGA board to the USB and wait until Windows
           finishes the default installation of the driver</li>
       <li>When the OK button is clicked, the Serial driver installer
           will be launched in a new window</li><li>In the installer,
@@ -640,14 +640,12 @@ angular.module('icestudio')
          nodeSudo.exec([common.APIO_CMD, 'drivers', `install ${type}`].join(' '), { name: 'Icestudio' }, function (error, stdout, stderr) {
               utils.endBlockingTask();
               if (stderr) {
-                alertify.error(gettextCatalog.getString('Error enabling driver type') + ' ' + type, 30);
+                alertify.error(gettextCatalog.getString('Error enabling driver type {{type}}', { type: type }), 30);
               }
               else if (!error) {
                 alertify.message(gettextCatalog.getString('<b>Unplug</b> and <b>reconnect</b> the board'), 5);
               }
             });
-
-      
       }
     }
 
@@ -666,5 +664,4 @@ angular.module('icestudio')
         }
       });
     }
-
   });

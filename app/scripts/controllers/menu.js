@@ -43,8 +43,8 @@ angular
             //--  example is opened
             //--
             //-- The new window receives the parameters through the URL
-            //-- Ex. 
-            //-------------------------------------------------------------------------  
+            //-- Ex.
+            //-------------------------------------------------------------------------
 
             //-- Initialize scope
 
@@ -52,10 +52,10 @@ angular
             $scope.project = project;
             $scope.tools = tools;
             $scope.common = common;
-            
+
             $scope.version = _package.version;
             $scope.toolchain = tools.toolchain;
-            
+
             $scope.workingdir = "";
             $scope.snapshotdir = "";
 
@@ -75,13 +75,13 @@ angular
             //-- The nw object is globally available. It contains all the
             //-- NWjs APIs
             //-- More information:
-            //--  https://nwjs.readthedocs.io/en/latest/ 
+            //--  https://nwjs.readthedocs.io/en/latest/
             let win = nw.Window.get();
 
             //-- ONLY MAC:
             //-- Creates the builtin menus (App, Edit and Window) within the menubar
             //-- on Mac
-            //-- More information: 
+            //-- More information:
             //-- https://nwjs.readthedocs.io/en/latest/References/Menu/
             //-- #menucreatemacbuiltinappname-options-mac
             if (process.platform === "darwin") {
@@ -120,7 +120,7 @@ angular
             //-- Event: The window was resized
             win.on("resize", function () {
 
-                //-- When working with big designs it is better not to fit 
+                //-- When working with big designs it is better not to fit
                 //-- the contents (Leave it commented)
                 graph.fitPaper();
                 //graph.fitContent();
@@ -133,7 +133,7 @@ angular
                 //graph.fitContent();
             });
 
-            //-- Emitted when window is restored from minimize, maximize and 
+            //-- Emitted when window is restored from minimize, maximize and
             //-- fullscreen state.
             win.on("restore", function () {
                 graph.fitContent();
@@ -155,7 +155,7 @@ angular
             //-- Build the URL object
             let myURL = new url.URL("http://index.html" + window.location.search);
 
-            //-- Icestudio file to open on the new window. 
+            //-- Icestudio file to open on the new window.
             //-- There is no .ice file by default
             let filepath = "";
 
@@ -203,7 +203,7 @@ angular
                     //-- Open the file
                     project.open(filepath);
 
-                    //-- Add recent project    
+                    //-- Add recent project
                     addRecentProject(filepath);
                 }
             }
@@ -324,21 +324,21 @@ angular
             //-------------------------------------------------------------------------//-------------------------------------------------------------------------
             //-- FILE/Open Recent
             //-- Show a list of recent projects
-            //-------------------------------------------------------------------------            
-            
-            
+            //-------------------------------------------------------------------------
+
+
             function addRecentProject(filepath) {
                 const recentProjects = profile.get('recentProjects') || [];
-        
+
                 // Remove duplicate entries
                 const updatedProjects = recentProjects.filter(p => p.path !== filepath);
-        
+
                 // Add the new project at the top
                 updatedProjects.unshift({
                     path: filepath,
                     lastOpened: new Date().toISOString()
                 });
-        
+
                 // Limit the list to the last 10 projects
                 profile.set('recentProjects', updatedProjects.slice(0, 10));
                 $scope.recentProjects = updatedProjects.slice(0, 10);
@@ -347,19 +347,19 @@ angular
             $scope.clearRecentProjects = function () {
                 alertify.confirm(
                     gettextCatalog.getString('Clear Recent Projects'),
-                    gettextCatalog.getString('Are you sure you want to clear the list of recent projects?'),
+                    gettextCatalog.getString('Are you sure you want to clear the recent projects list?'),
                     function () {
                         profile.set('recentProjects', []);
                         $scope.recentProjects = [];
-                        alertify.success(gettextCatalog.getString('Recent projects have been cleared.'));
+                        alertify.success(gettextCatalog.getString('Recent projects cleared'));
                     },
                     function () { }
                 );
-            };              
+            };
 
             $scope.truncatePath = function (path) {
                 if (path.length > 40) {
-                  return '...' + path.slice(-40); 
+                  return '...' + path.slice(-40);
                 }
                 return path;
             };
@@ -421,7 +421,7 @@ angular
                           }
 
                                          });
-                    
+
                 } else {
                     $scope.saveProjectAs();
                 }
@@ -434,7 +434,7 @@ angular
 
                     project.save(filepath, function () {
                         reloadCollectionsIfRequired(filepath);
-                        
+
                     });
                     resetChangedStack();
                     if (localCallback) {
@@ -643,17 +643,17 @@ angular
                     setup: function () {
                         return {
                             buttons: [
-                            { text: gettextCatalog.getString("Save"), className: 'ajs-ok' }, 
-                            { text: gettextCatalog.getString("Don't Save"), className: 'ajs-ok' },
+                            { text: gettextCatalog.getString("Save"), className: 'ajs-ok' },
+                            { text: gettextCatalog.getString("Don’t Save"), className: 'ajs-ok' },
                             { text: gettextCatalog.getString("Cancel"), className: 'ajs-cancel', key: 27 }
                             ],
                             focus: { element: 3 },
-                            options: { 
+                            options: {
                                 movable: false, maximizable: false,
                                 closable: false, resizable: false
-                            }             
+                            }
                         };
-                    },       
+                    },
                     callback: function (closeEvent) {
                         switch (closeEvent.index) {
                             case 0:
@@ -669,7 +669,7 @@ angular
                 };
             });
 
-            function exit() {                
+            function exit() {
                 if (project.changed) {
                     alertify.closeDialog(
                         utils.bold(
@@ -787,7 +787,7 @@ angular
                 //-- Display the form
                 form.display((evt) => {
 
-                    //-- The callback is executed when the user has pressed the 
+                    //-- The callback is executed when the user has pressed the
                     //-- OK button
 
                     //-- Process the information in the form
@@ -829,7 +829,7 @@ angular
                             gettextCatalog.getString("Logging file updated")
                         );
                     }
-                    //-- The file is not valid 
+                    //-- The file is not valid
                     else {
 
                         //-- Notify the error
@@ -862,7 +862,7 @@ angular
                 //-- Display the form
                 form.display((evt) => {
 
-                    //-- The callback is executed when the user has pressed the 
+                    //-- The callback is executed when the user has pressed the
                     //-- OK button
 
                     //-- Process the information in the form
@@ -887,7 +887,7 @@ angular
                             gettextCatalog.getString("External plugins updated")
                         );
                     }
-                    //-- The file is not valid 
+                    //-- The file is not valid
                     else {
                         //-- Notify the error
                         evt.cancel = true;
@@ -919,7 +919,7 @@ angular
                 //-- Display the form
                 form.display((evt) => {
 
-                    //-- The callback is executed when the user has pressed the 
+                    //-- The callback is executed when the user has pressed the
                     //-- OK button
 
                     //-- Process the information in the form
@@ -951,7 +951,7 @@ angular
                             gettextCatalog.getString("Python environment updated")
                         );
                     }
-                    //-- The file is not valid 
+                    //-- The file is not valid
                     else {
                         //-- Notify the user
                         evt.cancel = true;
@@ -982,7 +982,7 @@ angular
 
                 //-- Display the form
                 form.display((evt) => {
-                    //-- The callback is executed when the user has pressed the 
+                    //-- The callback is executed when the user has pressed the
                     //-- OK button
 
                     //-- Process the information in the form
@@ -1057,7 +1057,7 @@ angular
                         if (
                               typeof common.submoduleHeap !== 'undefined' &&
                               common.submoduleHeap.length>0
-     
+
 
                         ) {
                             graph.setBlockInfo(values, newValues, common.submoduleId);
@@ -1145,7 +1145,7 @@ angular
             $scope.selectTheme = function (theme) {
                 if (profile.get("uiTheme") !== theme) {
                     const modalWait = new WafleModal();
-                    modalWait.waitingSeconds(3,gettextCatalog.getString('UI Theme'),gettextCatalog.getString('Wait for <b></b> seconds') );
+                    modalWait.waitingSeconds(3,gettextCatalog.getString('UI theme'),gettextCatalog.getString('Wait for <b></b> seconds') );
                     profile.set("uiTheme", theme);
                     setTimeout(function(){
                         //-- Shared variable for ace-editor blocks in "profile.js"
@@ -1163,13 +1163,13 @@ angular
                             }
 
                             $(".code-editor.ace_editor").each(function() {
-                                const editor = ace.edit(this); 
-                                editor.setTheme("ace/theme/" + editorTheme); 
+                                const editor = ace.edit(this);
+                                editor.setTheme("ace/theme/" + editorTheme);
                             });
                         }
 
 
-                        changeTheme(theme); 
+                        changeTheme(theme);
 
 
 
@@ -1736,11 +1736,11 @@ angular
                     graph.removeSelected();
                 } else {
                     //-- When inside a block in non-edit mode
-                    //-- the back key causes it to return to 
+                    //-- the back key causes it to return to
                     //-- the top-main module
 
                     //-- Changed: The Back key is disabled by default
-                    //--  (asked by joaquim) 
+                    //--  (asked by joaquim)
                     //-- (Uncomment the next sentence  for enabling it)
                     // $rootScope.$broadcast("breadcrumbsBack");
                 }
@@ -2058,7 +2058,7 @@ angular
             //-- close floating toolbox with x button
             $(document).on("mousedown", ".closeToolbox-button", function () {
                 mousedown = true;
-                showToolBox();  // close toolbox 
+                showToolBox();  // close toolbox
             });
 
             //-- draggable toolbox
