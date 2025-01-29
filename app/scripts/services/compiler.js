@@ -516,7 +516,6 @@ angular.module('icestudio')
       var instances = [];
       var blockArray = graph.blocks;
 
-     console.log('INSTANCES',name,currentLibrary);
       for (var b in blockArray) {
         var block = blockArray[b];
 
@@ -533,9 +532,7 @@ angular.module('icestudio')
           if (block.type === blocks.BASIC_CODE) {
             instance = name + '_' + utils.digestId(block.id);
           } else {
-            console.log('INSTANCE NAME',block);
             let prefix= currentLibrary[block.type].package.name ?? '';
-            console.log('PREFIX',prefix);
             prefix=utils.normalizeVerilogName(prefix);
             if(prefix.length > 0) { prefix+='__'; }
             instance = `${prefix}${utils.digestId(block.type)}`;
@@ -700,7 +697,6 @@ angular.module('icestudio')
     function verilogCompiler(name, project, opt) {
       var i, data, block, code = '';
       opt = opt || {};
-      console.log('COMPILER',project);
       if (project &&
         project.design &&
         project.design.graph) {
@@ -775,7 +771,6 @@ angular.module('icestudio')
           var ports = getPorts(project);
 
           var content = getContent(name, project);
-          console.log('CONTENT',content);
 
           // Initialize output pins
 
@@ -843,7 +838,6 @@ angular.module('icestudio')
           block = blockArray[i];
           if (block) {
             if (block.type === blocks.BASIC_CODE) {
-              console.log('COMPILER BASIC_CODE',name,block);
               data = {
                 name: name + '_' + utils.digestId(block.id),
                 params: block.data.params,
