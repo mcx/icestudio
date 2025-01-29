@@ -533,7 +533,6 @@ function isElementInViewport(elementBBox, viewport) {
               self.addingDraggableBlock = false;
               processReplaceBlock(selection.at(0));
               disableSelected();
-              graph.trigger('batch:start');
               updateWiresOnObstacles().then(() => {
                 graph.trigger('batch:stop');
               }); 
