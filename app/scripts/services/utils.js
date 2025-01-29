@@ -1482,6 +1482,27 @@ angular.module('icestudio')
       }
     };
 
+    this.normalizeVerilogName =function(str) {
+    // 1. Convertir a minúsculas (opcional según necesidades)
+    str = str.toLowerCase();
+    
+    // 2. Normalizar y eliminar acentos
+    str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    
+    // 3. Reemplazar espacios y guiones por _
+    str = str.replace(/[\s-]/g, "_");
+
+    // 4. Eliminar caracteres no permitidos (solo letras, números y _)
+    str = str.replace(/[^a-zA-Z0-9_]/g, "");
+
+    // 5. Si empieza con un número, agregar un prefijo válido
+    if (/^\d/.test(str)) {
+        str = "_" + str;
+    }
+
+    return str;
+};
+
     this.digestId = function (id) {
       if (id.indexOf('-') !== -1) {
         id = nodeSha1(id).toString();

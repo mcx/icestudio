@@ -9,13 +9,16 @@ angular.module('icestudio')
     nodeSha1,
     _package) {
 
+    let  currentLibrary=false;
     this.generate = function (target, project, opt) {
       var content = '';
       var files = [];
+      this.currentLibrary=false;
       switch (target) {
         case 'verilog':
           content += header('//', opt,true);
           content += '`default_nettype none\n\n';
+          currentLibrary=project.dependencies;
           content += verilogCompiler('main', project, opt);
           files.push({
             name: 'main.v',
@@ -63,6 +66,7 @@ angular.module('icestudio')
       }
       return files;
     };
+
 
     function header(comment, opt,linterRules=false) {
       var header = '';
@@ -206,7 +210,7 @@ angular.module('icestudio')
       let id = block;
 
       if (typeof block.id !== 'undefined') {
-        id = utils.digestId(block.id);
+        id = utils.digestId2(block.id);
 
         if (typeof block.data !== 'undefined' &&
           typeof block.data.name !== 'undefined' &&
@@ -471,7 +475,7 @@ angular.module('icestudio')
 
       // Block instances
 
-      content = content.concat(getInstances(name, project.design.graph));
+      content = content.concat(getInstances(name,project.design.graph));
 
       // Restore original graph
       // delete temporal wires
@@ -512,6 +516,7 @@ angular.module('icestudio')
       var instances = [];
       var blockArray = graph.blocks;
 
+     console.log('INSTANCES',name,currentLibrary);
       for (var b in blockArray) {
         var block = blockArray[b];
 
@@ -528,7 +533,14 @@ angular.module('icestudio')
           if (block.type === blocks.BASIC_CODE) {
             instance = name + '_' + utils.digestId(block.id);
           } else {
-            instance = utils.digestId(block.type);
+            console.log('INSTANCE NAME',block);
+            let prefix= currentLibrary[block.type].package.name ?? '';
+            console.log('PREFIX',prefix);
+            prefix=utils.normalizeVerilogName(prefix);
+            if(prefix.length > 0) { prefix+='__'; }
+            instance = `${prefix}${utils.digestId(block.type)}`;
+          
+           // instance = utils.digestId(block.type);
 
           }
 
@@ -688,7 +700,7 @@ angular.module('icestudio')
     function verilogCompiler(name, project, opt) {
       var i, data, block, code = '';
       opt = opt || {};
-
+      console.log('COMPILER',project);
       if (project &&
         project.design &&
         project.design.graph) {
@@ -763,6 +775,7 @@ angular.module('icestudio')
           var ports = getPorts(project);
 
           var content = getContent(name, project);
+          console.log('CONTENT',content);
 
           // Initialize output pins
 
@@ -817,8 +830,11 @@ angular.module('icestudio')
           }
         }
 
+        let prefix='';
         for (var d in dependencies) {
-          code += verilogCompiler(utils.digestId(d), dependencies[d]);
+          prefix= dependencies[d].package.name ?? 'pkg';
+          prefix=utils.normalizeVerilogName(prefix);          
+          code += verilogCompiler(`${prefix}__${utils.digestId(d)}`, dependencies[d]);
         }
 
         // Code modules 
@@ -827,6 +843,7 @@ angular.module('icestudio')
           block = blockArray[i];
           if (block) {
             if (block.type === blocks.BASIC_CODE) {
+              console.log('COMPILER BASIC_CODE',name,block);
               data = {
                 name: name + '_' + utils.digestId(block.id),
                 params: block.data.params,
