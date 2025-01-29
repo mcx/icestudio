@@ -1,8 +1,9 @@
-2025-01-26 23:24 (GMT+1)
+2025-01-29 21:27 (GMT+1)
 ========================
 Type: WIP
 
 App Changes: 
+
   - Better translatios for verilog importer by @TimRudy
   - Support for dynamic width on labels and IO Pins improving readability by @lmcapacho
   - Support for parametric IO pins by @cavearr
