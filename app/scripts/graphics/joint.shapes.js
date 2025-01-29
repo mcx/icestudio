@@ -323,33 +323,7 @@ joint.shapes.ice.Model = joint.shapes.basic.Generic.extend({
       this.updatePortsAttrs,
       this
     );
-    this.constructor.__super__.constructor.__super__.initialize.apply(
-      this,
-      arguments
-    );
-    this.updateSize();
-    this.on('change:data', this.updateSize, this);
-  },
-
-  updateSize: function () {   
-    const fontSize = 14; 
-    
-    const name = this.get('data').name;
-    const pins = this.get('data').pins;
-
-    let text = name;
-
-    for (var i in pins) {
-      if( pins[i].name.length > text.length){
-        text = pins[i].name;
-      }
-    }
-  
-    const context = document.createElement('canvas').getContext('2d');
-    context.font = `${fontSize}px Monaco`;
-    const textWidth = context.measureText(text).width;
-    const newWidth = Math.round(Math.max(textWidth + 50, 96));
-    this.resize(newWidth, this.size().height);
+    joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
   },
 
   updatePortsAttrs: function (/*eventName*/) {
@@ -980,7 +954,40 @@ if(state.mutateZoom|| forceMutate){
 
 // I/O blocks
 
-joint.shapes.ice.Input = joint.shapes.ice.Model.extend({
+joint.shapes.ice.IO = joint.shapes.ice.Model.extend({
+  defaults: joint.util.deepSupplement(    
+    joint.shapes.ice.Model.prototype.defaults
+  ),
+
+  initialize: function () {
+    this.updateSize();
+    this.on('change:data', this.updateSize, this);
+    joint.shapes.ice.Model.prototype.initialize.apply(this, arguments);
+  },
+
+  updateSize: function () {   
+    const fontSize = 14; 
+    
+    const name = this.get('data').name;
+    const pins = this.get('data').pins;
+    
+    let text = name;
+
+    for (var i in pins) {
+      if( pins[i].name.length > text.length){
+        text = pins[i].name;
+      }
+    }
+  
+    const context = document.createElement('canvas').getContext('2d');
+    context.font = `${fontSize}px Monaco`;
+    const textWidth = context.measureText(text).width;
+    const newWidth = Math.round(Math.max(textWidth + 50, 96));
+    this.resize(newWidth, this.size().height);
+  },
+});
+
+joint.shapes.ice.Input = joint.shapes.ice.IO.extend({
   defaults: joint.util.deepSupplement(
     {
       type: "ice.Input",
@@ -989,11 +996,11 @@ joint.shapes.ice.Input = joint.shapes.ice.Model.extend({
         height: 64,
       },
     },
-    joint.shapes.ice.Model.prototype.defaults
+    joint.shapes.ice.IO.prototype.defaults
   ),
 });
 
-joint.shapes.ice.Output = joint.shapes.ice.Model.extend({
+joint.shapes.ice.Output = joint.shapes.ice.IO.extend({
   defaults: joint.util.deepSupplement(
     {
       type: "ice.Output",
@@ -1006,7 +1013,7 @@ joint.shapes.ice.Output = joint.shapes.ice.Model.extend({
   ),
 });
 
-joint.shapes.ice.InputLabel = joint.shapes.ice.Model.extend({
+joint.shapes.ice.InputLabel = joint.shapes.ice.IO.extend({
   markup:
     '<g class="rotatable">\
              <g class="scalable">\
@@ -1040,7 +1047,7 @@ joint.shapes.ice.InputLabel = joint.shapes.ice.Model.extend({
   ),
 });
 
-joint.shapes.ice.OutputLabel = joint.shapes.ice.Model.extend({
+joint.shapes.ice.OutputLabel = joint.shapes.ice.IO.extend({
   markup:
     '<g class="rotatable">\
              <g class="scalable">\
@@ -1460,7 +1467,7 @@ joint.shapes.ice.OutputView = joint.shapes.ice.IOView;
 
 // Constant block
 
-joint.shapes.ice.Constant = joint.shapes.ice.Model.extend({
+joint.shapes.ice.Constant = joint.shapes.ice.IO.extend({
   defaults: joint.util.deepSupplement(
     {
       type: "ice.Constant",
