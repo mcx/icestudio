@@ -102,17 +102,17 @@ Icestudio is a design tool focused on new comers to the FPGA world
 |  Russian (ru_RU)   | ![Progress](http://progress-bar.xyz/71) |
 |  Italian (it_IT)   | ![Progress](http://progress-bar.xyz/67) |
 | Taiwanese (zh_TW)  | ![Progress](http://progress-bar.xyz/67) |
+|  Turkish (tr_TR)   | ![Progress](http://progress-bar.xyz/64) |
 |   Basque (eu_ES)   | ![Progress](http://progress-bar.xyz/64) |
 |  Chinese (zh_CN)   | ![Progress](http://progress-bar.xyz/64) |
 |   Korean (ko_KR)   | ![Progress](http://progress-bar.xyz/64) |
-|  Turkish (tr_TR)   | ![Progress](http://progress-bar.xyz/64) |
 | Catalonian (ca_ES) | ![Progress](http://progress-bar.xyz/61) |
 |   Greek (el_GR)    | ![Progress](http://progress-bar.xyz/58) |
 |   Dutch (nl_NL)    | ![Progress](http://progress-bar.xyz/57) |
 |  Galician (gl_ES)  | ![Progress](http://progress-bar.xyz/57) |
 
 
-**Contribute!**. Any contribution is very welcome!. Please, follow the instructions on [Translating Icestudio](https://github.com/FPGAwars/icestudio/wiki/Translating-Icestudio)  
+**Contribute!**. Any contribution is very welcome! Please follow the steps at [Translating Icestudio](https://github.com/FPGAwars/icestudio/wiki/Translating-Icestudio)  
 
 ## Contributors
 

@@ -118,7 +118,6 @@ msgid "Basic"
 msgstr "Básico"
 
 #: app/views/design.html:275
-#, fuzzy
 msgid "Basic Toolbox"
 msgstr "Caja de herramientas básica"
 
@@ -229,7 +228,7 @@ msgstr "Comprobando conexión a Internet..."
 msgid "Check Python..."
 msgstr "Comprobando Python..."
 
-#: app/views/languages.html:68
+#: app/views/languages.html:98
 msgid "Chinese"
 msgstr "Chino"
 
@@ -366,7 +365,7 @@ msgstr "Crear virtualenv..."
 msgid "Cut"
 msgstr "Cortar"
 
-#: app/views/languages.html:50
+#: app/views/languages.html:62
 msgid "Czech"
 msgstr "Checo"
 
@@ -496,7 +495,6 @@ msgid "Enter the external collection path"
 msgstr "Introduce la ruta de las colecciones externas"
 
 #: app/scripts/services/forms.js:2501
-#, fuzzy
 msgid "Enter the external plugins path"
 msgstr "Introduce la ruta del plugins externo"
 
@@ -640,7 +638,7 @@ msgstr "Alemán"
 msgid "Gold"
 msgstr "Oro"
 
-#: app/views/languages.html:56
+#: app/views/languages.html:50
 msgid "Greek"
 msgstr "Griego"
 
@@ -702,7 +700,6 @@ msgid "Input parameters"
 msgstr "Parámetros de entrada"
 
 #: app/scripts/services/forms.js:1060
-#, fuzzy
 msgid "Input port names"
 msgstr "Nombres de puertos de entrada"
 
@@ -719,7 +716,6 @@ msgid "Install Development version"
 msgstr "Instalar la versión de desarrollo"
 
 #: app/scripts/services/tools.js:1333
-#, fuzzy
 msgid ""
 "Install the <b>STABLE Toolchain</b>. This operation requires Internet "
 "connection.<br><p><b>NOTE:</b> You need to disconnect your VPN (if any) to "
@@ -810,7 +806,7 @@ msgstr "Italiano"
 msgid "Japanese"
 msgstr "Japonés"
 
-#: app/views/languages.html:98
+#: app/views/languages.html:110
 msgid "Korean"
 msgstr "Koreano"
 
@@ -879,7 +875,6 @@ msgid "Name"
 msgstr "Nombre"
 
 #: app/scripts/services/forms.js:1609
-#, fuzzy
 msgid "Names of the paired labels"
 msgstr "Nombres de las etiquetas emparejadas"
 
@@ -1002,7 +997,6 @@ msgid "Python environment"
 msgstr "Entorno de Python"
 
 #: app/scripts/controllers/menu.js:951
-#, fuzzy
 msgid "Python environment updated"
 msgstr "Entorno de Python actualizado"
 
@@ -1146,7 +1140,7 @@ msgstr "Sincronizando ficheros remotos ..."
 msgid "System info"
 msgstr "Información del sistema"
 
-#: app/views/languages.html:62
+#: app/views/languages.html:104
 msgid "Taiwanese"
 msgstr "Taiwanés"
 
@@ -1203,7 +1197,6 @@ msgid "This project is designed for the {{name}} board."
 msgstr "Este proyecto está diseñado para la placa {{name}}."
 
 #: app/views/version.html:36
-#, fuzzy
 msgid ""
 "This release has been possible thanks to the great work done by an emerging "
 "team from"
@@ -1287,7 +1280,7 @@ msgstr "Conexiones tri-estado (puertos entrada/salida) deshabilitadas"
 msgid "Tri-state connections (inout ports) enabled"
 msgstr "Conexiones tri-estado (puertos entrada/salida) habilitadas"
 
-#: app/views/languages.html:104
+#: app/views/languages.html:56
 msgid "Turkish"
 msgstr "Turco"
 
@@ -1299,7 +1292,7 @@ msgstr "Turquesa"
 msgid "UI theme"
 msgstr "Tema de la interfaz"
 
-#: app/views/languages.html:110
+#: app/views/languages.html:68
 msgid "Ukrainian"
 msgstr ""
 
@@ -1483,6 +1476,3 @@ msgstr "Reglas de {{board}} no definidas"
 #: app/scripts/controllers/menu.js:558 app/scripts/controllers/menu.js:591
 msgid "{{name}} exported"
 msgstr "{{name}} exportado"
-
-#~ msgid "Image {{name}} saved"
-#~ msgstr "Imagen {{name}} guardada"

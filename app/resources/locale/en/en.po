@@ -228,7 +228,7 @@ msgstr "Check Internet connection..."
 msgid "Check Python..."
 msgstr "Check Python..."
 
-#: app/views/languages.html:68
+#: app/views/languages.html:98
 msgid "Chinese"
 msgstr "Chinese"
 
@@ -364,7 +364,7 @@ msgstr "Create virtualenv..."
 msgid "Cut"
 msgstr "Cut"
 
-#: app/views/languages.html:50
+#: app/views/languages.html:62
 msgid "Czech"
 msgstr "Czech"
 
@@ -639,7 +639,7 @@ msgstr "German"
 msgid "Gold"
 msgstr "Gold"
 
-#: app/views/languages.html:56
+#: app/views/languages.html:50
 msgid "Greek"
 msgstr "Greek"
 
@@ -802,7 +802,7 @@ msgstr "Italian"
 msgid "Japanese"
 msgstr "Japanese"
 
-#: app/views/languages.html:98
+#: app/views/languages.html:110
 msgid "Korean"
 msgstr "Korean"
 
@@ -1136,7 +1136,7 @@ msgstr "Synchronize remote files ..."
 msgid "System info"
 msgstr "System info"
 
-#: app/views/languages.html:62
+#: app/views/languages.html:104
 msgid "Taiwanese"
 msgstr "Taiwanese"
 
@@ -1275,7 +1275,7 @@ msgstr "Tri-state connections (inout ports) disabled"
 msgid "Tri-state connections (inout ports) enabled"
 msgstr "Tri-state connections (inout ports) enabled"
 
-#: app/views/languages.html:104
+#: app/views/languages.html:56
 msgid "Turkish"
 msgstr "Turkish"
 
@@ -1287,7 +1287,7 @@ msgstr "Turquoise"
 msgid "UI theme"
 msgstr "UI theme"
 
-#: app/views/languages.html:110
+#: app/views/languages.html:68
 msgid "Ukrainian"
 msgstr ""
 

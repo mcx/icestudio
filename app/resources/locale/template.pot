@@ -221,7 +221,7 @@ msgstr ""
 msgid "Check Python..."
 msgstr ""
 
-#: app/views/languages.html:68
+#: app/views/languages.html:98
 msgid "Chinese"
 msgstr ""
 
@@ -358,7 +358,7 @@ msgstr ""
 msgid "Cut"
 msgstr ""
 
-#: app/views/languages.html:50
+#: app/views/languages.html:62
 msgid "Czech"
 msgstr ""
 
@@ -634,7 +634,7 @@ msgstr ""
 msgid "Gold"
 msgstr ""
 
-#: app/views/languages.html:56
+#: app/views/languages.html:50
 msgid "Greek"
 msgstr ""
 
@@ -787,7 +787,7 @@ msgstr ""
 msgid "Japanese"
 msgstr ""
 
-#: app/views/languages.html:98
+#: app/views/languages.html:110
 msgid "Korean"
 msgstr ""
 
@@ -1143,7 +1143,7 @@ msgstr ""
 msgid "System info"
 msgstr ""
 
-#: app/views/languages.html:62
+#: app/views/languages.html:104
 msgid "Taiwanese"
 msgstr ""
 
@@ -1254,7 +1254,7 @@ msgstr ""
 msgid "Tri-state connections (inout ports) enabled"
 msgstr ""
 
-#: app/views/languages.html:104
+#: app/views/languages.html:56
 msgid "Turkish"
 msgstr ""
 
@@ -1268,7 +1268,7 @@ msgstr ""
 msgid "UI theme"
 msgstr ""
 
-#: app/views/languages.html:110
+#: app/views/languages.html:68
 msgid "Ukrainian"
 msgstr ""
 

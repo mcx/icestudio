@@ -151,7 +151,7 @@ angular
               .then(function () {
                 utils.beginBlockingTask();
                 if (startMessage) {
-                  startAlert = alertify.message(startMessage, 100000);
+                  startAlert = alertify.message(startMessage, 99999);
                 }
 
                 return generateCode(commands);
@@ -293,7 +293,7 @@ angular
             .then(function () {
               utils.beginBlockingTask();
               if (startMessage) {
-                startAlert = alertify.message(startMessage, 100000);
+                startAlert = alertify.message(startMessage, 99999);
               }
 
               return generateCode(commands);
@@ -599,7 +599,7 @@ angular
           message +
           ".<br>" +
           gettextCatalog.getString("Click here to install it"),
-          100000
+          99999
         );
         resultAlert.callback = function (isClicked) {
           if (isClicked) {
@@ -1824,7 +1824,6 @@ while ((matchError = re.exec(stdout))) {
       this.addCollections = function (filepaths) {
         // Load zip file
         async.eachSeries(filepaths, function (filepath, nextzip) {
-          //alertify.message(gettextCatalog.getString('Load {{name}} ...', { name: utils.bold(utils.basename(filepath)) }));
           var zipData = nodeAdmZip(filepath);
           var _collections = getCollections(zipData);
 
@@ -1905,7 +1904,7 @@ while ((matchError = re.exec(stdout))) {
                 } else {
                   alertify.warning(
                     gettextCatalog.getString("Invalid collection {{name}}", {
-                      name: utils.bold(name)
+                      name: utils.bold(collection.name)
                     })
                   );
                 }
@@ -2184,7 +2183,7 @@ this.takeSnapshotPNG = function() {
             const userHome = process.env.HOME || process.env.USERPROFILE;
             const savePath = nodePath.join(userHome, 'Desktop', fileName);
             nodeFs.writeFileSync(savePath, imageBuffer);
-            alertify.success( gettextCatalog.getString('Snapshot saved: {{name}}', { name: savePath }),100000);
+            alertify.success( gettextCatalog.getString('Snapshot saved: {{name}}', { name: savePath }),30);
 
 
         } catch (err) {
@@ -2232,7 +2231,7 @@ this.takeSnapshotPNG = function() {
             const savePath = nodePath.join(userHome, 'Desktop', fileName);
             nodeFs.writeFileSync(savePath, Buffer.from(arrayBuffer));
 
-            alertify.success( gettextCatalog.getString('Video saved: {{name}}', { name: savePath }),100000);
+            alertify.success( gettextCatalog.getString('Video saved: {{name}}', { name: savePath }),30);
         };
 
         setTimeout(function(){ mediaRecorder.start();},750);
@@ -2243,7 +2242,7 @@ this.takeSnapshotPNG = function() {
         console.error('MediaRecorder::ERROR', error);
 
         isRecording=false;
-            alertify.error( gettextCatalog.getString('Screen recording error. Review your permissions.'),100000);
+            alertify.error( gettextCatalog.getString('Screen recording error. Review your permissions.'),10);
     }
      }else{
           const wrapper = document.getElementById('main-icestudio-wrapper');
