@@ -1482,20 +1482,20 @@ angular.module('icestudio')
       }
     };
 
-    this.normalizeVerilogName =function(str) {
-    // 1. Convertir a minúsculas (opcional según necesidades)
-    str = str.toLowerCase();
-    
-    // 2. Normalizar y eliminar acentos
+    this.normalizeVerilogName =  function (str) {
+    // 1. Standardize and remove accents
     str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    
-    // 3. Reemplazar espacios y guiones por _
+
+    // 2. Replace Spanish ñ by n
+    str = str.replace(/ñ/g, "n").replace(/Ñ/g, "N"); // Reemplazar 'ñ' y 'Ñ' por 'n' y 'N'
+
+    // 3. Replace spaces by _
     str = str.replace(/[\s-]/g, "_");
 
-    // 4. Eliminar caracteres no permitidos (solo letras, números y _)
+    // 4. Remove non valid characters (others than letters, numbers and _)
     str = str.replace(/[^a-zA-Z0-9_]/g, "");
 
-    // 5. Si empieza con un número, agregar un prefijo válido
+    // 5. if string start by numbers, add a _
     if (/^\d/.test(str)) {
         str = "_" + str;
     }
