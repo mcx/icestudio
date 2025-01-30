@@ -164,20 +164,20 @@ module.exports = function (grunt) {
   //-- Constants for the EXEC TASK
   //-------------------------------------------------------------
 
-  //-- Command for executing the NW. You should add the folder where
+  //-- Command for executing NW. You should add the folder where
   //-- your app (index.html) is placed
   //-- Ej. nw app
   const NWJS_EXEC_CMD = ["nw",'--enable-usermedia-screen-capturing', '--disable-backgrounding-occluded-windows', APPDIR].join(" ");
 
-  //-- Command for stoping NWjs on Windows
-  const NWJS_WIN_STOP = "taskkill /F /IM nw.exe >NUL 2>&1";
+  //-- Command for stopping NWjs on Windows
+  const NWJS_WIN_STOP = `cmd /c "taskkill /F /IM nw.exe >NUL 2>&1 || exit 0"`;
 
-  //-- command for stoping NWjs on Unix like systems (Linux, Mac)
-  const NWJS_UNIX_STOP = "killall nw   2>/dev/null || " +
+  //-- command for stopping NWjs on Unix like systems (Linux, Mac)
+  const NWJS_UNIX_STOP = "killall nw 2>/dev/null || " +
     "killall nwjs 2>/dev/null ||" +
     "(exit 0)";
 
-  //-- Final command for stoping NWjs
+  //-- Final command for stopping NWjs
   const NWJS_STOP = WIN32 ? NWJS_WIN_STOP : NWJS_UNIX_STOP;
 
   //--------------------------------------------------------------------------
@@ -893,7 +893,7 @@ module.exports = function (grunt) {
         command: [
 
           //-- Create a temp DIR
-          `mkdir -p ${DIST_ICESTUDIO_WIN64}/resources/images`,
+          `mkdir "${DIST_ICESTUDIO_WIN64}/resources/images"`,
 
           //-- Uncompress the NW-dist package
           `cp ${WIN_ICON} ${DIST_ICESTUDIO_WIN64}/resources/images`
