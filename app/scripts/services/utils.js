@@ -960,7 +960,7 @@ angular.module('icestudio')
     };
 
     this.updateWindowTitle = function (title) {
-      window.get().title = title;
+      document.title = title;
     };
 
     this.rootScopeSafeApply = function () {
