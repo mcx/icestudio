@@ -6,17 +6,15 @@ Copyright (c) 2013 client IO
 'use strict';
 
 joint.dia.CommandManager = Backbone.Model.extend({
-
   defaults: {
     cmdBeforeAdd: null,
-    cmdNameRegex: /^(?:add|remove|board|info|lang|change:\w+)$/
+    cmdNameRegex: /^(?:add|remove|board|info|lang|change:\w+)$/,
   },
 
   // length of prefix 'change:' in the event name
   PREFIX_LENGTH: 7,
 
   initialize: function (options) {
-
     _.bindAll(this, 'initBatchCommand', 'storeBatchCommand');
 
     this.paper = options.paper;
@@ -27,7 +25,6 @@ joint.dia.CommandManager = Backbone.Model.extend({
   },
 
   listen: function () {
-
     this.listenTo(this.graph, 'state', this.updateState, this);
 
     this.listenTo(this.graph, 'all', this.addCommand, this);
@@ -37,11 +34,10 @@ joint.dia.CommandManager = Backbone.Model.extend({
   },
 
   createCommand: function (options) {
-
     var cmd = {
       action: undefined,
       data: { id: undefined, type: undefined, previous: {}, next: {} },
-      batch: options && options.batch
+      batch: options && options.batch,
     };
 
     return cmd;
@@ -52,10 +48,7 @@ joint.dia.CommandManager = Backbone.Model.extend({
   },
 
   addCommand: function (cmdName, cell, graph, options) {
-
-
-    if (cmdName === 'change:labels' ||
-      cmdName === 'change:z') {
+    if (cmdName === 'change:labels' || cmdName === 'change:z') {
       return;
     }
 
@@ -63,12 +56,14 @@ joint.dia.CommandManager = Backbone.Model.extend({
       return;
     }
 
-    if (typeof this.get('cmdBeforeAdd') === 'function' && !this.get('cmdBeforeAdd').apply(this, arguments)) {
+    if (
+      typeof this.get('cmdBeforeAdd') === 'function' &&
+      !this.get('cmdBeforeAdd').apply(this, arguments)
+    ) {
       return;
     }
 
     var push = _.bind(function (cmd) {
-
       this.redoStack = [];
       if (!cmd.batch) {
         this.undoStack.push(cmd);
@@ -80,7 +75,6 @@ joint.dia.CommandManager = Backbone.Model.extend({
         // Commands possible thrown away. Someone might be interested.
         this.trigger('batch', cmd);
       }
-
     }, this);
 
     var command;
@@ -94,24 +88,29 @@ joint.dia.CommandManager = Backbone.Model.extend({
       // Check if we are start working with new object or performing different action with it.
       // Note, that command is uninitialized when lastCmdIndex equals -1. (see 'initBatchCommand()')
       // in that case we are done, command we were looking for is already set
-      if (this.lastCmdIndex >= 0 && (command.data.id !== cell.id || command.action !== cmdName)) {
-
+      if (
+        this.lastCmdIndex >= 0 &&
+        (command.data.id !== cell.id || command.action !== cmdName)
+      ) {
         // trying to find command first, which was performing same action with the object
         // as we are doing now with cell
-        command = _.find(this.batchCommand, function (cmd, index) {
-          this.lastCmdIndex = index;
-          return cmd.data.id === cell.id && cmd.action === cmdName;
-        }, this);
+        command = _.find(
+          this.batchCommand,
+          function (cmd, index) {
+            this.lastCmdIndex = index;
+            return cmd.data.id === cell.id && cmd.action === cmdName;
+          },
+          this
+        );
 
         if (!command) {
           // command with such an id and action was not found. Let's create new one
-          this.lastCmdIndex = this.batchCommand.push(this.createCommand({ batch: true })) - 1;
+          this.lastCmdIndex =
+            this.batchCommand.push(this.createCommand({ batch: true })) - 1;
           command = _.last(this.batchCommand);
         }
       }
-
     } else {
-
       // single command
       command = this.createCommand();
       command.batch = false;
@@ -119,7 +118,6 @@ joint.dia.CommandManager = Backbone.Model.extend({
 
     // In a batch: delete an "add-*-remove" sequence if it is applied to the same cell
     if (cmdName === 'remove' && this.batchCommand && this.lastCmdIndex > 0) {
-
       for (var i = 0; i < this.lastCmdIndex; i++) {
         var prevCommand = this.batchCommand[i];
         if (prevCommand.action === 'add' && prevCommand.data.id === cell.id) {
@@ -132,7 +130,6 @@ joint.dia.CommandManager = Backbone.Model.extend({
     }
 
     if (cmdName === 'add' || cmdName === 'remove') {
-
       command.action = cmdName;
       command.data.id = cell.id;
       command.data.type = cell.attributes.type;
@@ -143,7 +140,6 @@ joint.dia.CommandManager = Backbone.Model.extend({
     }
 
     if (cmdName === 'board' || cmdName === 'info' || cmdName === 'lang') {
-
       command.action = cmdName;
       command.data = cell.data;
 
@@ -160,7 +156,9 @@ joint.dia.CommandManager = Backbone.Model.extend({
       command.action = cmdName;
       command.data.id = cell.id;
       command.data.type = cell.attributes.type;
-      command.data.previous[changedAttribute] = _.clone(cell.previous(changedAttribute));
+      command.data.previous[changedAttribute] = _.clone(
+        cell.previous(changedAttribute)
+      );
       command.options = options || {};
     }
 
@@ -178,39 +176,34 @@ joint.dia.CommandManager = Backbone.Model.extend({
   // are also being removed to be part of different command
 
   initBatchCommand: function () {
-
-
     if (!this.batchCommand) {
-
       this.batchCommand = [this.createCommand({ batch: true })];
       this.lastCmdIndex = -1;
 
       // batch level counts how many times has been initBatchCommand executed.
       // It is useful when we doing an operation recursively.
       this.batchLevel = 0;
-
     } else {
-
       // batch command is already active
       this.batchLevel++;
     }
   },
 
   storeBatchCommand: function () {
-
-
     // In order to store batch command it is necesary to run storeBatchCommand as many times as
     // initBatchCommand was executed
     if (this.batchCommand && this.batchLevel <= 0) {
-
       // checking if there is any valid command in batch
       // for example: calling `initBatchCommand` immediately followed by `storeBatchCommand`
       if (this.lastCmdIndex >= 0) {
-
         this.redoStack = [];
 
         this.undoStack.push(this.batchCommand);
-        if (this.batchCommand && this.batchCommand[0] && this.batchCommand[0].action !== 'lang') {
+        if (
+          this.batchCommand &&
+          this.batchCommand[0] &&
+          this.batchCommand[0].action !== 'lang'
+        ) {
           // Do not store lang in changesStack
           this.changesStack.push(this.batchCommand);
           this.triggerChange();
@@ -221,16 +214,13 @@ joint.dia.CommandManager = Backbone.Model.extend({
       delete this.batchCommand;
       delete this.lastCmdIndex;
       delete this.batchLevel;
-
     } else if (this.batchCommand && this.batchLevel > 0) {
-
       // low down batch command level, but not store it yet
       this.batchLevel--;
     }
   },
 
   revertCommand: function (command) {
-
     this.stopListening();
 
     var batchCommand;
@@ -242,11 +232,10 @@ joint.dia.CommandManager = Backbone.Model.extend({
     }
 
     for (var i = batchCommand.length - 1; i >= 0; i--) {
-
-      var cmd = batchCommand[i], cell = this.graph.getCell(cmd.data.id);
+      var cmd = batchCommand[i],
+        cell = this.graph.getCell(cmd.data.id);
 
       switch (cmd.action) {
-
         case 'add':
           if (cell) {
             cell.remove();
@@ -282,8 +271,7 @@ joint.dia.CommandManager = Backbone.Model.extend({
           if (attribute === 'deltas') {
             // Ace editor requires the next deltas to revert
             data = cmd.data.next[attribute];
-          }
-          else {
+          } else {
             data = cmd.data.previous[attribute];
           }
           if (cell) {
@@ -301,7 +289,6 @@ joint.dia.CommandManager = Backbone.Model.extend({
   },
 
   applyCommand: function (command) {
-
     this.stopListening();
 
     var batchCommand;
@@ -313,11 +300,10 @@ joint.dia.CommandManager = Backbone.Model.extend({
     }
 
     for (var i = 0; i < batchCommand.length; i++) {
-
-      var cmd = batchCommand[i], cell = this.graph.getCell(cmd.data.id);
+      var cmd = batchCommand[i],
+        cell = this.graph.getCell(cmd.data.id);
 
       switch (cmd.action) {
-
         case 'add':
           cmd.data.attributes.state = this.state;
           this.graph.addCell(cmd.data.attributes);
@@ -363,7 +349,6 @@ joint.dia.CommandManager = Backbone.Model.extend({
   },
 
   undo: function () {
-
     var command = this.undoStack.pop();
     if (command) {
       this.revertCommand(command);
@@ -373,9 +358,7 @@ joint.dia.CommandManager = Backbone.Model.extend({
     }
   },
 
-
   redo: function () {
-
     var command = this.redoStack.pop();
 
     if (command) {
@@ -390,16 +373,13 @@ joint.dia.CommandManager = Backbone.Model.extend({
   },
 
   cancel: function () {
-
     if (this.hasUndo()) {
-
       this.revertCommand(this.undoStack.pop());
       this.redoStack = [];
     }
   },
 
   reset: function () {
-
     this.undoStack = [];
     this.redoStack = [];
 
@@ -407,17 +387,14 @@ joint.dia.CommandManager = Backbone.Model.extend({
   },
 
   hasUndo: function () {
-
     return this.undoStack.length > 0;
   },
 
   hasRedo: function () {
-
     return this.redoStack.length > 0;
   },
 
   triggerChange: function () {
-    
     var currentUndoStack = _.clone(this.changesStack);
     $(document).trigger('stackChanged', [currentUndoStack]);
   },
@@ -432,6 +409,5 @@ joint.dia.CommandManager = Backbone.Model.extend({
 
   triggerLanguage: function (lang) {
     $(document).trigger('langChanged', [lang]);
-  }
-
+  },
 });
