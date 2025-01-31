@@ -1,16 +1,5 @@
 'use strict';
 
-angular.module('icestudio')
-  .service('drivers', function (gettextCatalog,
-    profile,
-    common,
-    gui,
-    utils,
-    nodePath,
-    nodeSudo,
-    nodeChildProcess,
-    $rootScope) {
-
     //--------------------------------------
     //-- Enable de Drivers
     //--
@@ -34,6 +23,20 @@ angular.module('icestudio')
           console.warn('No valid selected board interface');
       }
     };
+angular
+  .module('icestudio')
+  .service(
+    'drivers',
+    function (
+      gettextCatalog,
+      profile,
+      common,
+      gui,
+      utils,
+      nodeSudo,
+      nodeChildProcess,
+      $rootScope
+    ) {
 
 
     //----------------------------------------------
