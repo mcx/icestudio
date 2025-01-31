@@ -432,7 +432,7 @@ angular.module('icestudio')
           var range = wire.size ? ' [' + (wire.size - 1) + ':0] ' : ' ';
           connections.wire.push('wire' + range + 'w' + w + ';');
         }
-        // Assignations
+        // Assign Statements
         for (i in graph.blocks) {
           var block = graph.blocks[i];
           if (block.type === blocks.BASIC_INPUT) {
@@ -808,10 +808,10 @@ angular.module('icestudio')
         }
 
         // Dependencies modules
-        //-- Generate the comments heather for the module
+        //-- Generate the comments header for the module
         if (typeof project.package !== 'undefined') {
 
-          //-- Sepation from the previous verilog block
+          //-- Separation from the previous verilog block
           code += '\n';
 
           //-- It is only generate if the project/block has a name
@@ -832,7 +832,7 @@ angular.module('icestudio')
           code += verilogCompiler(`${prefix}__${utils.digestId(d)}`, dependencies[d]);
         }
 
-        // Code modules 
+        // Code modules
 
         for (i in blockArray) {
           block = blockArray[i];

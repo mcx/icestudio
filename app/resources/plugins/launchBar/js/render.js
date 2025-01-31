@@ -7,8 +7,6 @@ function render(plist){
     const html=iceStudio.gui.template.render(pluginViews['plugin-list'].tpl,{pluginList:filtered});
     
     $(pluginRoot).find('#launchbar-wrapper').empty().append(html);
-    
-    let icons=$(pluginRoot).find('#launchbar-wrapper img');
 
       $('.launcher',pluginRoot).on('click',function(e){
         e.preventDefault();

@@ -174,7 +174,7 @@ joint.dia.CommandManager = Backbone.Model.extend({
   // (1) This is useful for e.g. when the user is dragging an object in the paper which would
   // normally lead to 1px translation commands. Applying undo() on such commands separately is
   // most likely undesirable.
-  // (2) e.g When you are removing an element, you don't want all links connected to that element, which
+  // (2) E.g. When you are removing an element, you don't want all links connected to that element, which
   // are also being removed to be part of different command
 
   initBatchCommand: function () {

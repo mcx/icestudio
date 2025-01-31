@@ -1728,7 +1728,7 @@ angular
             // -- Show Floating toolbox
             shortcuts.method("showToolBox", $scope.showToolBox);
 
-            // -- Show colection Manager
+            // -- Show collection Manager
             shortcuts.method("showCollectionManager", $scope.showCollectionManager);
 
             shortcuts.method("back", function () {
@@ -2317,6 +2317,6 @@ function ebusCollection(args) {
         }
     }
 }
+
 iceStudio.bus.events.subscribe("menu.collection", ebusCollection);
 });
-
