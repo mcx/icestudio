@@ -419,6 +419,7 @@ angular.module('icestudio')
 
       for (w in graph.wires) {
         var wire = graph.wires[w];
+        console.log('WIRE',wire);
         if (wire.source.port === 'constant-out' ||
           wire.source.port === 'memory-out') {
           // Local Parameters
@@ -437,6 +438,7 @@ angular.module('icestudio')
           var block = graph.blocks[i];
           if (block.type === blocks.BASIC_INPUT) {
             if (wire.source.block === block.id) {
+              console.log('ASSIGN',block);
               connections.assign.push('assign w' + w + ' = ' + utils.digestId(block.id) + ';');
             }
           } else if (block.type === blocks.BASIC_OUTPUT) {
