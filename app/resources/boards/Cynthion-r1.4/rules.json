@@ -1,5 +1,5 @@
 {
-  "input" : [
+  "input": [
     {
       "port": "clk",
       "pin": "A8"

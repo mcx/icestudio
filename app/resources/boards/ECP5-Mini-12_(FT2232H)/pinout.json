@@ -190,7 +190,7 @@
     "name": "pm_b[7]",
     "value": "J15",
     "pullmode": "NONE"
-  },  
+  },
   {
     "type": "inout",
     "name": "pm_c[0]",
@@ -238,8 +238,8 @@
     "name": "pm_c[7]",
     "value": "C15",
     "pullmode": "NONE"
-  },  
-    
+  },
+
   {
     "type": "inout",
     "name": "pm_d[0]",
@@ -287,7 +287,7 @@
     "name": "pm_d[7]",
     "value": "C12",
     "pullmode": "NONE"
-  },  
+  },
 
   {
     "type": "inout",
@@ -336,7 +336,7 @@
     "name": "pm_e[7]",
     "value": "F3",
     "pullmode": "NONE"
-  },  
+  },
 
   {
     "type": "inout",
@@ -385,7 +385,7 @@
     "name": "pm_f[7]",
     "value": "G4",
     "pullmode": "NONE"
-  },  
+  },
 
   {
     "type": "inout",
@@ -434,7 +434,7 @@
     "name": "pm_g[7]",
     "value": "H4",
     "pullmode": "NONE"
-  },  
+  },
 
   {
     "type": "inout",
@@ -483,7 +483,7 @@
     "name": "pm_h[7]",
     "value": "R1",
     "pullmode": "NONE"
-  },  
+  },
   {
     "type": "input",
     "name": "sd_miso",
@@ -501,7 +501,7 @@
     "name": "sd_dat[2]",
     "value": "B11",
     "pullmode": "NONE"
-  }, 
+  },
   {
     "type": "output",
     "name": "sd_cs",
@@ -526,6 +526,6 @@
     "value": "A12",
     "pullmode": "NONE"
   },
-  {"type": "output", "name": "NULL", "value": "NULL", "pullmode": "NONE"},
-  {"type": "input", "name": "NULL", "value": "NULL", "pullmode": "NONE"}
+  { "type": "output", "name": "NULL", "value": "NULL", "pullmode": "NONE" },
+  { "type": "input", "name": "NULL", "value": "NULL", "pullmode": "NONE" }
 ]
