@@ -11,21 +11,16 @@ let pluginUUID = -1;
 let colService = false;
 
 function setupEnvironment(env) {
-  if (typeof env === 'undefined' ||
-    typeof env.VERSION === 'undefined') {
-
+  if (typeof env === 'undefined' || typeof env.VERSION === 'undefined') {
     setTimeout(function () {
       iceStudio.bus.events.publish('pluginManager.getEnvironment');
-
     }, 2000);
-
   } else {
     pConfig.env = env;
     let tmp = pConfig.env.defaultCollection;
     tmp.name = 'Default collection';
 
     if (colService === false) {
-
       colService = new CollectionService();
       colService.setId(pluginUUID);
       colService.init();
@@ -52,4 +47,3 @@ function onPluginGetUUID(data) {
   registerEvents();
   iceStudio.bus.events.publish('pluginManager.getEnvironment');
 }
-

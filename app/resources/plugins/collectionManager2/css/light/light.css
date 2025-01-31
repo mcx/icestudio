@@ -25,7 +25,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #ccc; 
+  background: #ccc;
   animation: lds-grid 1.2s linear infinite;
 }
 .lds-grid div:nth-child(1) {
@@ -116,8 +116,8 @@
   transform: rotate(-45deg);
 }
 
-.cm-loader--status{
-  text-align:center;
+.cm-loader--status {
+  text-align: center;
   color: #666;
 }
 
@@ -131,7 +131,7 @@
   color: #333;
 }
 
-.tree-view--folder input[type="checkbox"] {
+.tree-view--folder input[type='checkbox'] {
   background: #ccc;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -142,7 +142,7 @@
   margin: 0px 5px 0px 7px;
 }
 
-.tree-view--folder input[type="checkbox"]:checked {
+.tree-view--folder input[type='checkbox']:checked {
   background-image: url(/resources/plugins/collectionManager2/img/check-solid.svg);
 }
 
@@ -259,18 +259,18 @@ visibility: hidden;
   display: none;
 }
 
-.tree-view--folder.is-in-use>.tree-view--folder-name>.in-use{
-  display:none;
-  width:10px;
-  height:10px;
-  border-radius:50px;
+.tree-view--folder.is-in-use > .tree-view--folder-name > .in-use {
+  display: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
   border: 1px solid rgb(87 224 126);
   position: absolute;
   right: 0;
   top: 4px;
 }
-.tree-view--folder.is-in-use>.tree-view--folder-name>.in-use{
-  display:inline-block;
+.tree-view--folder.is-in-use > .tree-view--folder-name > .in-use {
+  display: inline-block;
 }
 
 .tree-view--leaf {
@@ -297,21 +297,21 @@ visibility: hidden;
   display: none;
 }
 
-.tree-view--leaf>.in-use{
-  display:none;
-  width:10px;
-  height:10px;
-  border-radius:50px;
+.tree-view--leaf > .in-use {
+  display: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
   background-color: rgb(87 224 126);
   border: 1px solid rgb(87 224 126);
   position: absolute;
   right: 0;
   top: 4px;
 }
-.tree-view--leaf.is-in-use>.in-use{
-  display:inline-block;
+.tree-view--leaf.is-in-use > .in-use {
+  display: inline-block;
 }
 
-.tree-view-main--folder > .tree-view--leaf{
+.tree-view-main--folder > .tree-view--leaf {
   display: none;
 }

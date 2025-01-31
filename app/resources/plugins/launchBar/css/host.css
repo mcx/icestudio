@@ -1,7 +1,7 @@
-#launchBar{
-    position:absolute;
-    top:var(--sandbox-menu-height);
-    left:0;
-    height:var(--sandbox-height);
-    display:flex;
+#launchBar {
+  position: absolute;
+  top: var(--sandbox-menu-height);
+  left: 0;
+  height: var(--sandbox-height);
+  display: flex;
 }
