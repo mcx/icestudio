@@ -824,7 +824,7 @@ module.exports = function (grunt) {
       },
 
       //-- Download NWjs for ARM arquitecture, as it is not part of the
-      //-- oficial NWjs project
+      //-- official NWjs project
       //-- It is downloaded during the ARM build process
       //-- Only ARM
       nwjsAarch64: {
@@ -1234,8 +1234,7 @@ module.exports = function (grunt) {
             path: MAC_EXEC_FILE,
           },
         ],
-        /* -- For code oficial packages of Icestudio, for developers maintain commented
-
+        /* -- For code official packages of Icestudio, for developers maintain commented
         "code-sign": {
           "signing-identity": "XXXX",
         }

@@ -2,14 +2,10 @@
 
 'use strict';
 
-angular.module('icestudio')
-  .service('compiler', function (common,
-    utils,
-    blocks,
-    nodeSha1,
-    _package) {
-
-    let  currentLibrary=false;
+angular
+  .module('icestudio')
+  .service('compiler', function (common, utils, blocks, _package) {
+    let currentLibrary = false;
     this.generate = function (target, project, opt) {
       var content = '';
       var files = [];

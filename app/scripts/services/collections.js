@@ -2,14 +2,16 @@
 'use strict';
 /*jshint unused:false*/
 
-angular.module('icestudio')
-  .service('collections', function (utils,
-    common,
-    profile,
-    gettextCatalog,
-    nodePath,
-    $exceptionHandler) {
-    
+angular
+  .module('icestudio')
+  .service(
+    'collections',
+    function (
+      common,
+      profile,
+      gettextCatalog,
+      $exceptionHandler
+    ) {
 
      let iceColl= new IceCollection({
       location :{ default: common.DEFAULT_COLLECTION_DIR,
