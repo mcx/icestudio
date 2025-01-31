@@ -116,7 +116,7 @@ num_keys_warn () {
 
 # num_keys_fatal Name # This is not a valid test since [Desktop Action ...] sections can also have Name=
 # num_keys_fatal Exec # This is not a valid test since [Desktop Action ...] sections can also have Name=
-# e.g, https://github.com/CDrummond/cantata/blob/master/cantata.desktop.cmake
+# e.g. https://github.com/CDrummond/cantata/blob/master/cantata.desktop.cmake
 num_keys_fatal Icon
 num_keys_fatal Categories
 # num_keys_warn Comment

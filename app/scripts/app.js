@@ -187,7 +187,7 @@ angular
                             //-- Display a Dialog with the board selected
                             alertify.success(
 
-                                //-- Message to show. Board name in Bold
+                                //-- Message to show board name in Bold
                                 gettextCatalog.getString(
                                     "Board {{name}} selected", 
                                     { name: utils.bold(newBoard.info.label) }

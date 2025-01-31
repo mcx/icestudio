@@ -970,7 +970,7 @@ angular.module('icestudio')
          };
 
     this.parsePortLabel = function (data, pattern) {
-      // e.g: name[x:y]
+      // e.g.: name[x:y]
       var match, ret = {};
       var maxSize = 95;
       pattern = pattern || common.PATTERN_PORT_LABEL;
@@ -996,7 +996,7 @@ angular.module('icestudio')
     };
 
     this.parseParamLabel = function (data, pattern) {
-      // e.g: name
+      // e.g.: name
       var match, ret = {};
       pattern = pattern || common.PATTERN_PARAM_LABEL;
       match = pattern.exec(data);
@@ -1171,7 +1171,7 @@ angular.module('icestudio')
                   });
                 }
               }
-              alertify.warning(message, "30");
+              alertify.warning(message, 30);
             });
           }
         } else {
