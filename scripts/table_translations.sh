@@ -57,5 +57,5 @@ do
     PARTS=(${LINE//:/ })
     LANGUAGE="languages_${PARTS[1]}"
     #echo "${!LANGUAGE}" "${PARTS[0]}"
-    echo "| ${!LANGUAGE} (${PARTS[1]}) | ![Progress](http://progress-bar.dev/${PARTS[0]}) |" >> $TABLE_FILE
+    echo "| ${!LANGUAGE} (${PARTS[1]}) | ![Progress](https://progress-bar.dev/${PARTS[0]}) |" >> $TABLE_FILE
 done
