@@ -29,7 +29,7 @@ angular
       $scope.toRestore = false;
 
       //-- Create the PAPER. It is the place were the circuits are drawn
-      //-- It is asociated to html element 'paper', located in the
+      //-- It is associated to html element 'paper', located in the
       //--  design.html file
       let htmlElement = $('.paper');
       graph.createPaper(htmlElement);

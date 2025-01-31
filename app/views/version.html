@@ -42,15 +42,16 @@
         </p>
 
         <br>
-        <p>  {{ 'Icestudio is part of' | translate }} 
-          <a ng-click="openUrl('http://fpgawars.github.io/')">
+        <p>  {{ 'Icestudio is part of' | translate }}
+          <a ng-click="openUrl('https://fpgawars.github.io')"
+		     href="https://fpgawars.github.io">
             {{ 'FPGAwars community' | translate }}
           </a>
         </p>
 
-        <p> <a ng-click="openUrl('https://fpgawars.github.io/', $event)"
-                href="https://fpgawars.github.io/">
-              <img class="img-responsive" 
+        <p> <a ng-click="openUrl('https://fpgawars.github.io', $event)"
+                href="https://fpgawars.github.io">
+              <img class="img-responsive"
                  src="resources/images/fgpawars-banner.svg">
             </a>
         </p>
