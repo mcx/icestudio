@@ -9,17 +9,14 @@ name: Stable Release
 on: [workflow_dispatch]
 
 jobs:
-
   #-- Build for Linux and windows
   build-LinWin:
-
     runs-on: ubuntu-22.04
     outputs:
-      #-- URL to upload the binaries for 
+      #-- URL to upload the binaries for
       #-- the jobs executed after build-LinWin
-      upload_url: ${{ steps.create_release.outputs.upload_url }} 
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
-
       # Debug: It is for testing if the `certificate has expired`
       # Error is solved
       - name: 'Debug: No SSL verification'
@@ -47,7 +44,7 @@ jobs:
       # -- Debug: Print the icestudio version
       - name: Get the Icestudio version
         env:
-          VERSION: "${{steps.icestudio_json.outputs.icestudio_version}}"
+          VERSION: '${{steps.icestudio_json.outputs.icestudio_version}}'
         run: |
           echo "VERSION: ${{ env.VERSION }}"
 
@@ -58,8 +55,8 @@ jobs:
           node-version: '21.1.0'
 
       - name: Install npm dependencies
-        run: |  
-          npm install --legacy-peer-deps 
+        run: |
+          npm install --legacy-peer-deps
 
       # It is necesarry to install wine for building the package for
       # windows. Also it is necesary to download the wine-mono windows
@@ -73,7 +70,7 @@ jobs:
           wget https://dl.winehq.org/wine/wine-mono/5.0.0/wine-mono-5.0.0-x86.msi
           export DISPLAY=:0.0
           wine msiexec /i wine-mono-5.0.0-x86.msi
-      
+
       # -- Build For windows!!
       - name: Build Microsoft Windows package
         run: |
@@ -87,7 +84,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2
         env:
-          VERSION: "${{steps.icestudio_json.outputs.icestudio_version}}"
+          VERSION: '${{steps.icestudio_json.outputs.icestudio_version}}'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
@@ -97,7 +94,6 @@ jobs:
             dist/icestudio-${{env.VERSION}}-win64.exe
             dist/icestudio-${{env.VERSION}}-win64.zip
           body: A new release (Draft)
-
 
       #-- Build for linux
       - name: Build Linux
@@ -114,7 +110,7 @@ jobs:
       - name: Upload Linux64 binaries
         uses: softprops/action-gh-release@v2
         env:
-          VERSION: "${{steps.icestudio_json.outputs.icestudio_version}}"
+          VERSION: '${{steps.icestudio_json.outputs.icestudio_version}}'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
@@ -124,23 +120,20 @@ jobs:
             dist/icestudio-${{env.VERSION}}-linux64.AppImage
             dist/icestudio-${{env.VERSION}}-linux64.zip
 
-
   # Build for macos
   build-macos:
-    
-    # -- It is only run if the build for linux/win is ok, and  
+    # -- It is only run if the build for linux/win is ok, and
     # -- the release was already created
     needs: build-LinWin
 
     runs-on: macOS-latest
-    
+
     steps:
-     
       - name: Checkout the master repo branch
         uses: actions/checkout@v4
         with:
           ref: master
-      
+
       - name: Setup Nodejs version
         uses: actions/setup-node@v4
         with:
@@ -149,7 +142,7 @@ jobs:
       - name: Install npm dependencies
         run: |
           sed -i '' 's/darwinDependencies/dependencies/g' package.json
-          npm install --legacy-peer-deps 
+          npm install --legacy-peer-deps
 
       - name: Build OSX ARM64 packages
         env:
@@ -166,8 +159,8 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PASS build.keychain
           npm run buildOSXARM64
           ls dist/
-          
-       # Loading vars from icestudio package.json
+
+        # Loading vars from icestudio package.json
       - id: icestudio_json
         run: |
           content=`tr '\n' ' ' < package.json`
@@ -181,11 +174,10 @@ jobs:
 
       - name: Sign DMG
         env:
-          ICESTUDIO_VERSION: "${{fromJson(steps.icestudio_json.outputs.packageJson).version}}"
+          ICESTUDIO_VERSION: '${{fromJson(steps.icestudio_json.outputs.packageJson).version}}'
           MACOS_APPLE_UID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           codesign --force --deep --sign ${MACOS_APPLE_UID} dist/icestudio-${ICESTUDIO_VERSION}-osxarm64.dmg -v
-
 
       # ---------------------------------------
       # -- Upload Mac binaries to the release
@@ -194,7 +186,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         env:
           # VERSION: "${{fromJson(steps.icestudio_json.outputs.packageJson).version}}"
-          VERSION: "${{steps.icestudio_version_json.outputs.icestudio_version}}"
+          VERSION: '${{steps.icestudio_version_json.outputs.icestudio_version}}'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
@@ -205,8 +197,7 @@ jobs:
 
   # Build for ARM 64
   build-arm:
-
-    # -- It is only run if the build for linux/win is ok, and  
+    # -- It is only run if the build for linux/win is ok, and
     # -- the release already created
     needs: build-LinWin
 
@@ -215,23 +206,22 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    
       # Checkout the develop branch
       - uses: actions/checkout@v4
         with:
           ref: master
-      
+
       #-- PATCH! For ARM use NWjs 0.60
       - name: Setup por arm64
-        run:  ./scripts/preInstallArm64.sh
+        run: ./scripts/preInstallArm64.sh
 
       - name: Setup Nodejs version
         uses: actions/setup-node@v4
         with:
           node-version: '19.3.0'
-      
+
       - name: Install npm dependencies
-        run:   npm install --legacy-peer-deps  
+        run: npm install --legacy-peer-deps
 
       - name: Build ARM
         run: |
@@ -255,17 +245,17 @@ jobs:
       # -- It is read from the package.json
       - name: Get the Icestudio version
         env:
-          VERSION: "${{steps.icestudio_json.outputs.icestudio_version}}" 
+          VERSION: '${{steps.icestudio_json.outputs.icestudio_version}}'
         run: |
           echo "VERSION: ${{ env.VERSION }}"
-  
+
       # ---------------------------------------
       # -- Upload ARM binaries to the release
       # ---------------------------------------
       - name: 'Upload ZIP/Aarch64'
         uses: softprops/action-gh-release@v2
         env:
-          VERSION: "${{steps.icestudio_json.outputs.icestudio_version}}"
+          VERSION: '${{steps.icestudio_json.outputs.icestudio_version}}'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
@@ -273,5 +263,3 @@ jobs:
           tag_name: v${{ env.VERSION }}
           files: |
             dist/icestudio-${{env.VERSION}}-aarch64.zip
-
-
