@@ -1,16 +1,20 @@
-"use strict";
+'use strict';
 /*jshint unused:false*/
 class WafleUITree {
   constructor(opts) {
     this.config = opts || {};
-    if (typeof this.config.dbVersion === "undefined") this.config.dbVersion = 1;
+    if (typeof this.config.dbVersion === 'undefined') this.config.dbVersion = 1;
     this.vtree = {};
     this.groupBlocks = [];
     this.renderer = new WafleTemplate();
     this.id = -1;
     this.dom = false;
     this.blocksRQ = []; //-- Blocks retrieved queue, store the pending blocks to put into design
-    iceStudio.bus.events.subscribe("localDatabase.retrieved", "blockRetrieved", this);
+    iceStudio.bus.events.subscribe(
+      'localDatabase.retrieved',
+      'blockRetrieved',
+      this
+    );
   }
 
   setDomRoot(root) {
@@ -23,10 +27,11 @@ class WafleUITree {
     this.vtree = tree;
   }
   render() {
-    return (this.vtree === false) ? '' : this.renderer.render(this.tpl(), {
-      tree: this.vtree,
-    });
-
+    return this.vtree === false
+      ? ''
+      : this.renderer.render(this.tpl(), {
+          tree: this.vtree,
+        });
   }
 
   tpl() {
@@ -119,13 +124,16 @@ class WafleUITree {
   toggle(root, folder) {
     let search = this.toggleFolderState(this.vtree, folder);
     if (search) {
-      let el = iceStudio.gui.el(`.tree-view--folder[data-nodeid="${folder}"]`, root);
+      let el = iceStudio.gui.el(
+        `.tree-view--folder[data-nodeid="${folder}"]`,
+        root
+      );
       iceStudio.gui.elToggleClass(el[0], 'closed');
     }
   }
 
   hasSubFolders(tree) {
-    if (typeof tree.items !== "undefined") {
+    if (typeof tree.items !== 'undefined') {
       for (let i = 0; i < tree.items.length; i++) {
         if (tree.items[i].isFolder === true) {
           return true;
@@ -163,7 +171,7 @@ class WafleUITree {
   blockRetrieved(item) {
     for (let i = 0; i < this.blocksRQ.length; i++) {
       if (this.blocksRQ[i].id === item.id) {
-        iceStudio.bus.events.publish("block.addFromFile", item.path);
+        iceStudio.bus.events.publish('block.addFromFile', item.path);
         this.blocksRQ.splice(i, 1);
       }
     }
@@ -172,23 +180,27 @@ class WafleUITree {
     let item = {
       id: args.id,
       store: 'blockAssets',
-      block: false
+      block: false,
     };
 
     let transaction = {
       database: {
         dbId: 'Collections',
-        storages: ['blockAssets'], 'version': 1
+        storages: ['blockAssets'],
+        version: 1,
       },
-      data: item
+      data: item,
     };
     this.blocksRQ.push(item);
-    iceStudio.bus.events.publish("localDatabase.retrieve", transaction);
+    iceStudio.bus.events.publish('localDatabase.retrieve', transaction);
     this.setInUse(item.id);
   }
 
   setInUse(blockId) {
-    let leafs = iceStudio.gui.el(`.tree-view--leaf[data-nodeid="${blockId}"]`, this.dom);
+    let leafs = iceStudio.gui.el(
+      `.tree-view--leaf[data-nodeid="${blockId}"]`,
+      this.dom
+    );
     for (let i = 0; i < leafs.length; i++) {
       iceStudio.gui.elAddClass(leafs[i], 'is-in-use');
       this.setParentInUse(leafs[i]);
@@ -201,7 +213,4 @@ class WafleUITree {
       this.setParentInUse(el.parentNode);
     }
   }
-
-
 }
-
