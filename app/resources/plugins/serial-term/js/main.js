@@ -253,7 +253,7 @@ var serialManager = function () {
     /* let z = false;
          let i = 0, j = 0;
          let str = '';
-       
+
          for (i = 0; i < this.sessionBuffer.length; i++) {
              total += this.sessionBuffer.length;
              //  z = Buffer.from(this.sessionBuffer[i]);
@@ -262,12 +262,12 @@ var serialManager = function () {
                  // console.log(typeof z[j]);
                  // nodeFs.write(captureFileFD, Buffer.from(z[j]), 0, 1, null, function (err) { });
                  //total++;
- 
+
                  //console.log(z[j]);
                  // str = z[j].toString(2).padStart(8, '0') + '\n';
                  // console.log(str);
                  // nodeFs.write(captureFileFD, str, 0);
- 
+
              }
          }*/
     let dumpdata = concat(this.sessionBuffer); // new Uint8Array(total);
@@ -1224,11 +1224,14 @@ function handleData(data) {
       //enter key
       sm.write(onEnterMode);
 
-      if (hexView)
+      if (hexView) {
+        // wait a bit to let the time to receive and display all (up to 3) the "OnEnterSend Mode" chars
         setTimeout(() => {
           term.write('\r\n');
-        }, 15); // wait a bit to let the time to receive and display all (up to 3) the "OnEnterSend Mode" chars
-      else term.write('\r\n');
+        }, 15);
+      } else {
+        term.write('\r\n');
+      }
     } else {
       // terminal echoing of cursor movements avoided outside the "flush on enter" mode
       if (
