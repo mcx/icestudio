@@ -1,5 +1,4 @@
 'use strict';
-/*jshint unused:false*/
 
 class IceBlock {
   constructor(opts) {

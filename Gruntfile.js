@@ -693,8 +693,8 @@ module.exports = function (grunt) {
   //-- grunt server
   //-- Start Icestudio
   grunt.registerTask("serve", [
-    "nggettext_compile", //-- Get the translation in json files
-    "watch:scripts", //-- Watch the given files. When there is change
+    "nggettext_compile",     //-- Get the translation in json files
+    "watch:scripts",         //-- Watch the given files. When there is change
     //-- Icestudio is restarted
   ]);
 
@@ -740,7 +740,6 @@ module.exports = function (grunt) {
     //-- Get the English texts from the .js and .html files
     //-- and write them in the template (.pot) file
     //-- https://www.npmjs.com/package/grunt-angular-gettext
-    //-- Disable jshint warning:
     /* jshint camelcase: false */
     nggettext_extract: {
       pot: {
@@ -760,7 +759,6 @@ module.exports = function (grunt) {
     // Convert all the .po files (with the translations)
     // to JSON format. The json file is the one read by Icestudio when
     // it is started
-    //-- Disable jshint Warning:
     /* jshint camelcase: false */
     nggettext_compile: {
       all: {

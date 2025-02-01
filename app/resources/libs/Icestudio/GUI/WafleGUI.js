@@ -138,7 +138,7 @@ class WafleGUI {
     scriptnode.setAttribute('id', `scriptnode-${uuid}`);
     let code = `(function(win, doc, $,_self) {`;
     if (typeof views !== 'undefined' && views !== false) {
-      code = `${code}                     
+      code = `${code}
                let pluginViews=${JSON.stringify(views)};`;
     }
     if (typeof shadow !== 'undefined' && shadow !== false) {

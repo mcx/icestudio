@@ -3,9 +3,6 @@
 //---------------------------------------------------------------------------
 'use strict';
 
-//-- Disable the jshint Warning: "xxxx defined but never used"
-/* jshint unused:false */
-
 angular
   .module('icestudio')
   .service(
@@ -1615,7 +1612,7 @@ angular
           let field2 = new TextField(
             gettextCatalog.getString('Input parameters'), //-- Top message
             paramsIn, //-- Default Input parameter names
-            2
+            2 //-- Field id
           );
 
           this.addField(field0);

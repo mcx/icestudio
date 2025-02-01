@@ -6,9 +6,6 @@
 //----------------------------------------------------------------------------
 'use strict';
 
-//-- Disable the jshint Warning: "xxxx defined but never used"
-/* jshint unused:false */
-
 angular.module('icestudio').service(
   'common',
   function (

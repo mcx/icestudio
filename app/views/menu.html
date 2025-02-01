@@ -10,7 +10,7 @@
 
   Tools/Toolchain callbacks:
     * app/scripts/services/tools.js
-    
+
 -->
 
 <div ng-controller="MenuCtrl">
@@ -24,8 +24,8 @@
       type="file"
       accept=".ice"
       class="hidden"
-      nwworkingdir="{{workingdir}}"
-      nwsaveas="{{project.name}}.ice"
+      nwworkingdir="{{ workingdir }}"
+      nwsaveas="{{ project.name }}.ice"
     />
 
     <input
@@ -41,7 +41,7 @@
       type="file"
       accept=".v"
       class="hidden"
-      nwworkingdir="{{workingdir}}"
+      nwworkingdir="{{ workingdir }}"
       nwsaveas="{{ project.name }}.v"
     />
     <input
@@ -49,7 +49,7 @@
       type="file"
       accept=".pcf"
       class="hidden"
-      nwworkingdir="{{workingdir}}"
+      nwworkingdir="{{ workingdir }}"
       nwsaveas="{{ project.name }}.pcf"
     />
     <input
@@ -57,7 +57,7 @@
       type="file"
       accept=".v"
       class="hidden"
-      nwworkingdir="{{workingdir}}"
+      nwworkingdir="{{ workingdir }}"
       nwsaveas="{{ project.name }}_tb.v"
     />
     <input
@@ -65,7 +65,7 @@
       type="file"
       accept=".gtkw"
       class="hidden"
-      nwworkingdir="{{workingdir}}"
+      nwworkingdir="{{ workingdir }}"
       nwsaveas="{{ project.name }}_tb.gtkw"
     />
     <input
@@ -73,7 +73,7 @@
       type="file"
       accept=".blif"
       class="hidden"
-      nwworkingdir="{{workingdir}}"
+      nwworkingdir="{{ workingdir }}"
       nwsaveas="{{ project.name }}.blif"
     />
     <input
@@ -81,7 +81,7 @@
       type="file"
       accept=".asc"
       class="hidden"
-      nwworkingdir="{{workingdir}}"
+      nwworkingdir="{{ workingdir }}"
       nwsaveas="{{ project.name }}.asc"
     />
     <input
@@ -89,7 +89,7 @@
       type="file"
       accept=".bin"
       class="hidden"
-      nwworkingdir="{{workingdir}}"
+      nwworkingdir="{{ workingdir }}"
       nwsaveas="{{ project.name }}.bin"
     />
 
@@ -120,7 +120,7 @@
             ng-click="fixMenu('file')"
             is-open="status.file"
           >
-            <!-- Text displayed. Default in English. If available, 
+            <!-- Text displayed. Default in English. If available,
                  the translation to the current language is shown -->
             <a href uib-dropdown-toggle
               >{{ 'File' | translate }}
@@ -131,7 +131,7 @@
               <!-- File/New -->
               <li>
                 <!-- When the button is clicked, the function newProject()
-                     is called. It is located in the 
+                     is called. It is located in the
                      app/scripts/controllers/menu.js file-->
                 <a href ng-click="newProject()">
                   {{ 'New' | translate }}
@@ -179,7 +179,7 @@
               <li class="dropdown-submenu" uib-dropdown>
                 <a href uib-dropdown-toggle>{{ 'Blocks' | translate }}</a>
 
-                <menutree data="common.selectedCollection.content.blocks" 
+                <menutree data="common.selectedCollection.content.blocks"
                           callback="openProject(path)">
                 </menutree>
               </li> -->

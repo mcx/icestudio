@@ -8,14 +8,12 @@
 //---------------------------------------------------------------------------
 'use strict';
 
-//-- Disable the jshint Warning: "xxxx defined but never used"
-/*jshint unused:false*/
-
 //-- Global Icestudio
-//-- this is the core system with services, api and communications.
+//-- This is the core system with services, api and communications.
 //-- Group inside different object for efficiency model by V8 engine.
 //-- The global variable should be declared as "var" and not "let"
 //-- because it is accessible from popups windows
+/* jshint -W098 */
 var iceStudio = new Icestudio();
 
 //-- Global CONSOLE. Used for Debugging
@@ -39,6 +37,7 @@ angular.module('icestudio', ['ui.bootstrap', 'ngRoute', 'gettext']).run(
     //-- https://angular-gettext.rocketeer.be/dev-guide/api/angular-gettext/
     gettextCatalog
   ) {
+    /* jshint +W098 */
     console.log('->DEBUG: app.js');
 
     /* If in package.json appears development:{mode:true}*/

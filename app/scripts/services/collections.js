@@ -1,5 +1,4 @@
 'use strict';
-/*jshint unused:false*/
 
 angular
   .module('icestudio')
@@ -14,8 +13,10 @@ angular
         },
       });
 
+      /*
       const DEFAULT = '';
       const MAX_LEVEL_SEARCH = 20;
+      */
 
       this.loadAllCollections = function () {
         this.loadDefaultCollection();
@@ -48,9 +49,11 @@ angular
         return iceColl.getAll(paths);
       }
 
+      /*
       function getCollection(name, path, children) {
         return iceColl.get(name, path, children);
       }
+      */
 
       this.selectCollection = function (path) {
         var selectedCollection = null;

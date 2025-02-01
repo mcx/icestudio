@@ -1,5 +1,5 @@
 'use strict';
-/*jshint unused:false*/
+
 class IceCollection {
   constructor(opts) {
     this.constants = {
@@ -20,6 +20,7 @@ class IceCollection {
       )
     );
   }
+
   getAll(paths) {
     let _this = this;
     let collections = [];
@@ -34,6 +35,7 @@ class IceCollection {
     });
     return collections;
   }
+
   get(name, path, children) {
     let collection = {
       name: name,
@@ -98,6 +100,7 @@ class IceCollection {
     }
     return collectionsPaths;
   }
+
   contains(array, item) {
     return array.indexOf(item) !== -1;
   }
@@ -129,12 +132,14 @@ class IceCollection {
       this.fs.isFile(this.fs.joinPath(path, 'package.json'))
     );
   }
+
   hasBlocks(path, content) {
     return (
       this.contains(content, 'blocks') &&
       this.fs.isDir(this.fs.joinPath(path, 'blocks'))
     );
   }
+
   hasExamples(path, content) {
     return (
       this.contains(content, 'examples') &&

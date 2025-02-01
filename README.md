@@ -25,15 +25,15 @@ Find all the information on this [WIKI PAGE](https://github.com/FPGAwars/icestud
 
 Icestudio is a design tool focused on new comers to the FPGA world
 
-* **Step 1**: Draw your circuit
+- **Step 1**: Draw your circuit
 
 ![](https://github.com/FPGAwars/icestudio-wiki/raw/main/Readme/draw-two-leds-0.12.0-default-.gif)
 
-* **Step 2**: Upload it to your favorite OpenSource FPGA board
+- **Step 2**: Upload it to your favorite OpenSource FPGA board
 
 ![](https://github.com/FPGAwars/icestudio-wiki/raw/main/Readme/upload-two-leds-0.12.0-default-.gif)
 
-* **Step 3**: Done! 😀️
+- **Step 3**: Done! 😀️
 
 # Screenshots
 
@@ -105,7 +105,7 @@ Icestudio is a design tool focused on new comers to the FPGA world
 |   Dutch (nl_NL)    | ![Progress](https://progress-bar.xyz/57) |
 |  Galician (gl_ES)  | ![Progress](https://progress-bar.xyz/57) |
 
-**Contribute!**. Any contribution is very welcome! Please follow the steps at [Translating Icestudio](https://github.com/FPGAwars/icestudio/wiki/Translating-Icestudio)  
+**Contribute!**. Any contribution is very welcome! Please follow the steps at [Translating Icestudio](https://github.com/FPGAwars/icestudio/wiki/Translating-Icestudio)
 
 ## Contributors
 
@@ -127,23 +127,23 @@ Icestudio is a design tool focused on new comers to the FPGA world
 
 ## Credits
 
-* [Carlos Venegas Arrabé](https://github.com/cavearr) is the main developer since 2019/Oct
+- [Carlos Venegas Arrabé](https://github.com/cavearr) is the main developer since 2019/Oct
 
-* [Jesus Arroyo](https://github.com/Jesus89) started this project on 2016/Jan/28. He was the main developer from 2016/Jan to 2019/Oct
+- [Jesus Arroyo](https://github.com/Jesus89) started this project on 2016/Jan/28. He was the main developer from 2016/Jan to 2019/Oct
 
-* [FPGAwars](https://fpgawars.github.io) community has developed this project in a voluntary and altruistic way since 02/2017.
+- [FPGAwars](https://fpgawars.github.io) community has developed this project in a voluntary and altruistic way since 02/2017.
 
   ![](https://github.com/FPGAwars/icestudio-wiki/raw/main/Logos/fpgawars-logo-small.png)
 
-* [BQ](https://www.bq.com) sponsored this project from 02/2016 to 02/2017. Thanks
+- [BQ](https://www.bq.com) sponsored this project from 02/2016 to 02/2017. Thanks
 
 ## License
 
 Licensed under [GPL 2.0](http://opensource.org/licenses/GPL-2.0) and [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/).
 
---------
-[![](https://github.com/FPGAwars/icestudio-wiki/raw/main/Logos/fgpawars-banner.svg)](https://fpgawars.github.io)
+---
 
+[![](https://github.com/FPGAwars/icestudio-wiki/raw/main/Logos/fgpawars-banner.svg)](https://fpgawars.github.io)
 
 <!-- Badges -->
 

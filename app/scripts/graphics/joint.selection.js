@@ -134,8 +134,6 @@ joint.ui.SelectionView = Backbone.View.extend({
   },
 
   startSelecting: function (evt /*, x, y*/) {
-    /* jshint laxbreak: true */
-
     this.createSelectionArea();
 
     this._action = 'selecting';
@@ -314,8 +312,8 @@ joint.ui.SelectionView = Backbone.View.extend({
     const paper = this.options.paper;
     let views = _.map(paper.model.getElements(), paper.findViewByModel, paper);
     let method = opt.strict ? 'containsRect' : 'intersect';
-    /*-- unComment for debugging purpouses 
-         
+    /*-- unComment for debugging purpouses
+
         let table=[];
         */
     let search = _.filter(
@@ -331,7 +329,7 @@ joint.ui.SelectionView = Backbone.View.extend({
         );
 
         /*-- unComment for debugging purpouses
-                 
+
                   table.push(rbox);
                  */
         return view && rect[method](rbox);
@@ -339,8 +337,8 @@ joint.ui.SelectionView = Backbone.View.extend({
       this
     );
     /*-- unComment for debugging puropouses
-        
-        console.table(rect); 
+
+        console.table(rect);
         console.table(table);
         */
     return search;

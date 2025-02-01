@@ -1,5 +1,3 @@
-/* jshint unused: false */
-
 'use strict';
 
 angular
@@ -220,6 +218,7 @@ angular
       return code;
     }
 
+    /* Deprecated *
     function digestNameBlock(block) {
       let id = block;
 
@@ -236,6 +235,7 @@ angular
       }
       return id.replace(/(-)|(\s)/g, '');
     }
+    */
 
     function getParams(project) {
       var params = [];
