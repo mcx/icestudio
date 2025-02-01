@@ -6,7 +6,6 @@ angular.module('icestudio')
     common,
     blocks,
     _package,
-    window,
     nodeFs,
     nodeFse,
     nodePath,

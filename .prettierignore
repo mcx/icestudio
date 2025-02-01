@@ -1,0 +1,6 @@
+resources/libs/vendor/
+resources/fonts/
+*.md
+icerok/vendor/sweetalert2.min.js
+icerok/css/*.min.css
+Gruntfile.js

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <!-- ICESTUDIO MENU. Located at the top bar -->
 
@@ -14,82 +14,130 @@
 -->
 
 <div ng-controller="MenuCtrl">
-
-  <div id="menu" 
-       ondragstart="{return false;}"
-       ondrop="{return false;}">
-
+  <div id="menu" ondragstart="{return false;}" ondrop="{return false;}">
     <!-- File selector for loading .ice files in Icestudio -->
     <!-- It is normally hidden.                            -->
-    <input id="input-open-project" type="file" accept=".ice" class="hidden"/>
+    <input id="input-open-project" type="file" accept=".ice" class="hidden" />
 
+    <input
+      id="input-save-project"
+      type="file"
+      accept=".ice"
+      class="hidden"
+      nwworkingdir="{{workingdir}}"
+      nwsaveas="{{project.name}}.ice"
+    />
 
-    <input id="input-save-project" type="file" accept=".ice" class="hidden" 
-           nwworkingdir="{{workingdir}}" nwsaveas="{{project.name}}.ice"/>
-   
-    <input id="input-add-as-block" type="file" 
-           accept=".ice,.iceb" 
-           class="hidden" multiple/>
+    <input
+      id="input-add-as-block"
+      type="file"
+      accept=".ice,.iceb"
+      class="hidden"
+      multiple
+    />
 
-    <input id="input-export-verilog" type="file" accept=".v" class="hidden"
-           nwworkingdir="{{workingdir}}" nwsaveas="{{ project.name }}.v"/>
-    <input id="input-export-pcf" type="file" accept=".pcf" class="hidden"  
-           nwworkingdir="{{workingdir}}" nwsaveas="{{ project.name }}.pcf"/>
-    <input id="input-export-testbench" type="file" accept=".v" class="hidden"  
-           nwworkingdir="{{workingdir}}" nwsaveas="{{ project.name }}_tb.v"/>
-    <input id="input-export-gtkwave" type="file" accept=".gtkw" 
-           class="hidden"  
-           nwworkingdir="{{workingdir}}" 
-           nwsaveas="{{ project.name }}_tb.gtkw"/>
-    <input id="input-export-blif" type="file" accept=".blif" class="hidden"  
-           nwworkingdir="{{workingdir}}" nwsaveas="{{ project.name }}.blif"/>
-    <input id="input-export-asc" type="file" accept=".asc" class="hidden"
-           nwworkingdir="{{workingdir}}" nwsaveas="{{ project.name }}.asc"/>
-    <input id="input-export-bin" type="file" accept=".bin" class="hidden"  
-           nwworkingdir="{{workingdir}}" nwsaveas="{{ project.name }}.bin"/>
+    <input
+      id="input-export-verilog"
+      type="file"
+      accept=".v"
+      class="hidden"
+      nwworkingdir="{{workingdir}}"
+      nwsaveas="{{ project.name }}.v"
+    />
+    <input
+      id="input-export-pcf"
+      type="file"
+      accept=".pcf"
+      class="hidden"
+      nwworkingdir="{{workingdir}}"
+      nwsaveas="{{ project.name }}.pcf"
+    />
+    <input
+      id="input-export-testbench"
+      type="file"
+      accept=".v"
+      class="hidden"
+      nwworkingdir="{{workingdir}}"
+      nwsaveas="{{ project.name }}_tb.v"
+    />
+    <input
+      id="input-export-gtkwave"
+      type="file"
+      accept=".gtkw"
+      class="hidden"
+      nwworkingdir="{{workingdir}}"
+      nwsaveas="{{ project.name }}_tb.gtkw"
+    />
+    <input
+      id="input-export-blif"
+      type="file"
+      accept=".blif"
+      class="hidden"
+      nwworkingdir="{{workingdir}}"
+      nwsaveas="{{ project.name }}.blif"
+    />
+    <input
+      id="input-export-asc"
+      type="file"
+      accept=".asc"
+      class="hidden"
+      nwworkingdir="{{workingdir}}"
+      nwsaveas="{{ project.name }}.asc"
+    />
+    <input
+      id="input-export-bin"
+      type="file"
+      accept=".bin"
+      class="hidden"
+      nwworkingdir="{{workingdir}}"
+      nwsaveas="{{ project.name }}.bin"
+    />
 
-    <input id="input-add-collection" type="file" accept=".zip" 
-           class="hidden" multiple/>
-          
-    <input id="input-import-verilog" type="file" accept=".v" class="hidden"/>
+    <input
+      id="input-add-collection"
+      type="file"
+      accept=".zip"
+      class="hidden"
+      multiple
+    />
+
+    <input id="input-import-verilog" type="file" accept=".v" class="hidden" />
 
     <!-- Top navigation bar -->
-    <nav class="navbar navbar-default navbar-static-top ice-bar" 
-         role="navigation">
-
+    <nav
+      class="navbar navbar-default navbar-static-top ice-bar"
+      role="navigation"
+    >
       <div class="collapse navbar-collapse">
-
         <!-- Menus on the left side of the Menu bar: FILE, Edit, View,
              Select, Tools and Help   -->
         <ul class="nav navbar-nav">
-
-
           <!-- FILE Menu -->
-          <li uib-dropdown ng-mouseover="showMenu('file')" 
-              ng-mouseleave="hideMenu('file')"
-              ng-click="fixMenu('file')" 
-              is-open="status.file">
-
+          <li
+            uib-dropdown
+            ng-mouseover="showMenu('file')"
+            ng-mouseleave="hideMenu('file')"
+            ng-click="fixMenu('file')"
+            is-open="status.file"
+          >
             <!-- Text displayed. Default in English. If available, 
                  the translation to the current language is shown -->
-            <a href uib-dropdown-toggle>{{ 'File' | translate }}
+            <a href uib-dropdown-toggle
+              >{{ 'File' | translate }}
               <span class="caret"></span>
-           </a>
+            </a>
 
             <ul uib-dropdown-menu style="min-width: 230px">
-
               <!-- File/New -->
               <li>
                 <!-- When the button is clicked, the function newProject()
                      is called. It is located in the 
                      app/scripts/controllers/menu.js file-->
                 <a href ng-click="newProject()">
-                    {{ 'New' | translate }}
+                  {{ 'New' | translate }}
 
-                    <!-- Add the shortcut tip to the right -->
-                    <span class="shortcut">
-                      {{ 'newProject' | shortcut }}
-                    </span>
+                  <!-- Add the shortcut tip to the right -->
+                  <span class="shortcut"> {{ 'newProject' | shortcut }} </span>
                 </a>
               </li>
 
@@ -97,19 +145,18 @@
               <li>
                 <a href ng-click="openProjectDialog()">
                   {{ 'Open' | translate }}...
-                  <span class="shortcut">
-                    {{ 'openProject' | shortcut }}
-                  </span>
+                  <span class="shortcut"> {{ 'openProject' | shortcut }} </span>
                 </a>
               </li>
 
               <!-- File/Open Recent Sub-menu -->
-              <li class="dropdown-submenu" 
-                  uib-dropdown>
+              <li class="dropdown-submenu" uib-dropdown>
                 <a href uib-dropdown-toggle>{{ 'Open Recent' | translate }}</a>
                 <ul uib-dropdown-menu>
                   <!-- Dynamic list of recently opened projects -->
-                  <li ng-repeat="project in recentProjects track by project.path">
+                  <li
+                    ng-repeat="project in recentProjects track by project.path"
+                  >
                     <a href ng-click="openProject(project.path)">
                       {{ truncatePath(project.path) }}
                     </a>
@@ -120,8 +167,7 @@
 
                   <!-- Option to clear the recently opened projects -->
                   <li>
-                    <a href 
-                       ng-click="clearRecentProjects()">
+                    <a href ng-click="clearRecentProjects()">
                       {{ 'Clear Recently Opened' | translate }}...
                     </a>
                   </li>
@@ -144,15 +190,17 @@
 
                 <!-- It is a Sub-menu. The examples form the current selected
                      collection are shown -->
-                <menutree data="common.selectedCollection.content.examples"
-                          callback="openProject(path)">
+                <menutree
+                  data="common.selectedCollection.content.examples"
+                  callback="openProject(path)"
+                >
                 </menutree>
               </li>
 
               <!-- File/Add as Block -->
               <li>
                 <a href ng-click="addAsBlock()">
-                   {{ 'Add as block' | translate }}...
+                  {{ 'Add as block' | translate }}...
                 </a>
               </li>
 
@@ -163,9 +211,7 @@
               <li>
                 <a href ng-click="saveProject()">
                   {{ 'Save' | translate }}
-                  <span class="shortcut">
-                    {{ 'saveProject' | shortcut }}
-                 </span>
+                  <span class="shortcut"> {{ 'saveProject' | shortcut }} </span>
                 </a>
               </li>
 
@@ -175,7 +221,8 @@
                   {{ 'Save as' | translate }}...
                   <span class="shortcut">
                     {{ 'saveProjectAs' | shortcut }}
-                  </span></a>
+                  </span></a
+                >
               </li>
 
               <!-- Divisor line between sections of the menu -->
@@ -183,19 +230,19 @@
 
               <!-- File/Export Sub-menu -->
               <li class="dropdown-submenu" uib-dropdown>
-
                 <a href uib-dropdown-toggle>{{ 'Export' | translate }}...</a>
                 <ul uib-dropdown-menu>
                   <li>
                     <a href ng-click="exportVerilog()">
-                      {{ 'Verilog' }} (Obsolete)</a>
+                      {{ 'Verilog' }} (Obsolete)</a
+                    >
                   </li>
                   <li>
                     <a href ng-click="exportPCF()">{{ 'PCF' }} (Obsolete)</a>
                   </li>
                   <li>
                     <a href ng-click="exportTestbench()">
-                        {{ 'Testbench' | translate }}
+                      {{ 'Testbench' | translate }}
                     </a>
                   </li>
                   <li>
@@ -203,16 +250,15 @@
                   </li>
                   <li class="divider"></li>
                   <li>
-                    <a href ng-click="exportBLIF()">
-                      {{ 'BLIF' }} (Obsolete)</a>
+                    <a href ng-click="exportBLIF()"> {{ 'BLIF' }} (Obsolete)</a>
                   </li>
                   <li>
-                    <a href ng-click="exportASC()">
-                       {{ 'ASC' }} (Obsolete)</a>
+                    <a href ng-click="exportASC()"> {{ 'ASC' }} (Obsolete)</a>
                   </li>
                   <li>
                     <a href ng-click="exportBitstream()">
-                       {{ 'Bitstream' }} (Obsolete)</a>
+                      {{ 'Bitstream' }} (Obsolete)</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -224,35 +270,31 @@
               <li>
                 <a href ng-click="quit()">
                   {{ 'Quit' | translate }}
-                  <span class="shortcut">
-                    {{ 'quit' | shortcut }}
-                  </span>
+                  <span class="shortcut"> {{ 'quit' | shortcut }} </span>
                 </a>
               </li>
             </ul>
           </li>
 
           <!-- EDIT Menu -->
-          <li uib-dropdown 
-              ng-mouseover="showMenu('edit')" 
-              ng-mouseleave="hideMenu()" 
-              ng-click="fixMenu('edit')" 
-              is-open="status.edit">
-
+          <li
+            uib-dropdown
+            ng-mouseover="showMenu('edit')"
+            ng-mouseleave="hideMenu()"
+            ng-click="fixMenu('edit')"
+            is-open="status.edit"
+          >
             <a href uib-dropdown-toggle>
               {{ 'Edit' | translate }}
               <span class="caret"></span>
             </a>
 
             <ul uib-dropdown-menu style="min-width: 200px">
-
               <!-- Edit/Undo -->
               <li>
                 <a href ng-click="undoGraph()">
                   {{ 'Undo' | translate }}
-                  <span class="shortcut">
-                    {{ 'undoGraph' | shortcut }}
-                  </span>
+                  <span class="shortcut"> {{ 'undoGraph' | shortcut }} </span>
                 </a>
               </li>
 
@@ -262,7 +304,8 @@
                   {{ 'Redo' | translate }}
                   <span class="shortcut">
                     {{ 'redoGraph' | shortcut }}
-                  </span></a>
+                  </span></a
+                >
               </li>
 
               <!-- Divisor line between sections of the menu -->
@@ -274,7 +317,8 @@
                   {{ 'Cut' | translate }}
                   <span class="shortcut">
                     {{ 'cutSelected' | shortcut }}
-                  </span></a>
+                  </span></a
+                >
               </li>
 
               <!-- Edit/Copy -->
@@ -283,7 +327,8 @@
                   {{ 'Copy' | translate }}
                   <span class="shortcut">
                     {{ 'copySelected' | shortcut }}
-                  </span></a>
+                  </span></a
+                >
               </li>
 
               <!-- Edit/Paste -->
@@ -302,7 +347,8 @@
                   {{ 'Clone' | translate }}
                   <span class="shortcut">
                     {{ 'pasteAndCloneSelected' | shortcut }}
-                  </span></a>
+                  </span></a
+                >
               </li>
 
               <!-- Edit/Duplicate -->
@@ -311,7 +357,8 @@
                   {{ 'Duplicate' | translate }}
                   <span class="shortcut">
                     {{ 'duplicateSelected' | shortcut }}
-                  </span></a>
+                  </span></a
+                >
               </li>
 
               <!-- Edit/Delete -->
@@ -320,16 +367,15 @@
                   {{ 'Delete' | translate }}
                   <span class="shortcut">
                     {{ 'removeSelected' | shortcut }}
-                  </span></a>
+                  </span></a
+                >
               </li>
 
               <!-- Edit/Select all -->
               <li>
                 <a href ng-click="selectAll()">
                   {{ 'Select all' | translate }}
-                  <span class="shortcut">
-                    {{ 'selectAll' | shortcut }}
-                  </span>
+                  <span class="shortcut"> {{ 'selectAll' | shortcut }} </span>
                 </a>
               </li>
 
@@ -340,9 +386,7 @@
               <li>
                 <a href ng-click="fitContent()">
                   {{ 'Fit content' | translate }}
-                  <span class="shortcut">
-                    {{ 'fitContent' | shortcut }}
-                  </span>
+                  <span class="shortcut"> {{ 'fitContent' | shortcut }} </span>
                 </a>
               </li>
 
@@ -360,31 +404,29 @@
               <li>
                 <a href ng-click="showToolBox()">
                   {{ 'Toolbox' | translate }}
-                  <span class="shortcut">
-                    {{ 'showToolBox' | shortcut }}
-                  </span>
+                  <span class="shortcut"> {{ 'showToolBox' | shortcut }} </span>
                 </a>
               </li>
-<!--------------------------------------------------------------------------->
+              <!--------------------------------------------------------------------------->
 
               <!-- Divisor line between sections of the menu -->
               <li class="divider"></li>
 
               <!-- Edit/Preferences Sub-Menu -->
               <li class="dropdown-submenu" uib-dropdown>
-                <a href uib-dropdown-toggle>
-                   {{ 'Preferences' | translate }}</a>
+                <a href uib-dropdown-toggle> {{ 'Preferences' | translate }}</a>
 
                 <ul uib-dropdown-menu>
-
                   <!-- Edit/Preferences/Language sub-menu -->
                   <li class="dropdown-submenu" uib-dropdown>
                     <a href uib-dropdown-toggle>
-                       {{ 'Language' | translate }}</a>
+                      {{ 'Language' | translate }}</a
+                    >
 
-                    <ul uib-dropdown-menu 
-                        ng-include="'views/languages.html'">
-                    </ul>
+                    <ul
+                      uib-dropdown-menu
+                      ng-include="'views/languages.html'"
+                    ></ul>
                   </li>
 
                   <!-- Divisor line between sections of the menu -->
@@ -393,11 +435,13 @@
                   <!-- Edit/Preferences/UI theme sub-menu -->
                   <li class="dropdown-submenu" uib-dropdown>
                     <a href uib-dropdown-toggle>
-                       {{ 'UI theme' | translate }}
+                      {{ 'UI theme' | translate }}
                     </a>
 
-                    <ul uib-dropdown-menu 
-                        ng-include="'views/uithemes.html'"></ul>
+                    <ul
+                      uib-dropdown-menu
+                      ng-include="'views/uithemes.html'"
+                    ></ul>
                   </li>
 
                   <!-- Divisor line between sections of the menu -->
@@ -406,11 +450,13 @@
                   <!-- Edit/Preferences/Advanced features sub-menu -->
                   <li class="dropdown-submenu" uib-dropdown>
                     <a href uib-dropdown-toggle>
-                       {{ 'Advanced features' | translate }}
+                      {{ 'Advanced features' | translate }}
                     </a>
 
-                    <ul uib-dropdown-menu 
-                        ng-include="'views/advanced.html'"></ul>
+                    <ul
+                      uib-dropdown-menu
+                      ng-include="'views/advanced.html'"
+                    ></ul>
                   </li>
 
                   <!-- Divisor line between sections of the menu -->
@@ -419,47 +465,53 @@
                   <!-- Edit/Preferences/External collections -->
                   <li>
                     <a href ng-click="setExternalCollections()">
-                       {{ 'External collections' | translate }}</a>
+                      {{ 'External collections' | translate }}</a
+                    >
                   </li>
 
                   <!-- Edit/Preferences/Logging enable -->
                   <li>
                     <a href ng-click="toggleLoggingEnabled()">
                       {{ 'Logging enabled' | translate }}&ensp;
-                      <span ng-show="profile.data.loggingEnabled" 
-                            class="glyphicon glyphicon-ok-circle"></span>
+                      <span
+                        ng-show="profile.data.loggingEnabled"
+                        class="glyphicon glyphicon-ok-circle"
+                      ></span>
                     </a>
                   </li>
 
                   <!-- Edit/Preferences/Logging file -->
-                   <li>
+                  <li>
                     <a href ng-click="setLoggingFile()">
-                       {{ 'Logging file' | translate }}</a>
+                      {{ 'Logging file' | translate }}</a
+                    >
                   </li>
-                  
                 </ul>
               </li>
 
               <!-- Edit/Preferences/Project information -->
               <li>
                 <a href ng-click="setProjectInformation()">
-                   {{ 'Project information' | translate }}</a>
+                  {{ 'Project information' | translate }}</a
+                >
               </li>
             </ul>
           </li>
 
           <!-- VIEW Menu -->
-          <li uib-dropdown 
-              ng-mouseover="showMenu('view')" 
-              ng-mouseleave="hideMenu()" 
-              ng-click="fixMenu('view')" 
-              is-open="status.view">
+          <li
+            uib-dropdown
+            ng-mouseover="showMenu('view')"
+            ng-mouseleave="hideMenu()"
+            ng-click="fixMenu('view')"
+            is-open="status.view"
+          >
             <a href uib-dropdown-toggle>
-               {{ 'View' | translate }}
-               <span class="caret"></span></a>
+              {{ 'View' | translate }}
+              <span class="caret"></span
+            ></a>
 
             <ul uib-dropdown-menu>
-
               <!-- View/PCF -->
               <li>
                 <a href ng-click="showPCF()">{{ 'PCF' }}</a>
@@ -473,32 +525,37 @@
               <!-- View/Datasheet -->
               <li>
                 <a href ng-click="showDatasheet()">
-                   {{ 'Datasheet' | translate }}</a>
+                  {{ 'Datasheet' | translate }}</a
+                >
               </li>
 
               <!-- View/Board rules -->
               <li>
                 <a href ng-click="showBoardRules()">
-                   {{ 'Board rules' | translate }}</a>
+                  {{ 'Board rules' | translate }}</a
+                >
               </li>
 
               <!-- Divisor line between sections of the menu -->
               <li class="divider"></li>
               <li>
                 <a href ng-click="showCollectionData()">
-                   {{ 'Collection info' | translate }}</a>
+                  {{ 'Collection info' | translate }}</a
+                >
               </li>
 
-              <!-- View/Command output -->  
+              <!-- View/Command output -->
               <li>
                 <a href ng-click="showCommandOutput()">
-                   {{ 'Command output' | translate }}</a>
+                  {{ 'Command output' | translate }}</a
+                >
               </li>
 
               <!-- View/System Info -->
               <li>
                 <a href ng-click="showSystemInfo()">
-                   {{ 'System info' | translate }}</a>
+                  {{ 'System info' | translate }}</a
+                >
               </li>
 
               <!-- Divisor line between sections of the menu -->
@@ -509,100 +566,134 @@
                 <a href ng-click="toggleFPGAResources()">
                   {{ 'FPGA resources' | translate }}&ensp;
 
-                  <span ng-show="profile.data.showFPGAResources" 
-                        class="glyphicon glyphicon-ok-circle"></span>
+                  <span
+                    ng-show="profile.data.showFPGAResources"
+                    class="glyphicon glyphicon-ok-circle"
+                  ></span>
                 </a>
               </li>
             </ul>
           </li>
 
           <!-- SELECT Menu -->
-          <li uib-dropdown 
-              ng-mouseover="showMenu('select')" 
-              ng-mouseleave="hideMenu()" 
-              ng-click="fixMenu('select')" 
-              is-open="status.select">
+          <li
+            uib-dropdown
+            ng-mouseover="showMenu('select')"
+            ng-mouseleave="hideMenu()"
+            ng-click="fixMenu('select')"
+            is-open="status.select"
+          >
             <a href uib-dropdown-toggle>
-              {{ 'Select' | translate }}<span class="caret"></span></a>
+              {{ 'Select' | translate }}<span class="caret"></span
+            ></a>
 
             <ul uib-dropdown-menu>
               <li class="dropdown-submenu" uib-dropdown>
-
                 <!-- Select/Board sub-menu -->
                 <a href uib-dropdown-toggle>{{ 'Board' | translate }}</a>
 
                 <ul uib-dropdown-menu class="dropdown-overflow">
-                   <li><a><b>HX1K</b></a></li>
-                   <li ng-repeat="board in common.boards">
-                     <menuboard type="'HX1K'" board="board"></menuboard>
-                   </li>
-                   <li><a><b>HX8K</b></a></li>
-                   <li ng-repeat="board in common.boards">
-                     <menuboard type="'HX8K'" board="board"></menuboard>
-                   </li>
-				           <li><a><b>LP1K</b></a></li>
-                   <li ng-repeat="board in common.boards">
-                     <menuboard type="'LP1K'" board="board"></menuboard>
-                   </li>
-                   <li><a><b>LP8K</b></a></li>
-                   <li ng-repeat="board in common.boards">
-                     <menuboard type="'LP8K'" board="board"></menuboard>
-                   </li>
-                   <li><a><b>U4K</b></a></li>
-                   <li ng-repeat="board in common.boards">
-                     <menuboard type="'U4K'" board="board"></menuboard>
-                   </li>
-                   <li><a><b>UP5K</b></a></li>
-                   <li ng-repeat="board in common.boards">
-                     <menuboard type="'UP5K'" board="board"></menuboard>
-                   </li>
-                   <li><a><b>ECP5</b></a></li>
-                   <li ng-repeat="board in common.boards">
-                     <menuboard type="'ECP5'" board="board"></menuboard>
-                   </li>
-                 </ul>
+                  <li>
+                    <a><b>HX1K</b></a>
+                  </li>
+                  <li ng-repeat="board in common.boards">
+                    <menuboard type="'HX1K'" board="board"></menuboard>
+                  </li>
+                  <li>
+                    <a><b>HX8K</b></a>
+                  </li>
+                  <li ng-repeat="board in common.boards">
+                    <menuboard type="'HX8K'" board="board"></menuboard>
+                  </li>
+                  <li>
+                    <a><b>LP1K</b></a>
+                  </li>
+                  <li ng-repeat="board in common.boards">
+                    <menuboard type="'LP1K'" board="board"></menuboard>
+                  </li>
+                  <li>
+                    <a><b>LP8K</b></a>
+                  </li>
+                  <li ng-repeat="board in common.boards">
+                    <menuboard type="'LP8K'" board="board"></menuboard>
+                  </li>
+                  <li>
+                    <a><b>U4K</b></a>
+                  </li>
+                  <li ng-repeat="board in common.boards">
+                    <menuboard type="'U4K'" board="board"></menuboard>
+                  </li>
+                  <li>
+                    <a><b>UP5K</b></a>
+                  </li>
+                  <li ng-repeat="board in common.boards">
+                    <menuboard type="'UP5K'" board="board"></menuboard>
+                  </li>
+                  <li>
+                    <a><b>ECP5</b></a>
+                  </li>
+                  <li ng-repeat="board in common.boards">
+                    <menuboard type="'ECP5'" board="board"></menuboard>
+                  </li>
+                </ul>
               </li>
 
               <!-- Select/Collection sub-menu -->
               <li class="dropdown-submenu" uib-dropdown>
-                <a href uib-dropdown-toggle>
-                   {{ 'Collection' | translate }}</a>
+                <a href uib-dropdown-toggle> {{ 'Collection' | translate }}</a>
 
                 <ul uib-dropdown-menu>
-
                   <!-- Default collection obsolete... -->
                   <!-- Will be removed in the future...  -->
                   <li ng-init="collection = common.defaultCollection">
-                    <a href ng-click="selectCollection(collection)" 
-                       ng-show="collection.name == ''">
+                    <a
+                      href
+                      ng-click="selectCollection(collection)"
+                      ng-show="collection.name == ''"
+                    >
                       {{ 'Default' | translate }}&ensp;
-                      <span ng-show="common.selectedCollection.name == ''" 
-                            class="glyphicon glyphicon-ok-circle"></span>
+                      <span
+                        ng-show="common.selectedCollection.name == ''"
+                        class="glyphicon glyphicon-ok-circle"
+                      ></span>
                     </a>
                   </li>
-                  <li class="divider" 
-                      ng-show="common.internalCollections.length > 0"></li>
+                  <li
+                    class="divider"
+                    ng-show="common.internalCollections.length > 0"
+                  ></li>
 
                   <!-- Internal collections -->
                   <li ng-repeat="collection in common.internalCollections">
-                    <a href ng-click="selectCollection(collection)" 
-                       ng-hide="collection.name == ''">
+                    <a
+                      href
+                      ng-click="selectCollection(collection)"
+                      ng-hide="collection.name == ''"
+                    >
                       {{ collection.name }}&ensp;
-                      <span 
-                        ng-show="common.selectedCollection.path == collection.path" 
-                        class="glyphicon glyphicon-ok-circle"></span>
+                      <span
+                        ng-show="common.selectedCollection.path == collection.path"
+                        class="glyphicon glyphicon-ok-circle"
+                      ></span>
                     </a>
                   </li>
 
                   <!-- External collection -->
-                  <li class="divider" 
-                      ng-show="common.externalCollections.length > 0"></li>
+                  <li
+                    class="divider"
+                    ng-show="common.externalCollections.length > 0"
+                  ></li>
                   <li ng-repeat="collection in common.externalCollections">
-                    <a href ng-click="selectCollection(collection)" 
-                       ng-hide="collection.name == ''">
+                    <a
+                      href
+                      ng-click="selectCollection(collection)"
+                      ng-hide="collection.name == ''"
+                    >
                       {{ collection.name }}&ensp;
-                      <span 
-                        ng-show="common.selectedCollection.path == collection.path" class="glyphicon glyphicon-ok-circle"></span>
+                      <span
+                        ng-show="common.selectedCollection.path == collection.path"
+                        class="glyphicon glyphicon-ok-circle"
+                      ></span>
                     </a>
                   </li>
                 </ul>
@@ -611,79 +702,98 @@
           </li>
 
           <!-- TOOLS Menu -->
-          <li uib-dropdown 
-              ng-mouseover="showMenu('tools')" 
-              ng-mouseleave="hideMenu()" 
-              ng-click="fixMenu('tools')" 
-              is-open="status.tools">
+          <li
+            uib-dropdown
+            ng-mouseover="showMenu('tools')"
+            ng-mouseleave="hideMenu()"
+            ng-click="fixMenu('tools')"
+            is-open="status.tools"
+          >
             <a href uib-dropdown-toggle>
-               {{ 'Tools' | translate }}
-               <span class="caret"></span></a>
+              {{ 'Tools' | translate }}
+              <span class="caret"></span
+            ></a>
 
             <!-- Tools/Verify -->
             <ul uib-dropdown-menu style="min-width: 190px">
               <li>
                 <a href ng-click="verifyCode()">
-                   {{ 'Verify' | translate }}
-                   <span class="shortcut">
-                      {{ 'verifyCode' | shortcut }}</span></a>
+                  {{ 'Verify' | translate }}
+                  <span class="shortcut">
+                    {{ 'verifyCode' | shortcut }}</span
+                  ></a
+                >
               </li>
 
               <!-- Tools/Build -->
               <li>
                 <a href ng-click="buildCode()">
-                   {{ 'Build' | translate }}
-                   <span class="shortcut">
-                    {{ 'buildCode' | shortcut }}</span></a>
+                  {{ 'Build' | translate }}
+                  <span class="shortcut"> {{ 'buildCode' | shortcut }}</span></a
+                >
               </li>
 
               <!-- Tools/Upload-->
               <li>
                 <a href ng-click="uploadCode()">
-                   {{ 'Upload' | translate }}
-                    <span class="shortcut">
-                      {{ 'uploadCode' | shortcut }}</span></a>
+                  {{ 'Upload' | translate }}
+                  <span class="shortcut">
+                    {{ 'uploadCode' | shortcut }}</span
+                  ></a
+                >
               </li>
 
               <!-- Divisor line between sections of the menu -->
               <li class="divider" ng-if="common.showToolchain()"></li>
 
               <!-- Tools/Toolchains sub-menu-->
-              <li class="dropdown-submenu" 
-                  uib-dropdown ng-if="common.showToolchain()">
-                <a href uib-dropdown-toggle>
-                   {{ 'Toolchain' | translate }}</a>
+              <li
+                class="dropdown-submenu"
+                uib-dropdown
+                ng-if="common.showToolchain()"
+              >
+                <a href uib-dropdown-toggle> {{ 'Toolchain' | translate }}</a>
 
                 <ul uib-dropdown-menu>
-
                   <!-- Tools/Toolchains/Install (update)-->
                   <li ng-class="toolchain.disabled ? 'disabled' : ''">
-                    <a href ng-hide="toolchain.installed" 
-                       ng-click="tools.installToolchain()">
+                    <a
+                      href
+                      ng-hide="toolchain.installed"
+                      ng-click="tools.installToolchain()"
+                    >
                       {{ 'Install (Stable)' | translate }}
                     </a>
-                    <a href ng-show="toolchain.installed" 
-                       ng-click="tools.updateToolchain()">
+                    <a
+                      href
+                      ng-show="toolchain.installed"
+                      ng-click="tools.updateToolchain()"
+                    >
                       {{ 'Update (Latest stable)' | translate }}
                     </a>
                   </li>
 
                   <!-- Tools/Toolchain/Remove -->
-                  <li ng-class="(toolchain.disabled || !toolchain.installed) ? 'disabled' : ''">
-                    <a href 
-                       ng-click="(toolchain.disabled || !toolchain.installed) ? '' : tools.removeToolchain()">
+                  <li
+                    ng-class="(toolchain.disabled || !toolchain.installed) ? 'disabled' : ''"
+                  >
+                    <a
+                      href
+                      ng-click="(toolchain.disabled || !toolchain.installed) ? '' : tools.removeToolchain()"
+                    >
                       {{ 'Remove' | translate }}
                     </a>
                   </li>
 
                   <!-- Tools/Toolchain/Install development -->
                   <li>
-                    <a href 
-                       ng-show="toolchain.installed" 
-                       ng-click="tools.installToolchainDev()">
+                    <a
+                      href
+                      ng-show="toolchain.installed"
+                      ng-click="tools.installToolchainDev()"
+                    >
                       {{ 'Install Development version' | translate }}
                     </a>
-
                   </li>
 
                   <!-- Divisor line between sections of the menu -->
@@ -697,12 +807,13 @@
               </li>
 
               <!-- Tools/Drivers sub-menu -->
-              <li class="dropdown-submenu" 
-                  uib-dropdown ng-if="common.showDrivers()">
-                <a href uib-dropdown-toggle>
-                   {{ 'Drivers' | translate }}</a>
+              <li
+                class="dropdown-submenu"
+                uib-dropdown
+                ng-if="common.showDrivers()"
+              >
+                <a href uib-dropdown-toggle> {{ 'Drivers' | translate }}</a>
                 <ul uib-dropdown-menu>
-
                   <!-- Tools/Drivers/Enable -->
                   <li>
                     <a href ng-click="tools.enableDrivers()">
@@ -724,13 +835,10 @@
 
               <!-- Tools/Collections sub-menu -->
               <li class="dropdown-submenu" uib-dropdown>
-                <a href uib-dropdown-toggle>
-                   {{ 'Collections' | translate }}</a>
+                <a href uib-dropdown-toggle> {{ 'Collections' | translate }}</a>
 
-               
                 <ul uib-dropdown-menu>
-
-                   <!-- Tools/Collections/Add -->
+                  <!-- Tools/Collections/Add -->
                   <li>
                     <a href ng-click="addCollections()">
                       {{ 'Add' | translate }}
@@ -746,14 +854,17 @@
 
                   <!-- Tools/Collection/Remove sub-menu-->
                   <li class="dropdown-submenu" uib-dropdown>
-                    <a href uib-dropdown-toggle>
-                      {{ 'Remove' | translate }}</a>
-                    <ul uib-dropdown-menu
-                        ng-show="common.internalCollections.length > 0">
+                    <a href uib-dropdown-toggle> {{ 'Remove' | translate }}</a>
+                    <ul
+                      uib-dropdown-menu
+                      ng-show="common.internalCollections.length > 0"
+                    >
                       <li ng-repeat="collection in common.internalCollections">
-                        <a href 
-                           ng-click="removeCollection(collection)" 
-                           ng-if="collection.name != ''">
+                        <a
+                          href
+                          ng-click="removeCollection(collection)"
+                          ng-if="collection.name != ''"
+                        >
                           {{ collection.name | translate }}
                         </a>
                       </li>
@@ -769,33 +880,37 @@
                 </ul>
               </li>
               <li class="divider"></li>
- <li>
+              <li>
                 <a href ng-click="takeSnapshotPNG()">
-                   {{ 'Take PNG' | translate }}
-                   <span class="shortcut">
-                      {{ 'takeSnapshotPNG' | shortcut }}</span></a>
+                  {{ 'Take PNG' | translate }}
+                  <span class="shortcut">
+                    {{ 'takeSnapshotPNG' | shortcut }}</span
+                  ></a
+                >
               </li>
-<li>
+              <li>
                 <a href ng-click="takeSnapshotVideo()">
-                   {{ 'Take Video' | translate }}
-                   <span class="shortcut">
-                      {{ 'takeSnapshotVideo' | shortcut }}</span></a>
+                  {{ 'Take Video' | translate }}
+                  <span class="shortcut">
+                    {{ 'takeSnapshotVideo' | shortcut }}</span
+                  ></a
+                >
               </li>
-
-
-
             </ul>
           </li>
 
           <!-- BASIC Menu -->
-          <li uib-dropdown
-              ng-mouseover="showMenu('basic')" 
-              ng-mouseleave="hideMenu()" 
-              ng-click="fixMenu('basic')" 
-              is-open="status.basic">
+          <li
+            uib-dropdown
+            ng-mouseover="showMenu('basic')"
+            ng-mouseleave="hideMenu()"
+            ng-click="fixMenu('basic')"
+            is-open="status.basic"
+          >
             <a href uib-dropdown-toggle>
               {{ 'Basic' | translate }}
-              <span class="caret"></span></a>
+              <span class="caret"></span
+            ></a>
 
             <ul uib-dropdown-menu>
               <li>
@@ -807,8 +922,7 @@
                   <div class="marker marker-blue"></div>
                   {{ 'Output' | translate }}
                 </a>
-                <a href 
-                  ng-click="project.addBasicBlock('basic.outputLabel')">
+                <a href ng-click="project.addBasicBlock('basic.outputLabel')">
                   <div class="marker marker-fuchsia"></div>
                   {{ 'Input label' | translate }}
                 </a>
@@ -824,7 +938,7 @@
 
                 <a href ng-click="project.addBasicBlock('basic.constant')">
                   <div class="marker marker-orange"></div>
-                   {{ 'Constant' | translate }}
+                  {{ 'Constant' | translate }}
                 </a>
                 <a href ng-click="project.addBasicBlock('basic.memory')">
                   <div class="marker marker-orange"></div>
@@ -832,23 +946,24 @@
                 </a>
                 <a href ng-click="project.addBasicBlock('basic.code')">
                   <div class="marker marker-blue"></div>
-                   {{ 'Code' | translate }}
+                  {{ 'Code' | translate }}
                 </a>
                 <a href ng-click="project.addBasicBlock('basic.info')">
                   <div class="marker marker-gray"></div>
-                   {{ 'Information' | translate }}
+                  {{ 'Information' | translate }}
                 </a>
               </li>
             </ul>
           </li>
 
-
           <!-- HELP Menu -->
-          <li uib-dropdown 
-              ng-mouseover="showMenu('help')" 
-              ng-mouseleave="hideMenu()" 
-              ng-click="fixMenu('help')" 
-              is-open="status.help">
+          <li
+            uib-dropdown
+            ng-mouseover="showMenu('help')"
+            ng-mouseleave="hideMenu()"
+            ng-click="fixMenu('help')"
+            is-open="status.help"
+          >
             <a href uib-dropdown-toggle>
               {{ 'Help' | translate }}
               <span class="caret"></span>
@@ -857,9 +972,12 @@
             <ul uib-dropdown-menu>
               <!-- HELP/View license -->
               <li disabled>
-                <a href ng-click="openUrl(
+                <a
+                  href
+                  ng-click="openUrl(
                   'https://www.gnu.org/licenses/old-licenses/gpl-2.0.html',
-                  $event)">
+                  $event)"
+                >
                   {{ 'View license' | translate }}
                 </a>
               </li>
@@ -873,8 +991,8 @@
 
               <!-- Show the current Version -->
               <li class="disabled">
-                <a href>{{ 'Version' | translate }} 
-                        {{ common.ICESTUDIO_VERSION }}
+                <a href
+                  >{{ 'Version' | translate }} {{ common.ICESTUDIO_VERSION }}
                 </a>
               </li>
 
@@ -883,18 +1001,24 @@
 
               <!-- HELP/Documentation -->
               <li>
-                <a href ng-click=
-                  "openUrl('https://github.com/FPGAwars/icestudio/wiki',
-                   $event)">
-                  {{ 'Documentation' | translate }}</a>
+                <a
+                  href
+                  ng-click="openUrl('https://github.com/FPGAwars/icestudio/wiki',
+                   $event)"
+                >
+                  {{ 'Documentation' | translate }}</a
+                >
               </li>
 
               <!-- HELP/Source code -->
               <li>
-                <a href ng-click=
-                   "openUrl('https://github.com/FPGAwars/icestudio',
-                   $event)">
-                   {{ 'Source code' | translate }}</a>
+                <a
+                  href
+                  ng-click="openUrl('https://github.com/FPGAwars/icestudio',
+                   $event)"
+                >
+                  {{ 'Source code' | translate }}</a
+                >
               </li>
 
               <!-- Divisor line between sections of the menu -->
@@ -902,10 +1026,13 @@
 
               <!-- Help/Community forum -->
               <li>
-                <a href ng-click=
-                   "openUrl('https://groups.google.com/forum/#!forum/fpga-wars-explorando-el-lado-libre',
-                    $event)">
-                    {{ 'Community forum' | translate }}</a>
+                <a
+                  href
+                  ng-click="openUrl('https://groups.google.com/forum/#!forum/fpga-wars-explorando-el-lado-libre',
+                    $event)"
+                >
+                  {{ 'Community forum' | translate }}</a
+                >
               </li>
 
               <!-- Divisor line between sections of the menu -->
@@ -914,20 +1041,16 @@
               <!-- Help/About -->
               <li>
                 <a href ng-click="about()">
-                  {{ 'About Icestudio' | translate }}</a>
+                  {{ 'About Icestudio' | translate }}</a
+                >
               </li>
             </ul>
           </li>
-
         </ul>
-
       </div>
-
     </nav>
-
   </div>
 
-<!-- HTML file with the Version notes --> 
-<div ng-include="'views/version.html'"></div>
+  <!-- HTML file with the Version notes -->
+  <div ng-include="'views/version.html'"></div>
 </div>
-
