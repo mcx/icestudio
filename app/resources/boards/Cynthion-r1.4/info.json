@@ -3,7 +3,7 @@
   "SysClkMhz": 60,
   "datasheet": "https://cynthion.readthedocs.io",
   "interface": "MCU",
-  "arch" : "ecp5",
+  "arch": "ecp5",
   "toolchain": "apio",
   "FPGAResources": {
     "ffs": 12064,

@@ -1,6 +1,10 @@
-resources/libs/vendor/
-resources/fonts/
+app/resources/fonts/
+**/libs/vendor/
+**/js/vendor/
+**/lib/*.js
 *.md
-icerok/vendor/sweetalert2.min.js
-icerok/css/*.min.css
+package-lock.json
+tailwind.css
+app/resources/libs/Icestudio/Crypto/SHA-256.js
+app/resources/plugins/icerok/css/*.min.css
 Gruntfile.js

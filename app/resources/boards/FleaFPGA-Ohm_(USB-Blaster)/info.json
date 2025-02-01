@@ -1,14 +1,14 @@
 {
-	"label": "FleaFPGA_Ohm_(USB-Blaster)",
-	"SysClkMhz":25,
-	"datasheet": "https://github.com/Basman74/FleaFPGA-Ohm",
-	"interface": "FTDI",
-	"arch": "ecp5",
-	"FPGAResources": {
-		"ffs": 24288,
-		"luts": 24288,
-		"pios": 96,
-		"plbs": 660,
-		"brams": 30
-	}
+  "label": "FleaFPGA_Ohm_(USB-Blaster)",
+  "SysClkMhz": 25,
+  "datasheet": "https://github.com/Basman74/FleaFPGA-Ohm",
+  "interface": "FTDI",
+  "arch": "ecp5",
+  "FPGAResources": {
+    "ffs": 24288,
+    "luts": 24288,
+    "pios": 96,
+    "plbs": 660,
+    "brams": 30
+  }
 }
