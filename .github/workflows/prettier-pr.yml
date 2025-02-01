@@ -11,6 +11,7 @@ jobs:
   ci-pr:
     # Run on any change from PR or direct push, but don't run on a cancel PR
     if: github.event_name != 'pull_request' || (
+
       github.event.action == 'opened' ||
       github.event.action == 'synchronize' ||
       github.event.action == 'reopened' && github.event.before != github.event.after ||

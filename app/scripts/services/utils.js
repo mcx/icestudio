@@ -37,7 +37,6 @@ angular
         if (!_pythonPipExecutableCached) {
           _pythonPipExecutableCached = common.ENV_PIP;
         }
-
         return _pythonPipExecutableCached;
       };
 

@@ -45,7 +45,6 @@ angular
           case 'FTDI':
             disableDriversFTDI();
             break;
-
           //-- Serial Boards
           case 'Serial':
             disableDriversSerial();
