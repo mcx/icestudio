@@ -1,5 +1,5 @@
-/*jshint unused:false*/
 'use strict';
+
 var IceParametricHelper = function () {
   this.pair = function (A, B) {
     if (A.length !== B.length) {
@@ -20,6 +20,7 @@ var IceParametricHelper = function () {
     }
     return paired;
   };
+
   this.place = function (block, x, y, x0, y0, w, h, padw, padh) {
     if (typeof block.position === 'undefined') {
       block.position = { x: 0, y: 0 };
@@ -28,9 +29,9 @@ var IceParametricHelper = function () {
     h = h + padh;
     block.position.x = x * w + x0;
     block.position.y = y * h + y0;
-
     return block;
   };
+
   this.newId = function (prefix) {
     const nodeSha1 = require('sha1');
 
@@ -84,7 +85,6 @@ var IceParametricHelper = function () {
         index: i,
         name: direction,
         x: xi,
-
         y: yi,
       });
       xi += diffx;

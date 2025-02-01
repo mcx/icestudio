@@ -111,6 +111,7 @@ joint.routers.ice = (function (g, _, joint) {
     var excludedAncestors = [];
 
     var source = graph.getCell(link.get('source').id);
+
     if (source) {
       excludedAncestors = _.union(
         excludedAncestors,
@@ -119,6 +120,7 @@ joint.routers.ice = (function (g, _, joint) {
     }
 
     var target = graph.getCell(link.get('target').id);
+
     if (target) {
       excludedAncestors = _.union(
         excludedAncestors,
@@ -262,6 +264,7 @@ joint.routers.ice = (function (g, _, joint) {
   SortedSet.prototype.pop = function () {
     var item = this.items.shift();
     this.remove(item);
+
     return item;
   };
 
@@ -291,6 +294,7 @@ joint.routers.ice = (function (g, _, joint) {
     }
 
     var startDiff = normalizePoint(g.point(current).difference(startCenter));
+
     if (!startDiff.equals(prevDiff)) {
       route.unshift(current);
     }
@@ -324,11 +328,13 @@ joint.routers.ice = (function (g, _, joint) {
   // returns a direction index from start point to end point
   function getDirectionAngle(start, end, dirLen) {
     var q = 360 / dirLen;
+
     return Math.floor(g.normalizeAngle(start.theta(end) + q / 2) / q) * q;
   }
 
   function getDirectionChange(angle1, angle2) {
     var dirChange = Math.abs(angle1 - angle2);
+
     return dirChange > 180 ? 360 - dirChange : dirChange;
   }
 
@@ -338,6 +344,7 @@ joint.routers.ice = (function (g, _, joint) {
 
     for (var i = 0, len = endPoints.length; i < len; i++) {
       var cost = from.manhattanDistance(endPoints[i]);
+
       if (cost < min) {
         min = cost;
       }
@@ -407,13 +414,11 @@ joint.routers.ice = (function (g, _, joint) {
         var currentPoint = g.point(currentKey);
         var currentDist = costs[currentKey];
         previousDirAngle = currentDirAngle;
-        /* jshint -W116 */
         currentDirAngle = parents[currentKey]
           ? getDirectionAngle(parents[currentKey], currentPoint, dirLen)
-          : opt.previousDirAngle != null
+          : opt.previousDirAngle !== null
             ? opt.previousDirAngle
             : getDirectionAngle(startCenter, currentPoint, dirLen);
-        /* jshint +W116 */
 
         // Check if we reached any endpoint
         if (endPointsKeys.indexOf(currentKey) >= 0) {
@@ -422,8 +427,10 @@ joint.routers.ice = (function (g, _, joint) {
             currentDirAngle,
             getDirectionAngle(currentPoint, endCenter, dirLen)
           );
+
           if (currentPoint.equals(endCenter) || dirChange < 180) {
             opt.previousDirAngle = currentDirAngle;
+
             return reconstructRoute(
               parents,
               currentPoint,
@@ -437,6 +444,7 @@ joint.routers.ice = (function (g, _, joint) {
         for (var i = 0; i < dirLen; i++) {
           dir = dirs[i];
           dirChange = getDirectionChange(currentDirAngle, dir.angle);
+
           // if the direction changed rapidly don't use this point
           // Note that check is relevant only for points with previousDirAngle i.e.
           // any direction is allowed for starting points
@@ -448,6 +456,7 @@ joint.routers.ice = (function (g, _, joint) {
             .clone()
             .offset(dir.offsetX, dir.offsetY);
           var neighborKey = neighborPoint.toString();
+
           // Closed points from the openSet were already evaluated.
           if (
             openSet.isClose(neighborKey) ||
@@ -504,15 +513,13 @@ joint.routers.ice = (function (g, _, joint) {
 
   // initiation of the route finding
   function router(vertices, opt) {
+    /* jshint validthis: true */
     resolveOptions(opt);
-
-    /* jshint -W040 */
 
     // enable/disable linkView perpendicular option
     this.options.perpendicular = !!opt.perpendicular;
 
     // Force source/target BBoxes to be points
-
     this.sourceBBox.x += this.sourceBBox.width / 2;
     this.sourceBBox.y += this.sourceBBox.height / 2;
     this.sourceBBox.width = 0;
@@ -571,6 +578,7 @@ joint.routers.ice = (function (g, _, joint) {
         if (!_.isFunction(joint.routers.orthogonal)) {
           throw new Error('Manhattan requires the orthogonal router.');
         }
+
         return joint.routers.orthogonal(vertices, opt, this);
       }
 
@@ -585,8 +593,6 @@ joint.routers.ice = (function (g, _, joint) {
 
       Array.prototype.push.apply(newVertices, partialRoute);
     }
-
-    /* jshint +W040 */
 
     return newVertices;
   }

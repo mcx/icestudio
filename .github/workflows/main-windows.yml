@@ -51,7 +51,7 @@ jobs:
           sudo add-apt-repository universe
           sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install wine nsis 
+          sudo apt-get install wine nsis
           wget https://dl.winehq.org/wine/wine-mono/5.0.0/wine-mono-5.0.0-x86.msi
           export DISPLAY=:0.0
           wine msiexec /i wine-mono-5.0.0-x86.msi
@@ -59,7 +59,7 @@ jobs:
       - name: Build Microsoft Windows package
         if: env.skip_build != 'true'
         run: |
-          export DISPLAY=:0.0 
+          export DISPLAY=:0.0
           npm run buildWindows
 
       # jq is bash command for reading properties from a json file

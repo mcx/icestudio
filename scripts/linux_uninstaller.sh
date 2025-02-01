@@ -29,7 +29,6 @@ case "$RESP" in
 
       echo "${GREEN}\nIcestudio.desktop uninstalled!${NC}"
 
-
       # Register extension .ice
 
       rm -f ${MIME}

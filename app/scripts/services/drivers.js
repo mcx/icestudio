@@ -1,26 +1,5 @@
 'use strict';
 
-//--------------------------------------
-//-- Enable de Drivers
-//--
-this.enable = function () {
-  //-- The driver depends on the interface of the board
-  switch (common.selectedBoard.info.interface) {
-    //-- FTDI Boards
-    case 'FTDI':
-      enableDriversFTDI();
-      break;
-
-    //-- Serial boards
-    case 'Serial':
-      enableDriversSerial();
-      break;
-
-    //-- Board with no interface! (Error!)
-    default:
-      console.warn('No valid selected board interface');
-  }
-};
 angular
   .module('icestudio')
   .service(
@@ -35,27 +14,6 @@ angular
       nodeChildProcess,
       $rootScope
     ) {
-      //----------------------------------------------
-      //-- Disable the Drivers
-      //--
-      this.disable = function () {
-        //-- It depends on the type of interface of the board
-        switch (common.selectedBoard.info.interface) {
-          //-- FTDI boards
-          case 'FTDI':
-            disableDriversFTDI();
-            break;
-          //-- Serial Boards
-          case 'Serial':
-            disableDriversSerial();
-            break;
-
-          //-- Board wiht no interface! (Error!)
-          default:
-            console.warn('No valid selected board interface');
-        }
-      };
-
       //---------------------------------------------
       //-- Enable the drivers for the FTDI boards
       //-- It depends on the operating system
@@ -140,6 +98,50 @@ angular
         }
       }
 
+      //--------------------------------------
+      //-- Enable the Drivers
+      //--
+      this.enable = function () {
+        //-- The driver depends on the interface of the board
+        switch (common.selectedBoard.info.interface) {
+          //-- FTDI Boards
+          case 'FTDI':
+            enableDriversFTDI();
+            break;
+
+          //-- Serial boards
+          case 'Serial':
+            enableDriversSerial();
+            break;
+
+          //-- Board with no interface! (Error!)
+          default:
+            console.warn('No valid selected board interface');
+        }
+      };
+
+      //----------------------------------------------
+      //-- Disable the Drivers
+      //--
+      this.disable = function () {
+        //-- It depends on the type of interface of the board
+        switch (common.selectedBoard.info.interface) {
+          //-- FTDI boards
+          case 'FTDI':
+            disableDriversFTDI();
+            break;
+
+          //-- Serial Boards
+          case 'Serial':
+            disableDriversSerial();
+            break;
+
+          //-- Board wiht no interface! (Error!)
+          default:
+            console.warn('No valid selected board interface');
+        }
+      };
+
       //-----------------------
       //-- On MAC some actions should be done with the drivers
       //-- before every upload
@@ -150,7 +152,7 @@ angular
           preUploadDarwin(callback);
         }
 
-        //-- For the oter platforms just call the callback
+        //-- For the other platforms just call the callback
         else if (callback) {
           callback();
         }
@@ -166,9 +168,9 @@ angular
         }
       };
 
-      /* ----------------------------------------------------------------------
-       Linux drivers
-    -----------------------------------------------------------------------*/
+      /*
+       * Linux drivers
+       */
 
       //------------------------------------
       //-- Enable the FTDI Drivers

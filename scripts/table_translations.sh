@@ -26,10 +26,8 @@ declare "languages_el_GR=Greek"
 declare "languages_nl_NL=Dutch"
 declare "languages_gl_ES=Galician"
 
-
 #-- Examine the .po file of all the locale folders
 cd app/resources/locale
-
 
 #-- Calculate results: percentage per LOCALE
 
@@ -46,7 +44,6 @@ done
 
 #-- sort the results
 IFS=$'\n'; SORTED=($(sort -nr <<<"${RESULTS[*]}")); unset IFS
-
 
 #-- Output results
 echo "|  Language  | Translated strings |" > $TABLE_FILE

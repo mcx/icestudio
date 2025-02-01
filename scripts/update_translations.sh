@@ -28,6 +28,4 @@ for d in */ ; do
   msgfmt --statistics $LOCALE/$LOCALE.po 2>> $STATS_FILE
   echo "" >> $STATS_FILE
 
-
 done
-

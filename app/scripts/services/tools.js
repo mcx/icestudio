@@ -1485,7 +1485,6 @@ angular
         //-- Already installed
         checkToolchain(function () {
           if (toolchain.installed) {
-            //-- Disable de drivers!
             drivers.disable();
           }
         });

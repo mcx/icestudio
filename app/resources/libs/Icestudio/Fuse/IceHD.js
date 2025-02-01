@@ -1,5 +1,4 @@
 'use strict';
-/*jshint unused:false*/
 
 class IceHD {
   constructor() {
@@ -11,6 +10,7 @@ class IceHD {
     this.fs = require('fs');
     this.path = require('path');
   }
+
   isValidPath(path) {
     return this.fs.existsSync(path);
   }
@@ -18,8 +18,10 @@ class IceHD {
   isDir(path) {
     return this.fs.lstatSync(path).isDirectory();
   }
+
   isFile(path) {
     let stats = false;
+
     try {
       stats = this.fs.lstatSync(path).isFile();
     } catch (e) {
@@ -28,6 +30,7 @@ class IceHD {
       } else {
       }
     }
+
     return stats;
   }
 
@@ -72,6 +75,7 @@ class IceHD {
     let _this = this;
     let fileTree = [];
     const validator = /.*\.(ice|json|md)$/;
+
     try {
       let content = this.fs.readdirSync(folder);
       level--;
@@ -118,9 +122,11 @@ class IceHD {
       console.error(err);
     }
   }
+
   coverPath(filepath) {
     return '"' + filepath + '"';
   }
+
   shellEscape(arrayArgs) {
     return arrayArgs.map(function (c) {
       if (c.indexOf('(') >= 0) {

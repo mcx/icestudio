@@ -1,5 +1,5 @@
 'use strict';
-/*jshint unused:false*/
+
 class WafleUITree {
   constructor(opts) {
     this.config = opts || {};
@@ -20,12 +20,15 @@ class WafleUITree {
   setDomRoot(root) {
     this.dom = root;
   }
+
   setId(id) {
     this.id = id;
   }
+
   setTree(tree) {
     this.vtree = tree;
   }
+
   render() {
     return this.vtree === false
       ? ''
@@ -72,43 +75,43 @@ class WafleUITree {
                                                                 {{/isFolder}}
                                                                 {{#isLeaf}}
                                                                 <span class="tree-view--leaf" data-nodeid="{{{id}}}"  data-guievt="click" data-handler="this.getBlock" data-args='{"id":"{{{id}}}"}'><i class="block-icon"></i><input type="checkbox"  data-guievt="checkbox" data-handler="treeView.selectBlock" data-args='{"id":"{{{id}}}"}'>{{{name}}}<i class="in-use"></i></span>
-                                                              {{/isLeaf}}    
-                                                              {{/items}}       
+                                                              {{/isLeaf}}
+                                                              {{/items}}
                                                             </div>
                                                           {{/isFolder}}
                                                           {{#isLeaf}}
                                                           <span class="tree-view--leaf" data-nodeid="{{{id}}}"  data-guievt="click" data-handler="this.getBlock" data-args='{"id":"{{{id}}}"}'><i class="block-icon"></i><input type="checkbox"  data-guievt="checkbox" data-handler="treeView.selectBlock" data-args='{"id":"{{{id}}}"}'>{{{name}}}<i class="in-use"></i></span>
-                                                        {{/isLeaf}}    
-                                                        {{/items}}        
+                                                        {{/isLeaf}}
+                                                        {{/items}}
                                                       </div>
                                                     {{/isFolder}}
                                                     {{#isLeaf}}
                                                     <span class="tree-view--leaf" data-nodeid="{{{id}}}"  data-guievt="click" data-handler="this.getBlock" data-args='{"id":"{{{id}}}"}'><i class="block-icon"></i><input type="checkbox"  data-guievt="checkbox" data-handler="treeView.selectBlock" data-args='{"id":"{{{id}}}"}'>{{{name}}}<i class="in-use"></i></span>
-                                                  {{/isLeaf}}    
-                                                  {{/items}}           
+                                                  {{/isLeaf}}
+                                                  {{/items}}
                                               </div>
                                             {{/isFolder}}
                                             {{#isLeaf}}
                                             <span class="tree-view--leaf" data-nodeid="{{{id}}}"  data-guievt="click" data-handler="this.getBlock" data-args='{"id":"{{{id}}}"}'><i class="block-icon"></i><input type="checkbox"  data-guievt="checkbox" data-handler="treeView.selectBlock" data-args='{"id":"{{{id}}}"}'>{{{name}}}<i class="in-use"></i></span>
-                                          {{/isLeaf}}    
-                                          {{/items}}            
+                                          {{/isLeaf}}
+                                          {{/items}}
                                         </div>
                                       {{/isFolder}}
                                       {{#isLeaf}}
                                       <span class="tree-view--leaf" data-nodeid="{{{id}}}"  data-guievt="click" data-handler="this.getBlock" data-args='{"id":"{{{id}}}"}'><i class="block-icon"></i><input type="checkbox"  data-guievt="checkbox" data-handler="treeView.selectBlock" data-args='{"id":"{{{id}}}"}'>{{{name}}}<i class="in-use"></i></span>
-                                    {{/isLeaf}}    
+                                    {{/isLeaf}}
                                     {{/items}}
                                   </div>
                                 {{/isFolder}}
                                 {{#isLeaf}}
                                 <span class="tree-view--leaf" data-nodeid="{{{id}}}"  data-guievt="click" data-handler="this.getBlock" data-args='{"id":"{{{id}}}"}'><i class="block-icon"></i><input type="checkbox"  data-guievt="checkbox" data-handler="treeView.selectBlock" data-args='{"id":"{{{id}}}"}'>{{{name}}}<i class="in-use"></i></span>
-                              {{/isLeaf}}    
+                              {{/isLeaf}}
                                 {{/items}}
                           </div>
                       {{/isFolder}}
                       {{#isLeaf}}
                         <span class="tree-view--leaf" data-nodeid="{{{id}}}"  data-guievt="click" data-handler="this.getBlock" data-args='{"id":"{{{id}}}"}'><i class="block-icon"></i><input type="checkbox"  data-guievt="checkbox" data-handler="treeView.selectBlock" data-args='{"id":"{{{id}}}"}'>{{{name}}}<i class="in-use"></i></span>
-                      {{/isLeaf}}    
+                      {{/isLeaf}}
                      {{/items}}
                   </div>
                 {{/isFolder}}
@@ -121,6 +124,7 @@ class WafleUITree {
               <div class="blocks-db"></div>
               </div>`;
   }
+
   toggle(root, folder) {
     let search = this.toggleFolderState(this.vtree, folder);
     if (search) {
@@ -176,6 +180,7 @@ class WafleUITree {
       }
     }
   }
+
   getBlock(root, args) {
     let item = {
       id: args.id,

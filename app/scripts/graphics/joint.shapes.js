@@ -3174,9 +3174,9 @@ joint.shapes.ice.WireView = joint.dia.LinkView.extend({
           );
         }
       }
-    }
 
-    /* jshint +W082 */
+      /* jshint +W082 */
+    }
 
     return this;
   },
