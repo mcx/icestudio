@@ -6,7 +6,7 @@ joint.routers.ice = (function (g, _, joint) {
     perpendicular: true,
     excludeEnds: [],
     excludeTypes: ['ice.Info'],
-    maximumLoops: 300,
+    maximumLoops: 150,
     startDirections: ['right', 'bottom'],
     endDirections: ['left', 'top'],
     directionMap: {
@@ -143,7 +143,8 @@ ObstacleMap.prototype.isPointAccessible = function (point) {
     this.values[item] = value;
     // Note: sortedIndex from lodash would be hard to replace without significant change to the logic or performance
     // Here's a basic sort, but it's less efficient for large arrays
-    // I'm improving it with best algorithm like min-heap
+    // I'm improving it with best algorithm like min-heap, but need a lot of testing because only improve probably for
+    // large sets and for medium sets could be worsk, put on TODO because for now the improvement is hight.
     this.items.push(item);
     this.items.sort((a, b) => this.values[a] - this.values[b]);
   };
