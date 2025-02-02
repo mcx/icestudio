@@ -1,9 +1,16 @@
-2025-01-29 21:27 (GMT+1)
+2025-02-02 18:39 (GMT+1)
 ========================
 Type: WIP
 
 App Changes:
 
+  - Improve copy/paste blocks at top level with IO migration by @cavearr
+  - Node.js upgrade to 23.3.0 version by @cavearr
+  - NWJS upgrade to 0.95.0 version (latest stable) by @cavearr
+  - Improvement Speed of UI (>300% of speed) by @cavearr
+  - Prettier integration for automatic code formating on commits by @TimRudy
+  - Improve windows nwjs launcher integration in Windows OS by @TimRudy
+  - Cosmetic improvements (translations, language orders,etc) by @TimRudy
   - Better translatios for verilog importer by @TimRudy
   - Support for dynamic width on labels and IO Pins improving readability by @lmcapacho
   - Support for parametric IO pins by @cavearr
