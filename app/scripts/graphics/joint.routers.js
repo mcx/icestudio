@@ -55,76 +55,73 @@ joint.routers.ice = (function (g, _, joint) {
   ObstacleMap.prototype.build = function (graph, link) {
     var opt = this.options;
 
-    var excludedEnds = _.chain(opt.excludeEnds)
-      .map(link.get, link)
-      .pluck('id')
-      .map(graph.getCell, graph)
-      .value();
+    const excludedIds = new Set(
+      opt.excludeEnds
+        .map((end) => link.get(end))
+        .map((end) => end.id)
+        .map((id) => graph.getCell(id).id)
+    );
 
-    var excludedAncestors = [];
+    const excludedTypes = new Set(opt.excludeTypes);
 
-    var source = graph.getCell(link.get('source').id);
+    const excludedAncestors = new Set();
+
+    const source = graph.getCell(link.get('source').id);
     if (source) {
-      excludedAncestors = _.union(excludedAncestors, _.map(source.getAncestors(), 'id'));
+      source.getAncestors().forEach((ancestor) => excludedAncestors.add(ancestor.id));
     }
 
-    var target = graph.getCell(link.get('target').id);
+    const target = graph.getCell(link.get('target').id);
     if (target) {
-      excludedAncestors = _.union(excludedAncestors, _.map(target.getAncestors(), 'id'));
+      target.getAncestors().forEach((ancestor) => excludedAncestors.add(ancestor.id));
     }
 
-    var mapGridSize = this.mapGridSize;
-
-    var blockRectangles = _.chain(graph.getElements())
-      .difference(excludedEnds)
-      .reject(function (element) {
-        return (
-          _.contains(opt.excludeTypes, element.get('type')) ||
-          _.contains(excludedAncestors, element.id)
-        );
-      })
-      .invoke('getBBox')
-      .value();
-
-    var state = this.paper.options.getState();
-    var plabels = document.querySelectorAll('.port-label');
-    var labelRectangles = [];
-    var rect = false;
-    for (var i = 0, npl = plabels.length; i < npl; i++) {
-      rect = V(plabels[i]).bbox();
-      labelRectangles.push(
-        g.rect({
-          x: (rect.x - state.pan.x) / state.zoom,
-          y: (rect.y - state.pan.y) / state.zoom,
-          width: rect.width / state.zoom,
-          height: rect.height / state.zoom,
-        })
+    const filteredElements = graph.getElements().filter((element) => {
+      return (
+        !excludedIds.has(element.id) &&
+        !excludedTypes.has(element.get('type')) &&
+        !excludedAncestors.has(element.id)
       );
-    }
+    });
 
-    var x, y, origin, corner;
-    _.chain(blockRectangles.concat(labelRectangles))
-      .invoke('moveAndExpand', opt.paddingBox)
-      .foldl(function (map, bbox) {
-        origin = bbox.origin().snapToGrid(mapGridSize);
-        corner = bbox.corner().snapToGrid(mapGridSize);
+    const blockRectangles = filteredElements.map((element) => element.getBBox());
 
-        for (x = origin.x; x <= corner.x; x += mapGridSize) {
-          for (y = origin.y; y <= corner.y; y += mapGridSize) {
-            var gridKey = x + '@' + y;
-            map[gridKey] = map[gridKey] || [];
-            map[gridKey].push(bbox);
+    const state = this.paper.options.getState();
+    const plabels = document.querySelectorAll('.port-label');
+    const labelRectangles = Array.from(plabels).map((label) => {
+      const rect = V(label).bbox();
+      return g.rect({
+        x: (rect.x - state.pan.x) / state.zoom,
+        y: (rect.y - state.pan.y) / state.zoom,
+        width: rect.width / state.zoom,
+        height: rect.height / state.zoom,
+      });
+    });
+
+    //-- Building the obstacle map
+    const mapGridSize = this.mapGridSize;
+    const allRectangles = blockRectangles.concat(labelRectangles);
+
+    allRectangles.forEach((bbox) => {
+        const padding = opt.paddingBox();
+        const paddedBbox = bbox.moveAndExpand(padding); 
+        const origin = paddedBbox.origin().snapToGrid(mapGridSize);
+        const corner = paddedBbox.corner().snapToGrid(mapGridSize);
+
+        for (let x = origin.x; x <= corner.x; x += mapGridSize) {
+          for (let y = origin.y; y <= corner.y; y += mapGridSize) {
+            const gridKey = `${x}@${y}`;
+            this.map[gridKey] = this.map[gridKey] || [];
+            this.map[gridKey].push(paddedBbox);
           }
         }
-
-        return map;
-      }, this.map)
-      .value();
+    });
 
     return this;
   };
 
-  ObstacleMap.prototype.isPointAccessible = function (point) {
+
+ObstacleMap.prototype.isPointAccessible = function (point) {
     var mapKey = point.clone().snapToGrid(this.mapGridSize).toString();
     return _.every(this.map[mapKey], function (obstacle) {
       return !obstacle.containsPoint(point);
@@ -372,24 +369,35 @@ joint.routers.ice = (function (g, _, joint) {
   }
 
   function resolveOptions(opt) {
-    opt.directions = _.result(opt, 'directions');
-    opt.penalties = _.result(opt, 'penalties');
-    opt.paddingBox = _.result(opt, 'paddingBox');
+    opt.directions = typeof opt.directions === 'function' ? opt.directions() : opt.directions;
+    opt.penalties = typeof opt.penalties === 'function' ? opt.penalties() : opt.penalties;
+    opt.paddingBox = typeof opt.paddingBox === 'function' ? opt.paddingBox : function() {
+        var step = 2;
+        return {
+            x: -step,
+            y: -step,
+            width: 2 * step,
+            height: 2 * step,
+        };
+    };
 
     for (var i = 0, no = opt.directions.length; i < no; i++) {
-      var point1 = g.point(0, 0);
-      var point2 = g.point(
-        opt.directions[i].offsetX,
-        opt.directions[i].offsetY
-      );
+        var point1 = g.point(0, 0);
+        var point2 = g.point(
+            opt.directions[i].offsetX,
+            opt.directions[i].offsetY
+        );
 
-      opt.directions[i].angle = g.normalizeAngle(point1.theta(point2));
+        opt.directions[i].angle = g.normalizeAngle(point1.theta(point2));
     }
-  }
+}
 function router(vertices, opt, linkView) {
   resolveOptions(opt);
 
-  // Usar linkView en lugar de this
+  //-- Important bug fixed, maintain this comment for some time to 
+  //-- remember that. I'm removing "this" because we use "strict" and "this"
+  //-- in this context could be "undefined"
+  //--
   linkView.options.perpendicular = !!opt.perpendicular;
 
   linkView.sourceBBox.x += linkView.sourceBBox.width / 2;
