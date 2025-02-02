@@ -1,7 +1,7 @@
 {
   "name": "icestudio",
   "flavour": "develop",
-  "version": "0.13.2w",
+  "version": "0.13.3w",
   "description": "Visual editor for open FPGA boards",
   "contributors": [
     {
@@ -50,7 +50,7 @@
   },
   "collection": "0.4.1",
   "engines": {},
-  "node": ">= 21.1.0",
+  "node": ">= 23.3.0",
   "dependencies": {
     "ace-builds": "~1.37.5",
     "adm-zip": "0.4.16",

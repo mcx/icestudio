@@ -42,7 +42,7 @@ angular.module('icestudio').service(
       if (autorouting === false) {
         autorouting = true;
         $('body').on('Graph::updateWires', function () {
-          _this.route();
+         // _this.route();
         });
       }
     };
@@ -77,6 +77,7 @@ angular.module('icestudio').service(
         y: 0,
       },
       zoom: ZOOM_INI,
+      forceMutate:false
     };
 
     //-- Current view state: Position and Zoom
@@ -524,13 +525,13 @@ function isElementInViewport(elementBBox, viewport) {
         }
       });
 
-      $('body').mousemove(function (event) {
+     /* $('body').mousemove(function (event) {
         mousePosition = {
           x: event.pageX,
           y: event.pageY,
         };
       });
-
+*/
       selectionView.on('selection-box:pointerdown', function (/*evt*/) {
         // Move selection to top view
         if (hasSelection()) {
@@ -567,6 +568,7 @@ function isElementInViewport(elementBBox, viewport) {
       });
 
       paper.on('cell:pointerclick', function (cellView, evt, x, y) {
+        
         if (!checkInsideViewBox(cellView, x, y)) {
           // Out of the view box
           return;
@@ -726,16 +728,16 @@ function isElementInViewport(elementBBox, viewport) {
         }, 200);
       });
 
-      paper.on('cell:pointermove', function (cellView /*, evt*/) {
+    paper.on('cell:pointermove', function (cellView ) {
         debounceDisableReplacedBlock(cellView.model);
       });
 
-      selectionView.on('selection-box:pointermove', function (/*evt*/) {
+
+      selectionView.on('selection-box:pointermove', function () {
         if (self.addingDraggableBlock && hasSelection()) {
           debounceDisableReplacedBlock(selection.at(0));
         }
       });
-
       function processReplaceBlock(upperBlock) {
         var lowerBlock = findLowerBlock(upperBlock);
         replaceBlock(upperBlock, lowerBlock);
@@ -959,6 +961,7 @@ function isElementInViewport(elementBBox, viewport) {
           }
         }
       });
+  
 
       graph.on('remove', function (cell) {
         if (cell.isLink()) {
@@ -970,6 +973,7 @@ function isElementInViewport(elementBBox, viewport) {
           updatePortDefault(target, true);
         }
       });
+
 
       function updatePortDefault(target, value) {
         if (target) {
@@ -1635,6 +1639,7 @@ function isElementInViewport(elementBBox, viewport) {
           commandManager.listen();
         }
         self.fitContent();
+        //-- maintain autorouting disabled for the moment because there is overlapped routings
         self.enableAutoRouting();
         self.route();
         if (callback) {

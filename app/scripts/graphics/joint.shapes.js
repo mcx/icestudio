@@ -207,9 +207,9 @@ function placementCssTasks(selector, bbox, state, queue) {
       }
     }
   }
-  requestAnimationFrame(applyCSSChanges);
+  //requestAnimationFrame(applyCSSChanges);
+  applyCSSChanges();
 
-  // console.log('CSS Q',queue);
   return queue;
 }
 
@@ -492,7 +492,7 @@ joint.shapes.ice.ModelView = joint.dia.ElementView.extend({
     this.model.on('change', this.updateBox, this);
     this.model.on('remove', this.removeBox, this);
 
-    this.updateBox(true);
+    this.updateBox();
 
     this.listenTo(this.model, 'process:ports', this.update);
   },
@@ -595,7 +595,7 @@ joint.shapes.ice.ModelView = joint.dia.ElementView.extend({
   render: function () {
     joint.dia.ElementView.prototype.render.apply(this, arguments);
     this.paper.$el.append(this.$box);
-    this.updateBox(true);
+    this.updateBox();
     return this;
   },
 
@@ -654,7 +654,10 @@ joint.shapes.ice.ModelView = joint.dia.ElementView.extend({
     joint.dia.ElementView.prototype.update.apply(this, arguments);
   },
 
-  updateBox: function () {},
+  updateBox: function () {
+
+
+  },
 
   removeBox: function (/*event*/) {
     this.$box.remove();
@@ -821,20 +824,26 @@ joint.shapes.ice.GenericView = joint.shapes.ice.ModelView.extend({
         );
       }
     }
-    this.updateBox(true);
+    this.updateBox();
   },
   place: placementCssTasks,
-  updateBox: function (forceMutate = false) {
+  onUpdating:false,
+  initialized:false,
+  updateBox: function () {
+  if(this.onUpdating === false){
+  this.onUpdating=true;
     let pendingTasks = [];
     let i, port;
     const bbox = this.model.getBBox();
+
     let data = this.model.get('data');
     const state = this.model.get('state');
     const rules = this.model.get('rules');
     const leftPorts = this.model.get('leftPorts');
     const rightPorts = this.model.get('rightPorts');
     const modelId = this.model.id;
-    if (state.mutateZoom || forceMutate) {
+    if (state.mutateZoom || state.forceMutate || this.initialized===false) {
+      this.initialized=true;
       // Render ports width
       let width = WIRE_WIDTH * state.zoom;
       // var pwires = this.$el[0].getElementsByClassName("port-wire");
@@ -954,7 +963,11 @@ joint.shapes.ice.GenericView = joint.shapes.ice.ModelView.extend({
         }
       }
     }
+
+    this.onUpdating=false;
     return this.place('.generic-content', bbox, state, pendingTasks);
+    }
+    return false;
   },
 });
 
@@ -1206,7 +1219,7 @@ joint.shapes.ice.IOView = joint.shapes.ice.ModelView.extend({
       }
     });
 
-    this.updateBox(true);
+    this.updateBox();
 
     this.updating = false;
 
@@ -1292,7 +1305,6 @@ joint.shapes.ice.IOView = joint.shapes.ice.ModelView.extend({
       this.fpgaContentSelector.removeClass('hidden');
       if (data.pins) {
         this.model.attributes.size.height = 32 + 32 * data.pins.length;
-        //console.log('SELECT', this.model.attributes.size.height);
       }
     }
   },
@@ -1339,7 +1351,6 @@ joint.shapes.ice.IOView = joint.shapes.ice.ModelView.extend({
   updateBox: function () {
     const size = this.model.get('size');
     this.virtualContentSelector.width(size.width);
-
     var pendingTasks = [];
     var i, j, port;
     var bbox = this.model.getBBox();
@@ -1533,7 +1544,7 @@ joint.shapes.ice.ConstantView = joint.shapes.ice.ModelView.extend({
       event.stopPropagation();
     });
 
-    this.updateBox(true);
+    this.updateBox();
 
     this.updating = false;
 
@@ -1594,7 +1605,8 @@ joint.shapes.ice.ConstantView = joint.shapes.ice.ModelView.extend({
 
   place: placementCssTasks,
   updateBox: function () {
-    const size = this.model.get('size');
+  
+  const size = this.model.get('size');
     this.contentSelector.width(size.width);
     this.inputSelector.width(Math.round(size.width * 0.8));
     let bbox = this.model.getBBox();
@@ -1718,7 +1730,7 @@ joint.shapes.ice.MemoryView = joint.shapes.ice.ModelView.extend({
       event.stopPropagation();
     });
 
-    this.updateBox(true);
+    this.updateBox();
 
     this.updating = false;
     this.prevZoom = 0;
@@ -1875,6 +1887,7 @@ joint.shapes.ice.MemoryView = joint.shapes.ice.ModelView.extend({
   },
 
   updateBox: function () {
+    
     var bbox = this.model.getBBox();
     var data = this.model.get('data');
     var state = this.model.get('state');
@@ -2036,7 +2049,7 @@ joint.shapes.ice.CodeView = joint.shapes.ice.ModelView.extend({
       event.stopPropagation();
     });
 
-    this.updateBox(true);
+    this.updateBox();
 
     this.updating = false;
     this.prevZoom = 0;
@@ -2185,6 +2198,7 @@ joint.shapes.ice.CodeView = joint.shapes.ice.ModelView.extend({
   },
 
   updateBox: function () {
+    
     var pendingTasks = [];
     var i, j, port, portDefault, tokId, paths, rects, dome, anotations;
     var bbox = this.model.getBBox();
@@ -2514,7 +2528,7 @@ joint.shapes.ice.InfoView = joint.shapes.ice.ModelView.extend({
       event.stopPropagation();
     });
 
-    this.updateBox(true);
+    this.updateBox();
 
     this.updating = false;
     this.deltas = [];
