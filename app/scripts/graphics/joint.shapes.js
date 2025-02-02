@@ -842,7 +842,13 @@ joint.shapes.ice.GenericView = joint.shapes.ice.ModelView.extend({
     const leftPorts = this.model.get('leftPorts');
     const rightPorts = this.model.get('rightPorts');
     const modelId = this.model.id;
-    if (state.mutateZoom || state.forceMutate || this.initialized===false) {
+
+    //-- temporalBypass permit for the momment bypass the optimal filter,
+    //-- In the first render state not work properly and the render not works 
+    //-- correctly, until this is fixed, bypass the optimization
+    //--
+    let temporalBypass=true;
+    if (temporalBypass || state.mutateZoom || state.forceMutate || this.initialized===false) {
       this.initialized=true;
       // Render ports width
       let width = WIRE_WIDTH * state.zoom;

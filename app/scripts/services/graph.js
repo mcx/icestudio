@@ -30,6 +30,34 @@ angular.module('icestudio').service(
     let autorouting = false;
     let isRouting = false;
 
+    let mousePosition = { x: 0, y: 0 };
+ 
+        /*-- This event flood the task queue,and throttle techniches not work accurate as needed,for this 
+         *  i replace this capture method for on demand capture function based on non blocking promise
+         *
+         *  $('body').mousemove(function (event) {
+        mousePosition = {
+          x: event.pageX,
+          y: event.pageY,
+        };
+      });
+--*/
+
+
+let needsUpdate = true;
+
+document.addEventListener("mousemove", (event) => {
+  if (needsUpdate) {
+    needsUpdate = false;
+    requestAnimationFrame(() => {
+      mousePosition.x = event.pageX;
+      mousePosition.y = event.pageY;
+      needsUpdate = true; // Permitimos la siguiente actualización
+    });
+  }
+});
+
+     
     this.route = function () {
       if (!isRouting) {
         isRouting = true;
@@ -42,7 +70,7 @@ angular.module('icestudio').service(
       if (autorouting === false) {
         autorouting = true;
         $('body').on('Graph::updateWires', function () {
-         // _this.route();
+          _this.route();
         });
       }
     };
@@ -99,7 +127,6 @@ angular.module('icestudio').service(
     let selection = null;
     let selectionView = null;
     let commandManager = null;
-    let mousePosition = { x: 0, y: 0 };
     let gridsize = 8;
 
     let self = this;
@@ -525,14 +552,8 @@ function isElementInViewport(elementBBox, viewport) {
         }
       });
 
-     /* $('body').mousemove(function (event) {
-        mousePosition = {
-          x: event.pageX,
-          y: event.pageY,
-        };
-      });
-*/
-      selectionView.on('selection-box:pointerdown', function (/*evt*/) {
+      
+           selectionView.on('selection-box:pointerdown', function (/*evt*/) {
         // Move selection to top view
         if (hasSelection()) {
           selection.each(function (cell) {
@@ -1187,6 +1208,8 @@ function isElementInViewport(elementBBox, viewport) {
     this.addDraggableCell = function (cell) {
       this.addingDraggableBlock = true;
       let menuHeight = $('#menu').height();
+
+
       cell.set('position', {
         x:
           Math.round(
@@ -1211,12 +1234,18 @@ function isElementInViewport(elementBBox, viewport) {
         clientX: mousePosition.x,
         clientY: mousePosition.y,
       });
+
+
+     
     };
 
     this.addDraggableCells = function (cells) {
       this.addingDraggableBlock = true;
       let menuHeight = $('#menu').height();
       if (cells.length > 0) {
+
+
+
         let firstCell = cells[0];
         let offset = {
           x:
@@ -1255,6 +1284,8 @@ function isElementInViewport(elementBBox, viewport) {
           clientX: mousePosition.x,
           clientY: mousePosition.y,
         });
+
+
       }
     };
 
@@ -1848,6 +1879,32 @@ function isElementInViewport(elementBBox, viewport) {
       return cells;
     }
 
+this.isTopLevel=function(){
+
+  return (this.breadcrumbs.length<2);
+};
+
+this.convertIOtoTop = function (design) {
+  if (this.isTopLevel()) {
+    design.graph.blocks = design.graph.blocks
+      .filter((block) => {
+        if (block.type === "basic.input" || block.type === "basic.output") {
+          if (block.data.clock === true) { return false;}
+
+          block.virtual = false;
+          block.data.pins = block.data.pins ?? 
+            Array.from({ length: block.data.size ?? 1 }, (_, p) => ({
+              index: `${p}`,
+              name: "NULL",
+              value: "NULL",
+            }));
+        }        
+        return true;
+      });
+  }
+  design.board=common.selectedBoard.name;
+  return design;
+};
     this.appendDesign = function (design, dependencies) {
       if (
         design &&
@@ -1856,6 +1913,7 @@ function isElementInViewport(elementBBox, viewport) {
         design.graph.blocks &&
         design.graph.wires
       ) {
+
         selectionView.cancelSelection();
         // Merge dependencies
         for (let type in dependencies) {
@@ -1863,6 +1921,8 @@ function isElementInViewport(elementBBox, viewport) {
             common.allDependencies[type] = dependencies[type];
           }
         }
+      
+        design=this.convertIOtoTop(design);
 
         // Append graph cells: blocks and wires
         // - assign new UUIDs to the cells
@@ -1902,7 +1962,8 @@ function isElementInViewport(elementBBox, viewport) {
             cellView.updateBox(true);
           }
         });
-      }
+
+     }
     };
 
     function graphOrigin(graph) {
