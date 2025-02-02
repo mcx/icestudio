@@ -98,7 +98,7 @@ joint.routers.ice = (function (g, _, joint) {
       });
     });
 
-    //-- Building the obstacle map
+    // Building the obstacle map
     const mapGridSize = this.mapGridSize;
     const allRectangles = blockRectangles.concat(labelRectangles);
 
@@ -120,8 +120,7 @@ joint.routers.ice = (function (g, _, joint) {
     return this;
   };
 
-
-ObstacleMap.prototype.isPointAccessible = function (point) {
+  ObstacleMap.prototype.isPointAccessible = function (point) {
     var mapKey = point.clone().snapToGrid(this.mapGridSize).toString();
     return _.every(this.map[mapKey], function (obstacle) {
       return !obstacle.containsPoint(point);
@@ -274,19 +273,18 @@ ObstacleMap.prototype.isPointAccessible = function (point) {
       endPoints = [endCenter];
     }
 
-    startPoints = _.filter(startPoints, map.isPointAccessible, map);
-    endPoints = _.filter(endPoints, map.isPointAccessible, map);
+startPoints = startPoints.filter(map.isPointAccessible.bind(map));
+endPoints = endPoints.filter(map.isPointAccessible.bind(map));
 
     if (startPoints.length > 0 && endPoints.length > 0) {
       var openSet = new SortedSet();
       var parents = {};
       var costs = {};
-
-      _.each(startPoints, function (point) {
-        var key = point.toString();
-        openSet.add(key, estimateCost(point, endPoints));
-        costs[key] = 0;
-      });
+for (let point of startPoints) {
+    const key = point.toString();
+    openSet.add(key, estimateCost(point, endPoints));
+    costs[key] = 0;
+}
 
       var dir, dirChange;
       var dirs = opt.directions;
@@ -381,6 +379,12 @@ ObstacleMap.prototype.isPointAccessible = function (point) {
         };
     };
 
+    // Precompute normalized directions
+    opt.directions = opt.directions.map(dir => ({ 
+      ...dir, 
+      norm: normalizePoint(g.point(dir.offsetX, dir.offsetY)) 
+    }));
+
     for (var i = 0, no = opt.directions.length; i < no; i++) {
         var point1 = g.point(0, 0);
         var point2 = g.point(
@@ -390,93 +394,93 @@ ObstacleMap.prototype.isPointAccessible = function (point) {
 
         opt.directions[i].angle = g.normalizeAngle(point1.theta(point2));
     }
-}
-function router(vertices, opt, linkView) {
-  resolveOptions(opt);
+  }
 
-  //-- Important bug fixed, maintain this comment for some time to 
-  //-- remember that. I'm removing "this" because we use "strict" and "this"
-  //-- in this context could be "undefined"
-  //--
-  linkView.options.perpendicular = !!opt.perpendicular;
+  function router(vertices, opt, linkView) {
+    resolveOptions(opt);
 
-  linkView.sourceBBox.x += linkView.sourceBBox.width / 2;
-  linkView.sourceBBox.y += linkView.sourceBBox.height / 2;
-  linkView.sourceBBox.width = 0;
-  linkView.sourceBBox.height = 0;
+    // Important bug fixed, maintain this comment for some time to 
+    // remember that. I'm removing "this" because we use "strict" and "this"
+    // in this context could be "undefined"
+    linkView.options.perpendicular = !!opt.perpendicular;
 
-  linkView.targetBBox.x += linkView.targetBBox.width / 2;
-  linkView.targetBBox.y += linkView.targetBBox.height / 2;
-  linkView.targetBBox.width = 0;
-  linkView.targetBBox.height = 0;
+    linkView.sourceBBox.x += linkView.sourceBBox.width / 2;
+    linkView.sourceBBox.y += linkView.sourceBBox.height / 2;
+    linkView.sourceBBox.width = 0;
+    linkView.sourceBBox.height = 0;
 
-  var sourceBBox = g.rect(linkView.sourceBBox);
-  var targetBBox = g.rect(linkView.targetBBox);
+    linkView.targetBBox.x += linkView.targetBBox.width / 2;
+    linkView.targetBBox.y += linkView.targetBBox.height / 2;
+    linkView.targetBBox.width = 0;
+    linkView.targetBBox.height = 0;
 
-  var map = new ObstacleMap(opt, linkView.paper).build(
-    linkView.paper.model,
-    linkView.model
-  );
-  var oldVertices = _.map(vertices, g.point);
-  var newVertices = [];
-  var tailPoint = sourceBBox.center().snapToGrid(opt.step);
+    var sourceBBox = g.rect(linkView.sourceBBox);
+    var targetBBox = g.rect(linkView.targetBBox);
 
-  var from;
-  var to;
+    var map = new ObstacleMap(opt, linkView.paper).build(
+      linkView.paper.model,
+      linkView.model
+    );
+    var oldVertices = _.map(vertices, g.point);
+    var newVertices = [];
+    var tailPoint = sourceBBox.center().snapToGrid(opt.step);
 
-  for (var i = 0, len = oldVertices.length; i <= len; i++) {
-    var partialRoute = null;
+    var from;
+    var to;
 
-    from = to || sourceBBox;
-    to = oldVertices[i];
+    for (var i = 0, len = oldVertices.length; i <= len; i++) {
+      var partialRoute = null;
 
-    if (!to) {
-      to = targetBBox;
+      from = to || sourceBBox;
+      to = oldVertices[i];
 
-      var endingAtPoint =
-        !linkView.model.get('source').id || !linkView.model.get('target').id;
+      if (!to) {
+        to = targetBBox;
 
-      if (endingAtPoint && _.isFunction(opt.draggingRoute)) {
-        var dragFrom = from instanceof g.rect ? from.center() : from;
-        partialRoute = opt.draggingRoute(dragFrom, to.origin(), opt);
-      }
-    }
+        var endingAtPoint =
+          !linkView.model.get('source').id || !linkView.model.get('target').id;
 
-    partialRoute = partialRoute || findRoute(from, to, map, opt);
-
-    if (partialRoute === null) {
-      if (!_.isFunction(joint.routers.orthogonal)) {
-        throw new Error('Manhattan requires the orthogonal router.');
+        if (endingAtPoint && _.isFunction(opt.draggingRoute)) {
+          var dragFrom = from instanceof g.rect ? from.center() : from;
+          partialRoute = opt.draggingRoute(dragFrom, to.origin(), opt);
+        }
       }
 
-      return joint.routers.orthogonal(vertices, opt, linkView);
+      partialRoute = partialRoute || findRoute(from, to, map, opt);
+
+      if (partialRoute === null) {
+        if (!_.isFunction(joint.routers.orthogonal)) {
+          throw new Error('Manhattan requires the orthogonal router.');
+        }
+
+        return joint.routers.orthogonal(vertices, opt, linkView);
+      }
+
+      var leadPoint = _.first(partialRoute);
+
+      if (leadPoint && leadPoint.equals(tailPoint)) {
+        partialRoute.shift();
+      }
+
+      tailPoint = _.last(partialRoute) || tailPoint;
+
+      Array.prototype.push.apply(newVertices, partialRoute);
     }
 
-    var leadPoint = _.first(partialRoute);
+    return newVertices;
+  }
 
-    if (leadPoint && leadPoint.equals(tailPoint)) {
-      partialRoute.shift();
+  return function (vertices, opt, linkView) {
+    if (linkView.sourceMagnet) {
+      opt.startDirections = [linkView.sourceMagnet.attributes.pos.value];
     }
 
-    tailPoint = _.last(partialRoute) || tailPoint;
+    if (linkView.targetMagnet) {
+      opt.endDirections = [linkView.targetMagnet.attributes.pos.value];
+    }
 
-    Array.prototype.push.apply(newVertices, partialRoute);
-  }
-
-  return newVertices;
-}
-
-return function (vertices, opt, linkView) {
-  if (linkView.sourceMagnet) {
-    opt.startDirections = [linkView.sourceMagnet.attributes.pos.value];
-  }
-
-  if (linkView.targetMagnet) {
-    opt.endDirections = [linkView.targetMagnet.attributes.pos.value];
-  }
-
-  return router(vertices, _.extend({}, config, opt), linkView);
-};
-
+    return router(vertices, _.extend({}, config, opt), linkView);
+  };
 
 })(g, _, joint);
+
