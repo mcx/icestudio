@@ -437,22 +437,22 @@ joint.shapes.ice.Model = joint.shapes.basic.Generic.extend({
 
     switch (type) {
       case 'left':
-        attrs[portSelector]['ref-x'] = -8;
+        attrs[portSelector]['ref-x'] = -16;
         attrs[portSelector]['ref-y'] = position;
-        attrs[portLabelSelector]['dx'] = 4;
+        attrs[portLabelSelector]['dx'] = 0;
         attrs[portLabelSelector]['y'] = -5 - offset;
         attrs[portLabelSelector]['text-anchor'] = 'end';
         attrs[portWireSelector]['y'] = position;
-        attrs[portWireSelector]['d'] = 'M 0 0 L 8 0';
+        attrs[portWireSelector]['d'] = 'M 0 0 L 16 0';
         break;
       case 'right':
-        attrs[portSelector]['ref-dx'] = 8;
+        attrs[portSelector]['ref-dx'] =16;
         attrs[portSelector]['ref-y'] = position;
-        attrs[portLabelSelector]['dx'] = -4;
+        attrs[portLabelSelector]['dx'] = 0;
         attrs[portLabelSelector]['y'] = -5 - offset;
         attrs[portLabelSelector]['text-anchor'] = 'start';
         attrs[portWireSelector]['y'] = position;
-        attrs[portWireSelector]['d'] = 'M 0 0 L -8 0';
+        attrs[portWireSelector]['d'] = 'M 0 0 L -16 0';
         break;
       case 'top':
         attrs[portSelector]['ref-y'] = -8;
@@ -2739,13 +2739,15 @@ joint.shapes.ice.InfoView = joint.shapes.ice.ModelView.extend({
     joint.dia.ElementView.prototype.update.apply(this, arguments);
   },
 
-  updateBox: function (forceMutate = false) {
+  updateBox: function () {
     var bbox = this.model.getBBox();
     var state = this.model.get('state');
     var data = this.model.get('data');
 
-    if (state.mutateZoom || forceMutate) {
-      if (data.readonly) {
+    //if (state.mutateZoom || forceMutate) {
+     let temporalBypass=true;
+    if (temporalBypass ){   
+    if (data.readonly) {
         // Scale render
         this.renderSelector.css({
           'left': Math.round((bbox.width / 2.0) * (state.zoom - 1)),
@@ -2877,9 +2879,11 @@ joint.shapes.ice.Wire = joint.dia.Link.extend({
           'stroke': '#777',
         },
       },
+  //router: { name: 'manhattan' }, // ✅ Ahora usa Manhattan
+   // connector: { name: 'normal' }, // Puedes mantener normal o cambiarlo
 
-      router: { name: 'ice' },
-      connector: { name: 'ice' },
+     router: { name: 'ice' },
+     connector: { name: 'ice' },
     },
     joint.dia.Link.prototype.defaults
   ),
@@ -2920,7 +2924,7 @@ joint.shapes.ice.WireView = joint.dia.LinkView.extend({
 
       self.updateWireProperties(size);
       self.updateBifurcations();
-    }, 0);
+    }, 100);
   },
 
   apply: function () {

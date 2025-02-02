@@ -280,6 +280,7 @@ document.addEventListener("mousemove", (event) => {
         //markAvailable: true,
         getState: this.getState,
         defaultLink: new joint.shapes.ice.Wire(),
+        //
         // guard: function(evt, view) vg
         //   // FALSE means the event isn't guarded.
         //   return false;
@@ -574,6 +575,7 @@ function isElementInViewport(elementBBox, viewport) {
             self.addingDraggableBlock = false;
             processReplaceBlock(selection.at(0));
             disableSelected();
+            
             updateWiresOnObstacles().then(() => {
               graph.trigger('batch:stop');
             });
