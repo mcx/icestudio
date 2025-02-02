@@ -869,7 +869,7 @@ module.exports = function (grunt) {
         command: [
 
           //-- Create a temp DIR
-          `mkdir "${DIST_ICESTUDIO_WIN64}/resources/images"`,
+          `mkdir -p "${DIST_ICESTUDIO_WIN64}/resources/images"`,
 
           //-- Uncompress the NW-dist package
           `cp ${WIN_ICON} ${DIST_ICESTUDIO_WIN64}/resources/images`,
