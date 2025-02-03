@@ -1,4 +1,4 @@
-
+  
 joint.routers.ice = (function (g, _, joint) {
 
   'use strict';
@@ -19,7 +19,7 @@ step: 8,
 
     // if number of route finding loops exceed the maximum, stops searching and returns
     // fallback route
-    maximumLoops: 1000,
+    maximumLoops: 820,  //2000
 
     // possible starting directions from an element
     startDirections: ['right', 'bottom'],
@@ -77,15 +77,15 @@ step: 8,
     // * Deprecated *
     // a simple route used in situations, when main routing method fails
     // (exceed loops, inaccessible).
-    /* i.e.
-      function(from, to, opts) {
-        // Find an orthogonal route ignoring obstacles.
-        var point = ((opts.previousDirAngle || 0) % 180 === 0)
-                ? g.point(from.x, to.y)
-                : g.point(to.x, from.y);
-        return [point, to];
-      },
-    */
+    // i.e.
+    //  function(from, to, opts) {
+    //    // Find an orthogonal route ignoring obstacles.
+    //    var point = ((opts.previousDirAngle || 0) % 180 === 0)
+    //            ? g.point(from.x, to.y)
+    //            : g.point(to.x, from.y);
+    //    return [point, to];
+    //  },
+
     fallbackRoute: _.constant(null),
 
     // if a function is provided, it's used to route the link while dragging an end
@@ -163,15 +163,15 @@ step: 8,
 
     }
     
-   /* var labelRectangles = $('.port-label').map(function (index, node) {
-      var rect = V(node).bbox();
-      return g.rect({
-        x: (rect.x - state.pan.x) / state.zoom,
-        y: (rect.y - state.pan.y) / state.zoom,
-        width: rect.width / state.zoom,
-        height: rect.height / state.zoom
-      });
-    }).toArray();*/
+   // var labelRectangles = $('.port-label').map(function (index, node) {
+   //   var rect = V(node).bbox();
+   //   return g.rect({
+   //     x: (rect.x - state.pan.x) / state.zoom,
+   //     y: (rect.y - state.pan.y) / state.zoom,
+   //     width: rect.width / state.zoom,
+   //     height: rect.height / state.zoom
+   //   });
+   // }).toArray();
 
     var x,y,origin,corner;
     // Add all rectangles to the map's grid
@@ -413,10 +413,10 @@ step: 8,
         var currentPoint = g.point(currentKey);
         var currentDist = costs[currentKey];
         previousDirAngle = currentDirAngle;
-        /* jshint -W116 */
+        // jshint -W116 
         currentDirAngle = parents[currentKey] ? getDirectionAngle(parents[currentKey], currentPoint, dirLen)
           : opt.previousDirAngle != null ? opt.previousDirAngle : getDirectionAngle(startCenter, currentPoint, dirLen);
-        /* jshint +W116 */
+        // jshint +W116 
 
         // Check if we reached any endpoint
         if (endPointsKeys.indexOf(currentKey) >= 0) {
@@ -491,7 +491,7 @@ step: 8,
 
     resolveOptions(opt);
 
-    /* jshint -W040 */
+    // jshint -W040 
 
     // enable/disable linkView perpendicular option
     this.options.perpendicular = !!opt.perpendicular;
@@ -569,7 +569,7 @@ step: 8,
       Array.prototype.push.apply(newVertices, partialRoute);
     }
 
-    /* jshint +W040 */
+    // jshint +W040 
 
     return newVertices;
   }

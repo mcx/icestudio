@@ -273,6 +273,7 @@ document.addEventListener("mousemove", (event) => {
         height: 5000,
         model: graph,
         gridSize: gridsize,
+        interactive:true,
         clickThreshold: 6,
         snapLinks: { radius: 16 },
         linkPinning: false,
@@ -467,7 +468,7 @@ document.addEventListener("mousemove", (event) => {
       }
 
       let targetElement = element[0];
-
+      let zoomTimeout;
       this.panAndZoom = svgPanZoom(targetElement.childNodes[2], {
         fit: false,
         center: false,
@@ -479,14 +480,22 @@ document.addEventListener("mousemove", (event) => {
         maxZoom: ZOOM_MAX,
         eventsListenerElement: targetElement,
         onZoom: function (scale) {
+         graph.startBatch('batch-update'); 
           state.zoom = scale;
           state.mutateZoom = true;
           // Close expanded combo
           if (document.activeElement.className === 'select2-search__field') {
             $('select').select2('close');
           }
-          updateCellBoxes();
           state.mutateZoom = false;
+          //-- Optimization strategy, try to launch a timeout that is deleted 
+          //-- while user do the zoom, and when is finished, we is the only
+          //-- moment that routes are calculated.
+          clearTimeout(zoomTimeout); 
+           zoomTimeout = setTimeout(() => {
+          updateCellBoxes();
+          graph.stopBatch('batch-update');
+        }, 300); 
         },
         onPan: function (newPan) {
           state.pan = newPan;
@@ -969,7 +978,8 @@ function isElementInViewport(elementBBox, viewport) {
         disableReplacedBlock(lowerBlock);
       }, 100);
 
-      graph.on('add change:source change:target', function (cell) {
+
+           graph.on('add change:source change:target', function (cell) {
         if (cell.isLink() && cell.get('source').id) {
           // Link connected
           let target = cell.get('target');
