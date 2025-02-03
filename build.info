@@ -3,6 +3,7 @@
 Type: WIP
 
 App Changes:
+  - Fine tune zoom for slow cpus by @cavearr
   - Migration of I/O pins from virtual to physical at copy paste in top level by @cavearr
   - Improve zoom speed and routing algorithm  by @cavearr
   - Improve copy/paste blocks at top level with IO migration by @cavearr
