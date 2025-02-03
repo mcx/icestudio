@@ -81,9 +81,9 @@ document.addEventListener("mousemove", (event) => {
     };
 
     //-- ZOOM constants
-    const ZOOM_MAX = 2.1;
-    const ZOOM_MIN = 0.3;
-    const ZOOM_SENS = 0.3;
+    const ZOOM_MAX = 4;
+    const ZOOM_MIN = 0.1;
+    const ZOOM_SENS = 0.5;
     const ZOOM_INI = 1.0; //-- Initial zoom
 
     //-----------------------------------------------------------------------
