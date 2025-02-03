@@ -1,9 +1,9 @@
-2025-02-02 18:39 (GMT+1)
+2025-02-03 20:03 (GMT+1)
 ========================
 Type: WIP
 
 App Changes:
-
+  - Improve zoom speed and routing algorithm  by @cavearr
   - Improve copy/paste blocks at top level with IO migration by @cavearr
   - Node.js upgrade to 23.3.0 version by @cavearr
   - NWJS upgrade to 0.95.0 version (latest stable) by @cavearr
