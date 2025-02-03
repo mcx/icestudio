@@ -3,6 +3,7 @@
 Type: WIP
 
 App Changes:
+  - Migration of I/O pins from virtual to physical at copy paste in top level by @cavearr
   - Improve zoom speed and routing algorithm  by @cavearr
   - Improve copy/paste blocks at top level with IO migration by @cavearr
   - Node.js upgrade to 23.3.0 version by @cavearr
