@@ -1901,9 +1901,8 @@ this.convertIOtoTop = function (design) {
     design.graph.blocks = design.graph.blocks
       .filter((block) => {
         if (block.type === "basic.input" || block.type === "basic.output") {
-          if (block.data.clock === true) { return false;}
-
-          block.virtual = false;
+          if (typeof block.data.clock !== 'undefined' && block.data.clock === true) { return false;}
+          block.data.virtual = false;
           block.data.pins = block.data.pins ?? 
             Array.from({ length: block.data.size ?? 1 }, (_, p) => ({
               index: `${p}`,

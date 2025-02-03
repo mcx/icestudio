@@ -1245,7 +1245,6 @@ angular
                   if (result === 'cancel') {
                     return;
                   }
-                  console.log(callback,block);
                   callback(block);
                 });
               } else {
