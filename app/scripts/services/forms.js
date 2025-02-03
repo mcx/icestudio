@@ -3,17 +3,11 @@
 //---------------------------------------------------------------------------
 'use strict';
 
-//-- Disable the jshint Warning: "xxxx defined but never used"
-/* jshint unused:false */
-
-angular.module('icestudio')
-  .service('forms',
-    function (
-      gettextCatalog,
-      common,
-      blocks
-    ) {
-
+angular
+  .module('icestudio')
+  .service(
+    'forms',
+    function (gettextCatalog, common, profile, blocks, utils, nodeFs) {
       //---------------------------------------------------------
       //-- TEXTFIELD. It represents a Form Input text field
       //---------------------------------------------------------
@@ -22,10 +16,9 @@ angular.module('icestudio')
       //    text message
       //    +-----------------+
       //    | Input text      |
-      //    +-----------------+ 
-      //----------------------------------------------------------  
+      //    +-----------------+
+      //----------------------------------------------------------
       class TextField {
-
         //-----------------------------------------------------------------------
         //-- Input parameters:
         //--   * msg: Text place above the input box
@@ -33,7 +26,6 @@ angular.module('icestudio')
         //--   * formId: Form identification number
         //-----------------------------------------------------------------------
         constructor(msg, value, formId) {
-
           //-- Properties
           this.msg = msg;
           this.value = value;
@@ -45,26 +37,25 @@ angular.module('icestudio')
           //--  %ID% : Form identification number
           //--  %VALUE%: Default text value
           this.htmlTemplate = `
-        <p> %TEXT% </p>
-        <input class="ajs-input" 
-               type="text" 
-               id="form%ID%" 
-               value="%VALUE%"
-               autocomplete="off"/>
-      `;
+            <p> %TEXT% </p>
+            <input class="ajs-input"
+                  type="text"
+                  id="form%ID%"
+                  value="%VALUE%"
+                  autocomplete="off"/>
+          `;
         }
 
         //---------------------------------------------------------
         //-- Return a string whith the HTML code for this field
         //---------------------------------------------------------
         html() {
-
           //-- Generate the HTML code
 
           //-- Insert the parameters in the html code template
-          let html = this.htmlTemplate.replace("%TEXT%", this.msg);
-          html = html.replace("%VALUE%", this.value);
-          html = html.replace("%ID%", this.formId);
+          let html = this.htmlTemplate.replace('%TEXT%', this.msg);
+          html = html.replace('%VALUE%', this.value);
+          html = html.replace('%ID%', this.formId);
 
           return html;
         }
@@ -73,14 +64,20 @@ angular.module('icestudio')
         //-- Read the Field value
         //---------------------------------------------
         read() {
-
           //-- Read the value from the DOM
           let value = $(`#form${this.formId}`).val();
 
           return value;
         }
-      }
 
+        //---------------------------------------------
+        //-- Write a value to the Field
+        //---------------------------------------------
+        write(value) {
+          //-- Write the value to the DOM
+          $(`#form${this.formId}`).val(value);
+        }
+      }
 
       //-------------------------------------------------------------------------
       //--- CHECKBOX FIELD. Input checkbox field
@@ -91,7 +88,6 @@ angular.module('icestudio')
       //
       //-------------------------------------------------------------------------
       class CheckboxField {
-
         //-----------------------------------------------------------------------
         //-- Input parameters:
         //--   * Label: Text place to the right of the checkbox
@@ -100,7 +96,6 @@ angular.module('icestudio')
         //--   * disabled: If the checkbox is active or not
         //-----------------------------------------------------------------------
         constructor(label, value, formId, disabled = false) {
-
           //-- Properties
           this.label = label;
           this.value = value;
@@ -126,18 +121,18 @@ angular.module('icestudio')
         //-- Return a string whith the HTML code for this field
         //---------------------------------------------------------
         html() {
-
           //-- Create the disabled attribute
-          let disabled = this.disabled ? "disabled" : "";
+          let disabled = this.disabled ? 'disabled' : '';
 
           //-- Insert the parameters in the html code template
           let html = this.htmlTemplate.replace(
-            "%VALUE%",
-            (this.value ? 'checked' : ''));
+            '%VALUE%',
+            this.value ? 'checked' : ''
+          );
 
-          html = html.replace("%ID%", this.formId);
-          html = html.replace("%LABEL%", this.label);
-          html = html.replace("%DISABLED%", disabled);
+          html = html.replace('%ID%', this.formId);
+          html = html.replace('%LABEL%', this.label);
+          html = html.replace('%DISABLED%', disabled);
 
           return html;
         }
@@ -146,7 +141,6 @@ angular.module('icestudio')
         //-- Read the Field value
         //---------------------------------------------
         read() {
-
           //-- Read the value from the form i
           let value = $($('#form' + this.formId).prop('checked'));
           value = value[0] || false;
@@ -154,7 +148,6 @@ angular.module('icestudio')
           return value;
         }
       }
-
 
       //-------------------------------------------------------------------------
       //--- COLOR FIELD. Input color dropdown field
@@ -164,7 +157,7 @@ angular.module('icestudio')
       //      Text message
       //      +-----------------+
       //      | o Color       v |
-      //      +-----------------+  
+      //      +-----------------+
       //
       //-------------------------------------------------------------------------
 
@@ -180,7 +173,6 @@ angular.module('icestudio')
         //--   -A string with the HTML code for that Field
         //-----------------------------------------------------------------------
         constructor(msg, color) {
-
           //-- Properties
           this.msg = msg;
           this.color = color;
@@ -196,176 +188,176 @@ angular.module('icestudio')
           <label style ="font-weight:normal"> %TEXT% </label>
           <div class="lb-color--dropdown">
             <div class="lb-dropdown-title">
-      
+
               <!-- The current color is the one found in spec.color -->
               <span class="lb-selected-color color-%COLOR%"
                 data-color="%COLOR%"
-                data-name="%COLOR_NAME%"> 
-              </span> 
+                data-name="%COLOR_NAME%">
+              </span>
               %COLOR_NAME%
               <span class="lb-dropdown-icon"></span>
             </div>
-          
+
             <div class="lb-dropdown-menu">
-      
-            <div class="lb-dropdown-option" 
-              data-color="indianred" 
-              data-name="${this.getColorName("indianred")}">
+
+            <div class="lb-dropdown-option"
+              data-color="indianred"
+              data-name="${this.getColorName('indianred')}">
                 <span class="lb-option-color color-indianred">
                 </span>
-                ${this.getColorName("indianred")}
+                ${this.getColorName('indianred')}
             </div>
-            
-            <div class="lb-dropdown-option" 
-              data-color="red" 
-              data-name="${this.getColorName("red")}">
+
+            <div class="lb-dropdown-option"
+              data-color="red"
+              data-name="${this.getColorName('red')}">
                 <span class="lb-option-color color-red">
                 </span>
-                ${this.getColorName("red")}
+                ${this.getColorName('red')}
             </div>
-      
-            <div class="lb-dropdown-option" 
-              data-color="deeppink" 
-              data-name="${this.getColorName("deeppink")}">
+
+            <div class="lb-dropdown-option"
+              data-color="deeppink"
+              data-name="${this.getColorName('deeppink')}">
                 <span class="lb-option-color color-deeppink">
                 </span>
-                ${this.getColorName("deeppink")}
+                ${this.getColorName('deeppink')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="mediumvioletred"
-              data-name="${this.getColorName("mediumvioletred")}">
+              data-name="${this.getColorName('mediumvioletred')}">
                 <span class="lb-option-color color-mediumvioletred">
                 </span>
-                ${this.getColorName("mediumvioletred")}
+                ${this.getColorName('mediumvioletred')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="coral"
-              data-name="${this.getColorName("coral")}">
+              data-name="${this.getColorName('coral')}">
                 <span class="lb-option-color color-coral"></span>
-                ${this.getColorName("coral")}
+                ${this.getColorName('coral')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="orangered"
-              data-name="${this.getColorName("orangered")}">
+              data-name="${this.getColorName('orangered')}">
                 <span class="lb-option-color color-orangered"></span>
-                ${this.getColorName("orangered")}
+                ${this.getColorName('orangered')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="darkorange"
-              data-name="${this.getColorName("darkorange")}">
+              data-name="${this.getColorName('darkorange')}">
                 <span class="lb-option-color color-darkorange"></span>
-                ${this.getColorName("darkorange")}
+                ${this.getColorName('darkorange')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="gold"
-              data-name="${this.getColorName("gold")}">
+              data-name="${this.getColorName('gold')}">
                 <span class="lb-option-color color-gold"></span>
-                ${this.getColorName("gold")}
+                ${this.getColorName('gold')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="yellow"
-              data-name="${this.getColorName("yellow")}">
+              data-name="${this.getColorName('yellow')}">
                 <span class="lb-option-color color-yellow"></span>
-                ${this.getColorName("yellow")}
+                ${this.getColorName('yellow')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="fuchsia"
-              data-name=" ${this.getColorName("fuchsia")}">
+              data-name=" ${this.getColorName('fuchsia')}">
                 <span class="lb-option-color color-fuchsia"></span>
-                ${this.getColorName("fuchsia")}
+                ${this.getColorName('fuchsia')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="slateblue"
-              data-name="${this.getColorName("slateblue")}">
+              data-name="${this.getColorName('slateblue')}">
                 <span class="lb-option-color color-slateblue"></span>
-                ${this.getColorName("slateblue")}
+                ${this.getColorName('slateblue')}
             </div>
-            <div class="lb-dropdown-option" 
+            <div class="lb-dropdown-option"
               data-color="greenyellow"
-              data-name="${this.getColorName("greenyellow")}">
+              data-name="${this.getColorName('greenyellow')}">
                 <span class="lb-option-color color-greenyellow"></span>
-                ${this.getColorName("greenyellow")}
+                ${this.getColorName('greenyellow')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="springgreen"
-              data-name="${this.getColorName("springgreen")}">
+              data-name="${this.getColorName('springgreen')}">
                 <span class="lb-option-color color-springgreen"></span>
-                ${this.getColorName("springgreen")}
+                ${this.getColorName('springgreen')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="darkgreen"
-              data-name="${this.getColorName("darkgreen")}">
+              data-name="${this.getColorName('darkgreen')}">
                 <span class="lb-option-color color-darkgreen"></span>
-                ${this.getColorName("darkgreen")}
+                ${this.getColorName('darkgreen')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="olivedrab"
-              data-name="${this.getColorName("olivedrab")}">
+              data-name="${this.getColorName('olivedrab')}">
                 <span class="lb-option-color color-olivedrab">
                 </span>
-                ${this.getColorName("olivedrab")}
+                ${this.getColorName('olivedrab')}
             </div>
-      
-            <div class="lb-dropdown-option" 
-              data-color="lightseagreen" 
-              data-name="${this.getColorName("lightseagreen")}">
+
+            <div class="lb-dropdown-option"
+              data-color="lightseagreen"
+              data-name="${this.getColorName('lightseagreen')}">
                 <span class="lb-option-color color-lightseagreen"></span>
-                ${this.getColorName("lightseagreen")}
-            </div> 
-      
-            <div class="lb-dropdown-option" 
+                ${this.getColorName('lightseagreen')}
+            </div>
+
+            <div class="lb-dropdown-option"
               data-color="turquoise"
-              data-name="${this.getColorName("turquioise")}">
+              data-name="${this.getColorName('turquioise')}">
                 <span class="lb-option-color color-turquoise"></span>
-                ${this.getColorName("turquoise")}
+                ${this.getColorName('turquoise')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="steelblue"
-              data-name="${this.getColorName("steelblue")}">
+              data-name="${this.getColorName('steelblue')}">
                 <span class="lb-option-color color-steelblue"></span>
-                ${this.getColorName("steelblue")}
+                ${this.getColorName('steelblue')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="deepskyblue"
-              data-name="${this.getColorName("deepskyblue")}">
+              data-name="${this.getColorName('deepskyblue')}">
                 <span class="lb-option-color color-deepskyblue"></span>
-                ${this.getColorName("deepskyblue")}
+                ${this.getColorName('deepskyblue')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="royalblue"
-              data-name="${this.getColorName("royalblue")}">
+              data-name="${this.getColorName('royalblue')}">
                 <span class="lb-option-color color-royalblue"></span>
-                ${this.getColorName("royalblue")}
+                ${this.getColorName('royalblue')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="navy"
-              data-name="${this.getColorName("navy")}">
+              data-name="${this.getColorName('navy')}">
                 <span class="lb-option-color color-navy"></span>
-                ${this.getColorName("navy")}
+                ${this.getColorName('navy')}
             </div>
-      
-            <div class="lb-dropdown-option" 
+
+            <div class="lb-dropdown-option"
               data-color="lightgray"
-              data-name="${this.getColorName("lightgray")}">
+              data-name="${this.getColorName('lightgray')}">
                 <span class="lb-option-color color-lightgray"></span>
-                ${this.getColorName("lightgray")}
+                ${this.getColorName('lightgray')}
             </div>
-            
+
             </div>
           </div>
         </div>
@@ -380,70 +372,70 @@ angular.module('icestudio')
         //-------------------------------------------------------------------
         getColorName(color) {
           switch (color) {
-            case "fuchsia":
+            case 'fuchsia':
               return gettextCatalog.getString('Fuchsia');
 
-            case "indianred":
+            case 'indianred':
               return gettextCatalog.getString('Indian Red');
 
-            case "red":
+            case 'red':
               return gettextCatalog.getString('Red');
 
-            case "deeppink":
+            case 'deeppink':
               return gettextCatalog.getString('Deep Pink');
 
-            case "mediumvioletred":
+            case 'mediumvioletred':
               return gettextCatalog.getString('Medium Violet Red');
 
-            case "coral":
+            case 'coral':
               return gettextCatalog.getString('Coral');
 
-            case "orangered":
+            case 'orangered':
               return gettextCatalog.getString('Orange Red');
 
-            case "darkorange":
+            case 'darkorange':
               return gettextCatalog.getString('Dark Orange');
 
-            case "gold":
+            case 'gold':
               return gettextCatalog.getString('Gold');
 
-            case "yellow":
+            case 'yellow':
               return gettextCatalog.getString('Yellow');
 
-            case "slateblue":
+            case 'slateblue':
               return gettextCatalog.getString('Slate Blue');
 
-            case "greenyellow":
+            case 'greenyellow':
               return gettextCatalog.getString('Green Yellow');
 
-            case "springgreen":
+            case 'springgreen':
               return gettextCatalog.getString('Spring Green');
 
-            case "darkgreen":
+            case 'darkgreen':
               return gettextCatalog.getString('Dark Green');
 
-            case "olivedrab":
+            case 'olivedrab':
               return gettextCatalog.getString('Olive Drab');
 
-            case "lightseagreen":
+            case 'lightseagreen':
               return gettextCatalog.getString('Light Sea Green');
 
-            case "turquoise":
+            case 'turquoise':
               return gettextCatalog.getString('Turquoise');
 
-            case "steelblue":
+            case 'steelblue':
               return gettextCatalog.getString('Steel Blue');
 
-            case "deepskyblue":
+            case 'deepskyblue':
               return gettextCatalog.getString('Deep Sky Blue');
 
-            case "royalblue":
+            case 'royalblue':
               return gettextCatalog.getString('Royal Blue');
 
-            case "navy":
+            case 'navy':
               return gettextCatalog.getString('Navy');
 
-            case "lightgray":
+            case 'lightgray':
               return gettextCatalog.getString('Light Gray');
           }
         }
@@ -452,17 +444,13 @@ angular.module('icestudio')
         //-- Return a string whith the HTML code for this field
         //---------------------------------------------------------
         html() {
-
           //-- Generate the HTML code
 
           //-- Insert the parameters in the html code template
-          let html = this.htmlTemplate.replace(
-            "%TEXT%",
-            this.msg
-          );
+          let html = this.htmlTemplate.replace('%TEXT%', this.msg);
 
-          html = html.replaceAll("%COLOR%", this.color);
-          html = html.replaceAll("%COLOR_NAME%", this.colorName);
+          html = html.replaceAll('%COLOR%', this.color);
+          html = html.replaceAll('%COLOR_NAME%', this.colorName);
 
           return html;
         }
@@ -471,15 +459,12 @@ angular.module('icestudio')
         //-- Read the Field value
         //---------------------------------------------
         read() {
-
-          //-- Read the value 
+          //-- Read the value
           let value = $('.lb-selected-color').data('color');
 
           return value;
         }
-
       }
-
 
       //-------------------------------------------------------------------------
       //--- Input combobox field
@@ -488,10 +473,9 @@ angular.module('icestudio')
             Label
            +-----------------+
            | Option        v |
-           +-----------------+  
+           +-----------------+
      */
       class ComboboxField {
-
         //-------------------------------------------------------------------------
         //-- create the html code for a Combobox input Field
         //-- INPUTS:
@@ -506,7 +490,6 @@ angular.module('icestudio')
         //--    -A string with the HTML code
         //-------------------------------------------------------------------------
         constructor(options, label, value, formId) {
-
           //-- Properties
           this.label = label;
           this.options = options;
@@ -547,11 +530,10 @@ angular.module('icestudio')
         //--    -A string with the HTML code
         //----------------------------------------------------
         htmlComboboxOption(value, selected, label) {
-
           //-- Insert the parameters in the html TEMPLATE
-          let html = this.htmlComboboxOptionTemplate.replace("%VALUE%", value);
-          html = html.replace("%SELECTED%", selected);
-          html = html.replace("%LABEL%", label);
+          let html = this.htmlComboboxOptionTemplate.replace('%VALUE%', value);
+          html = html.replace('%SELECTED%', selected);
+          html = html.replace('%LABEL%', label);
 
           return html;
         }
@@ -577,9 +559,8 @@ angular.module('icestudio')
 
           //-- Apply to every option in the combobox
           this.options.forEach((op) => {
-
             //-- Is this option selected by default?
-            let selected = (this.value === op.value) ? 'selected' : '';
+            let selected = this.value === op.value ? 'selected' : '';
 
             //-- Generate the html code for that option
             let html = this.htmlComboboxOption(op.value, selected, op.label);
@@ -592,9 +573,9 @@ angular.module('icestudio')
           opts = opts.join('');
 
           //-- Insert the parameters in the Combox HTML template
-          let html = this.htmlTemplate.replace("%LABEL%", this.label);
-          html = html.replace("%ID%", this.formId);
-          html = html.replace("%OPTIONS%", opts);
+          let html = this.htmlTemplate.replace('%LABEL%', this.label);
+          html = html.replace('%ID%', this.formId);
+          html = html.replace('%OPTIONS%', opts);
 
           return html;
         }
@@ -603,31 +584,83 @@ angular.module('icestudio')
         //-- Read the Field value
         //---------------------------------------------
         read() {
-
           //-- Read the value from the DOM
           let value = $(`#form${this.formId}`).val();
 
           return value;
         }
-
       }
 
+      //---------------------------------------------------------
+      //-- BUTTONFIELD. It represents a button in a Form
+      //---------------------------------------------------------
+      //-- This is how this field is rendered in the Form
+      //
+      //    [ Button Text ]
+      //---------------------------------------------------------
+      class ButtonField {
+        //-----------------------------------------------------------------------
+        //-- Input parameters:
+        //--   * text: Text displayed on the button
+        //--   * callback: Function to execute when the button is pressed
+        //--   * formId: Form identification number
+        //-----------------------------------------------------------------------
+        constructor(text, callback, formId) {
+          //-- Properties
+          this.text = text;
+          this.callback = callback;
+          this.formId = formId;
+
+          //-- Html template for building the button
+          //-- The parameters are:
+          //--  %TEXT% : Text displayed on the button
+          //--  %ID% : Form identification number
+          this.htmlTemplate = `<button id="form%ID%" class="ice-button">%TEXT%</button>`;
+
+          //-- Attach the callback directly
+          $(document)
+            .off('click', `#form${this.formId}`)
+            .on('click', `#form${this.formId}`, (event) => {
+              event.preventDefault();
+              this.callback();
+            });
+        }
+
+        //---------------------------------------------------------
+        //-- Return a string with the HTML code for this button
+        //---------------------------------------------------------
+        html() {
+          //-- Generate the HTML code
+
+          //-- Insert the parameters in the html code template
+          let html = this.htmlTemplate.replace('%TEXT%', this.text);
+          html = html.replace('%ID%', this.formId);
+
+          return html;
+        }
+
+        //---------------------------------------------
+        //-- Read the Field value
+        //-- For a button, this always returns an empty string
+        //---------------------------------------------
+        read() {
+          return '';
+        }
+      }
 
       class Form {
-
         //-- Build a blank form
         constructor() {
-
           //-- Array of fields
           this.fields = [];
         }
 
         //------------------------------------------------------
-        //-- Parse the block names. The spaces are removed  
+        //-- Parse the block names. The spaces are removed
         //-- and the individual names obtained (if they are
         //-- separated by comas)
         //--
-        //-- INPUT: 
+        //-- INPUT:
         //--   * value: String introduced by the user
         //-- Returns:
         //--   An array of string with the names of the ports
@@ -636,16 +669,15 @@ angular.module('icestudio')
         //-- It returns: ["a", "b", "c[1:0]"]
         //------------------------------------------------------
         static parseNames(names) {
-
           //-- First: remove the initial and ending spaces, if any
-          let text = names.trim();
+          let text = names.trim().replace(/\s+/g, '');
 
-          //-- Second: Remove the spaces around the commas (,) 
+          //-- Second: Remove the spaces around the commas (,)
           text = text.replace(/\s*,\s*/g, ',');
+          //text = text.replace(' ','');
 
           //-- Third: Get the Input block names as a list of strings
           let finalNames = text.split(',');
-          console.log(finalNames);
           //-- Return an array with the names
           return finalNames;
         }
@@ -659,7 +691,7 @@ angular.module('icestudio')
 
         //---------------------------------------------------
         //-- Parse the Port names
-        //-- 
+        //--
         //-- INPUT:
         //--   * name: String (Ex: "a[7:0]")
         //--
@@ -671,10 +703,8 @@ angular.module('icestudio')
         //--      -size: Port size
         //----------------------------------------------------
         static parseNameWithPattern(portName, pattern) {
-
           //-- Parse the name
           let match = pattern.exec(portName);
-
           //-- match[0]: global match
           //-- match[1]: Initial word: name
           //-- match[2]: Range (Ex. [7:0])
@@ -682,10 +712,8 @@ angular.module('icestudio')
           //-- match[4]: Less significant byte in the range (Ex. 0)
 
           if (match) {
-
             //--There is a full match
             if (match[0] === match.input) {
-
               //-- Return object
               let portInfo = {};
 
@@ -697,27 +725,28 @@ angular.module('icestudio')
 
               //-- If it is a bus...
               if (portInfo.rangestr) {
-
                 //-- Get the range left and right numbers
                 let left = parseInt(match[3]);
                 let right = parseInt(match[4]);
-
-                portInfo.size = Math.abs(left - right) + 1;
+                if (/\D/.test(left) || /\D/.test(right)) {
+                  portInfo.size = 2;
+                  portInfo.isParametric = true;
+                } else {
+                  portInfo.size = Math.abs(left - right) + 1;
+                  portInfo.isParametric = false;
+                }
               }
               //-- It is an isolated wire
               else {
                 portInfo.size = 1;
               }
-
               //-- No more checkings....
               //-- TODO: Size checking
               return portInfo;
             }
-
           }
           //-- No match
           return null;
-
         }
 
         //------------------------------------
@@ -732,32 +761,27 @@ angular.module('icestudio')
         //-- Returns: An array of values
         //------------------------------------------------------------------
         readFields() {
-
-          //-- Array were the values will be stored 
+          //-- Array were the values will be stored
           let values = [];
 
           //-- Read the values from the Form fields
           //-- and insert them into the values array
-          this.fields.forEach(field => {
-
+          this.fields.forEach((field) => {
             //-- Read the value from the field
             let value = field.read();
 
             //-- Add the value to the array
             values.push(value);
-
           });
 
           //-- Return all the values
           return values;
         }
 
-
         //-------------------------------------
         //-- Generate the HTML of the form
         //-------------------------------------
         html() {
-
           //-- Variable for storing the html code
           let formHtml = [];
 
@@ -768,14 +792,12 @@ angular.module('icestudio')
           formHtml.push('<div>');
 
           //-- Generate the html for all the fields in the form
-          this.fields.forEach(field => {
-
+          this.fields.forEach((field) => {
             //-- Create the html code
             fieldHtml = field.html();
 
             //-- Store the html for this Field
             formHtml.push(fieldHtml);
-
           });
 
           //-- Closing tag for the Form
@@ -786,7 +808,6 @@ angular.module('icestudio')
 
           //-- return the HTML code
           return html;
-
         }
 
         //-----------------------------------------------------------------
@@ -795,22 +816,19 @@ angular.module('icestudio')
         //--   * callback: Function called when the OK button is pressed
         //-----------------------------------------------------------------
         display(callback) {
-
           //-- Create the HTML
           let html = this.html();
-
           //-- Display the Form
-          alertify.confirm(html)
+          alertify
+            .confirm(html)
 
             //-- Set the callback for the OK button
             .set('onok', callback)
 
             //-- Set the callback for the Candel button:
-            //--   Do nothing... 
-            .set('oncancel', function ( /*evt*/) { });
-
+            //--   Do nothing...
+            .set('oncancel', function (/*evt*/) {});
         }
-
       }
 
       //-------------------------------------------------------------
@@ -818,7 +836,6 @@ angular.module('icestudio')
       //--    ports. All their common stuff is place here
       //-------------------------------------------------------------
       class FormBasicPort extends Form {
-
         //--------------------------------------------------
         //-- INPUTS:
         //--   * msg: Message above the text box
@@ -826,32 +843,31 @@ angular.module('icestudio')
         //--   * virtual: Is this a virtual or real port?
         //--------------------------------------------------
         constructor(msg, name = '', virtual = false, disabled = false) {
-
           //-- Create a blank Form (calling the upper Class)
           super();
 
           //-------- Add the diffent Fields:
           //-- Field 0: Text input
           let field0 = new TextField(
-            msg,     //-- Top message
-            name,    //-- Default value
-            0        //-- Field id
+            msg, //-- Top message
+            name, //-- Default value
+            0 //-- Field id
           );
 
           //-- Field 1: Checkbox for selecting if the input block
           //-- is an FPGA pin or an internal port
           let field1 = new CheckboxField(
             gettextCatalog.getString('FPGA pin'),
-            !virtual,  //-- Default value
-            1,         //-- Field id
-            disabled   //-- Disabled attribute
+            !virtual, //-- Default value
+            1, //-- Field id
+            disabled //-- Disabled attribute
           );
 
           //-- Add the fields to the form
           this.addField(field0);
           this.addField(field1);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
@@ -867,7 +883,6 @@ angular.module('icestudio')
           //-- Values[0]: Input pin names
           //-- Parse the input names
           this.names = Form.parseNames(this.values[0]);
-          console.log('NAMES', this.names);
           //-- Values[1] indicates if it is a virtual pin or not
           this.virtual = !this.values[1];
         }
@@ -879,19 +894,17 @@ angular.module('icestudio')
         //-- ERRORs are check and Notifications raised in case of errors
         //------------------------------------------------------------------------
         getPortInfo(evt) {
-
           let portInfo;
           this.portInfos = [];
 
           //-- Check all the ports (The user may have include one or more)
           for (let name of this.names) {
-
             //-- Get the port Info: port name, size...
             portInfo = Form.parseNameWithPattern(
               name,
-              common.PATTERN_GLOBAL_PORT_LABEL
+              //common.PATTERN_GLOBAL_PORT_LABEL
+              common.PATTERN_PORT_LABEL
             );
-
             //-- No portInfo... The was a syntax error
             if (!portInfo) {
               //-- Do not close the form
@@ -899,8 +912,10 @@ angular.module('icestudio')
 
               //-- Show a warning notification
               this.resultAlert = alertify.warning(
-                gettextCatalog.getString('Wrong block name {{name}}',
-                  { name: name }));
+                gettextCatalog.getString('Wrong block name {{name}}', {
+                  name: name,
+                })
+              );
               return;
             }
 
@@ -912,14 +927,12 @@ angular.module('icestudio')
 
           //-- Close the form when finish
           evt.cancel = false;
-
         }
 
         //------------------------------------------------
         //-- Process the information enter by the user
         //------------------------------------------------
         process(evt) {
-
           //-- If there was a previous notification, dismiss it
           if (this.resultAlert) {
             this.resultAlert.dismiss(false);
@@ -932,20 +945,16 @@ angular.module('icestudio')
           this.getPortInfo(evt);
         }
 
-
-
         //-------------------------------------------------------------
         //-- Create the blocks defined in the form
         //-- Call this methods only when the form has been processed!
         //-------------------------------------------------------------
         newBlocks() {
-
           //-- Array for storing all the blocks created
           let blocks = [];
           let block;
 
           for (let i in this.portInfos) {
-
             //-- Create the block
             block = this.newBlock(i);
 
@@ -955,13 +964,10 @@ angular.module('icestudio')
 
           //-- Return an array of Blocks
           return blocks;
-
         }
-
       }
 
       class FormBasicInput extends FormBasicPort {
-
         //-------------------------------------------------------------------------
         //-- Create the form for the INPUT PORTS
         //-------------------------------------------------------------------------
@@ -983,13 +989,20 @@ angular.module('icestudio')
         //--   * disabled: FPGA-pin checkbox disabled
         //--   * inoutValue: If undefined, InOut-pin checkbox is hidden
         //       Otherwise, it is a boolean value to initialize the checkbox
-        constructor(name = '', virtual = false, clock = false, disabled = false, inoutValue = undefined) {
-
+        constructor(
+          name = '',
+          virtual = false,
+          clock = false,
+          disabled = false,
+          inoutValue = undefined
+        ) {
           //-- Create a blank BasicPortForm (calling the upper Class)
-          super(gettextCatalog.getString('Input port names'),
+          super(
+            gettextCatalog.getString('Input port names'),
             name,
             virtual,
-            disabled);
+            disabled
+          );
 
           //-- Store the type of block associated with the Form
           this.type = blocks.BASIC_INPUT;
@@ -1000,8 +1013,8 @@ angular.module('icestudio')
           //--          as a clock
           let field2 = new CheckboxField(
             gettextCatalog.getString('Show clock'),
-            clock,  //-- Default value
-            2       //-- Field id
+            clock, //-- Default value
+            2 //-- Field id
           );
 
           //-- Add the fields to the form
@@ -1011,8 +1024,8 @@ angular.module('icestudio')
           if (inoutValue !== undefined) {
             let field3 = new CheckboxField(
               gettextCatalog.getString('\"Inout\" pin'),
-              inoutValue,  //-- Default value
-              3            //-- Field id
+              inoutValue, //-- Default value
+              3 //-- Field id
             );
 
             //-- Add the fields to the form
@@ -1034,7 +1047,6 @@ angular.module('icestudio')
         //-- Process the information entered by the user
         //------------------------------------------------
         process(evt) {
-
           //-- First, Process the form as a BasicPort
           super.process(evt);
 
@@ -1051,7 +1063,6 @@ angular.module('icestudio')
           //-- Check all ports again... There could be no data buses defined
           //-- as clocks (it is only for 1-wire ports)
           for (let portInfo of this.portInfos) {
-
             //-- Check particular errors
             //-- Error: Buses cannot be clocks...
             if (portInfo.rangestr && this.clock) {
@@ -1059,7 +1070,8 @@ angular.module('icestudio')
 
               //-- Show a notification with the warning
               this.resultAlert = alertify.warning(
-                gettextCatalog.getString('Clock not allowed for data buses'));
+                gettextCatalog.getString('Clock not allowed for data buses')
+              );
 
               //-- Processing not yet finished
               return;
@@ -1068,16 +1080,17 @@ angular.module('icestudio')
 
           //-- There have been no errors. Detect if there have been some
           //-- changes in the values
-          this.changed = this.nameIni !== this.values[0] ||
+          this.changed =
+            this.nameIni !== this.values[0] ||
             this.virtualIni !== this.virtual ||
             this.clockIni !== this.clock ||
-            this.hasOwnProperty('inoutIni') && this.inoutIni !== this.inout;
+            (this.hasOwnProperty('inoutIni') && this.inoutIni !== this.inout);
         }
 
         //-------------------------------------------------------------
         //-- Create the block define in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -1085,31 +1098,27 @@ angular.module('icestudio')
         //--   * The InputBasicPort block
         //-------------------------------------------------------------
         newBlock(n) {
-
           //-- Create all the blocks defined
           let portInfo = this.portInfos[n];
 
-          //-- Create an array of empty pins (with name and values 
+          //-- Create an array of empty pins (with name and values
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
-
           let block = new blocks.InputPortBlock(
             portInfo.name,
             this.virtual,
             portInfo.rangestr,
             pins,
             this.clock,
-            this.inout
+            this.inout,
+            portInfo.isParametric
           );
 
           return block;
         }
-
       }
 
-
       class FormBasicOutput extends FormBasicPort {
-
         //-------------------------------------------------------------------------
         //-- Create the form for the OUTPUT PORTS
         //-------------------------------------------------------------------------
@@ -1129,13 +1138,19 @@ angular.module('icestudio')
         //--   * disabled: FPGA-pin checkbox disabled
         //--   * inoutValue: If undefined, InOut-pin checkbox is hidden
         //       Otherwise, it is a boolean value to initialize the checkbox
-        constructor(name = '', virtual = false, disabled = false, inoutValue = undefined) {
-
+        constructor(
+          name = '',
+          virtual = false,
+          disabled = false,
+          inoutValue = undefined
+        ) {
           //-- Create a blank BasicPortForm (calling the upper Class)
-          super(gettextCatalog.getString('Output port names'),
+          super(
+            gettextCatalog.getString('Output port names'),
             name,
             virtual,
-            disabled);
+            disabled
+          );
 
           //-- Store the type of block associated with the Form
           this.type = blocks.BASIC_OUTPUT;
@@ -1146,8 +1161,8 @@ angular.module('icestudio')
           if (inoutValue !== undefined) {
             let field2 = new CheckboxField(
               gettextCatalog.getString('\"Inout\" pin'),
-              inoutValue,  //-- Default value
-              2            //-- Field id
+              inoutValue, //-- Default value
+              2 //-- Field id
             );
 
             //-- Add the field to the form
@@ -1165,7 +1180,6 @@ angular.module('icestudio')
         }
 
         process(evt) {
-
           //-- Process the form as an BasicPort
           super.process(evt);
 
@@ -1175,15 +1189,16 @@ angular.module('icestudio')
 
           //-- There have been no errors. Detect if there have been some
           //-- changes in the values
-          this.changed = this.nameIni !== this.values[0] ||
+          this.changed =
+            this.nameIni !== this.values[0] ||
             this.virtualIni !== this.virtual ||
-            this.hasOwnProperty('inoutIni') && this.inoutIni !== this.inout;
+            (this.hasOwnProperty('inoutIni') && this.inoutIni !== this.inout);
         }
 
         //-------------------------------------------------------------
         //-- Create the block define in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -1191,11 +1206,10 @@ angular.module('icestudio')
         //--   * The OutputBasicPort block
         //-------------------------------------------------------------
         newBlock(n) {
-
           //-- Create all the blocks defined
           let portInfo = this.portInfos[n];
 
-          //-- Create an array of empty pins (with name and values 
+          //-- Create an array of empty pins (with name and values
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
 
@@ -1211,16 +1225,13 @@ angular.module('icestudio')
           //-- Return the block
           return block;
         }
-
       }
-
 
       //-------------------------------------------------------------
       //-- Class for modeling the Forms for the Input and Output
       //-- labels. All their common stuff is place here
       //-------------------------------------------------------------
       class FormBasicLabel extends Form {
-
         //-----------------------------------------------------
         //-- INPUTS:
         //--    * msg: Message above the text box
@@ -1228,29 +1239,28 @@ angular.module('icestudio')
         //--    * color: Default label color
         //------------------------------------------------------
         constructor(msg, name = '', color = 'fuchsia') {
-
           //-- Create a blank Form (calling the upper Class)
           super();
 
           //-- Add the different Fields
           //-- Field 0: Text input: label name
           let field0 = new TextField(
-            msg,   //-- Top message
-            name,  //-- Default value
-            0      //-- Field id
+            msg, //-- Top message
+            name, //-- Default value
+            0 //-- Field id
           );
 
           //-- Field 1: Color Selector. Label color
           let field1 = new ColorField(
-            gettextCatalog.getString("Choose a color:"),
-            color    //-- Default color
+            gettextCatalog.getString('Choose a color:'),
+            color //-- Default color
           );
 
           //-- Add the fields to the form
           this.addField(field0);
           this.addField(field1);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
 
@@ -1284,13 +1294,11 @@ angular.module('icestudio')
         //-- ERRORs are check and Notifications raised in case of errors
         //------------------------------------------------------------------------
         getPortInfo(evt) {
-
           let portInfo;
           this.portInfos = [];
 
           //-- Check all the ports (The user may have include one or more)
           for (let name of this.names) {
-
             //-- Get the port Info: port name, size...
             portInfo = Form.parsePortName(name);
 
@@ -1301,8 +1309,10 @@ angular.module('icestudio')
 
               //-- Show a warning notification
               this.resultAlert = alertify.warning(
-                gettextCatalog.getString('Wrong block name {{name}}',
-                  { name: name }));
+                gettextCatalog.getString('Wrong block name {{name}}', {
+                  name: name,
+                })
+              );
               return;
             }
 
@@ -1314,16 +1324,12 @@ angular.module('icestudio')
 
           //-- Close the form when finish
           evt.cancel = false;
-
         }
 
         //------------------------------------------------
         //-- Process the information entered by the user
         //------------------------------------------------
         process(evt) {
-
-          console.log("PROCESS THE FORM!!");
-
           //-- If there was a previous notification, dismiss it
           if (this.resultAlert) {
             this.resultAlert.dismiss(false);
@@ -1334,7 +1340,6 @@ angular.module('icestudio')
 
           //-- Get the ports info and check for errors
           this.getPortInfo(evt);
-
         }
 
         //-------------------------------------------------------------
@@ -1342,13 +1347,11 @@ angular.module('icestudio')
         //-- Call this methods only when the form has been processed!
         //-------------------------------------------------------------
         newBlocks() {
-
           //-- Array for storing all the blocks created
           let blocks = [];
           let block;
 
           for (let i in this.portInfos) {
-
             //-- Create the block
             block = this.newBlock(i);
 
@@ -1358,17 +1361,13 @@ angular.module('icestudio')
 
           //-- Return an array of Blocks
           return blocks;
-
         }
-
-
       }
 
       //-----------------------------------------------------------
       //-- Class for modeling the Forms for the Input Labels
       //-----------------------------------------------------------
       class FormBasicInputLabel extends FormBasicLabel {
-
         //---------------------------------------------
         //-- Create the form for the INPUT Labels
         //---------------------------------------------
@@ -1390,13 +1389,8 @@ angular.module('icestudio')
         //--   * color: Default label color
         //---------------------------------------------
         constructor(name = '', color = 'fuchsia') {
-
           //-- Create a blank BasicLabelForm (calling the upper Class)
-          super(
-            gettextCatalog.getString('Output labels'),
-            name,
-            color
-          );
+          super(gettextCatalog.getString('Output labels'), name, color);
 
           //-- Store the type of block associated with the Form
           this.type = blocks.BASIC_INPUT_LABEL;
@@ -1405,7 +1399,6 @@ angular.module('icestudio')
         }
 
         process(evt) {
-
           //-- Process the form as an BasicPort
           super.process(evt);
 
@@ -1413,14 +1406,14 @@ angular.module('icestudio')
 
           //-- There have been no errors. Detect if there have been some
           //-- changes in the values
-          this.changed = (this.nameIni !== this.values[0] ||
-            this.colorIni !== this.color);
+          this.changed =
+            this.nameIni !== this.values[0] || this.colorIni !== this.color;
         }
 
         //-------------------------------------------------------------
         //-- Create the block define in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -1428,11 +1421,10 @@ angular.module('icestudio')
         //--   * The InputBasicPort block
         //-------------------------------------------------------------
         newBlock(n) {
-
           //-- Get the info of the label n
           let portInfo = this.portInfos[n];
 
-          //-- Create an array of empty pins (with name and values 
+          //-- Create an array of empty pins (with name and values
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
 
@@ -1446,7 +1438,6 @@ angular.module('icestudio')
 
           return block;
         }
-
       }
 
       class FormBasicOutputLabel extends FormBasicLabel {
@@ -1471,13 +1462,8 @@ angular.module('icestudio')
         //--   * color: Default label color
         //---------------------------------------------
         constructor(name = '', color = 'fuchsia') {
-
           //-- Create a blank BasicLabelForm (calling the upper Class)
-          super(
-            gettextCatalog.getString('Input labels'),
-            name,
-            color
-          );
+          super(gettextCatalog.getString('Input labels'), name, color);
 
           //-- Store the type of block associated with the Form
           this.type = blocks.BASIC_OUTPUT_LABEL;
@@ -1486,7 +1472,6 @@ angular.module('icestudio')
         }
 
         process(evt) {
-
           //-- Process the form as an BasicPort
           super.process(evt);
 
@@ -1494,14 +1479,14 @@ angular.module('icestudio')
 
           //-- There have been no errors. Detect if there have been some
           //-- changes in the values
-          this.changed = (this.nameIni !== this.values[0] ||
-            this.colorIni !== this.color);
+          this.changed =
+            this.nameIni !== this.values[0] || this.colorIni !== this.color;
         }
 
         //-------------------------------------------------------------
         //-- Create the block define in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -1509,11 +1494,10 @@ angular.module('icestudio')
         //--   * The InputBasicPort block
         //-------------------------------------------------------------
         newBlock(n) {
-
           //-- Get the info of the label n
           let portInfo = this.portInfos[n];
 
-          //-- Create an array of empty pins (with name and values 
+          //-- Create an array of empty pins (with name and values
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
 
@@ -1529,11 +1513,8 @@ angular.module('icestudio')
         }
       }
 
-
-
       class FormBasicPairedLabels extends FormBasicLabel {
         constructor(name = '', color = 'fuchsia') {
-
           //-- Create a blank BasicLabelForm (calling the upper Class)
           super(
             gettextCatalog.getString('Names of the paired labels'),
@@ -1548,7 +1529,7 @@ angular.module('icestudio')
         //-------------------------------------------------------------
         //-- Create the block define in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -1556,11 +1537,10 @@ angular.module('icestudio')
         //--   * The InputBasicPort block
         //-------------------------------------------------------------
         newBlock(n) {
-
           //-- Get the info of the label n
           let portInfo = this.portInfos[n];
 
-          //-- Create an array of empty pins (with name and values 
+          //-- Create an array of empty pins (with name and values
           //-- set to 'NULL')
           let pins = blocks.getPins(portInfo);
 
@@ -1592,7 +1572,6 @@ angular.module('icestudio')
       //-- CLASS: Creating/Editing a Basic Code block
       //-------------------------------------------------------------------------
       class FormBasicCode extends Form {
-
         //-----------------------------------------------------------------
         //-- INPUTS:
         //--   * portsIn: Input port names (separated by commas)
@@ -1603,8 +1582,13 @@ angular.module('icestudio')
         //--   * portsInOutRight: If undefined, InputOutput port names field is hidden
         //       Otherwise, it is string of port names (separated by commas) to populate the field
         //-----------------------------------------------------------------
-        constructor(portsIn = '', portsOut = '', paramsIn = '', portsInOutLeft = undefined, portsInOutRight = undefined) {
-
+        constructor(
+          portsIn = '',
+          portsOut = '',
+          paramsIn = '',
+          portsInOutLeft = '',
+          portsInOutRight = ''
+        ) {
           //-- Create a blank Form (calling the upper Class)
           super();
 
@@ -1613,62 +1597,122 @@ angular.module('icestudio')
           //-- Field 0: Input port names
           let field0 = new TextField(
             gettextCatalog.getString('Input ports'), //-- Top message
-            portsIn,   //-- Default Input port names
-            0          //-- Field id
+            portsIn, //-- Default Input port names
+            0 //-- Field id
           );
 
           //-- Field 1: Output port names
           let field1 = new TextField(
             gettextCatalog.getString('Output ports'), //-- Top message
-            portsOut,  //-- Default Output port names
-            1          //-- Field id
+            portsOut, //-- Default Output port names
+            1 //-- Field id
           );
 
           //-- Field 2: Input params
           let field2 = new TextField(
             gettextCatalog.getString('Input parameters'), //-- Top message
-            paramsIn,   //-- Default Input parameter names
-            2
+            paramsIn, //-- Default Input parameter names
+            2 //-- Field id
           );
 
           this.addField(field0);
           this.addField(field1);
           this.addField(field2);
+          let field3 = false;
+          let field4 = false;
 
-          //-- Optional fields
-          let field3;
-          let field4;
-
-          //-- Field 3: InputOutput port names at the left
-          if (portsInOutLeft !== undefined) {
+          const allowInoutPorts =
+            profile.get('allowInoutPorts') || common.allowProjectInoutPorts;
+          if (allowInoutPorts) {
+            //-- Optional fields
+            //-- Field 3: InputOutput port names at the left
             field3 = new TextField(
               gettextCatalog.getString('\"Inout\" Left ports'), //-- Top message
-              portsInOutLeft,   //-- Default InputOutput port names at the left
-              3                 //-- Field id
+              portsInOutLeft, //-- Default InputOutput port names at the left
+              3 //-- Field id
             );
 
             //-- Add the field to the form
             this.addField(field3);
-          }
 
-          //-- Field 4: InputOutput port names at the right
-          if (portsInOutRight !== undefined) {
+            //-- Field 4: InputOutput port names at the right
             field4 = new TextField(
               gettextCatalog.getString('\"Inout\" Right ports'), //-- Top message
-              portsInOutRight,  //-- Default InputOutput port names at the right
-              4                 //-- Field id
+              portsInOutRight, //-- Default InputOutput port names at the right
+              4 //-- Field id
             );
 
             //-- Add the field to the form
             this.addField(field4);
           }
+          this.code = '';
+          let self = this;
+          //-- Field 5: Import code
+          let field5 = new ButtonField(
+            gettextCatalog.getString('Import code'), //-- Button text
+            function () {
+              //-- Callback
+              //-- Open the file Dialog
+              //-- The selector is passed as a parameter
+              //-- The html element is located in the menu.html file
+              utils.openDialog(
+                '#input-import-verilog',
+                async function (filepath) {
+                  try {
+                    // Leer el archivo de forma asíncrona
+                    const content = await nodeFs.promises.readFile(
+                      filepath,
+                      'utf8'
+                    );
 
-          //-- Control the notifications generated by 
+                    // Parsear el contenido del archivo
+                    const result = await utils.parseVerilog(content);
+
+                    // Actualizar los campos con los resultados del parseo
+                    portsIn = result.inputs;
+                    portsOut = result.outputs;
+                    paramsIn = result.parameters;
+                    field0.write(result.inputs);
+                    field1.write(result.outputs);
+                    field2.write(result.parameters);
+
+                    if (result.inouts.length > 0) {
+                      if (field3) {
+                        field3.write(result.inouts);
+                      } else {
+                        alertify.error(
+                          gettextCatalog.getString(
+                            'Design contains tri-state I/O. You need to update your Preferences:<br />&nbsp;&nbsp;&nbsp;<b>Advanced features → Allow tri-state connections</b>,<br />and reimport the block.'
+                          ),
+                          20000
+                        );
+                      }
+                    }
+
+                    // Almacenar el cuerpo del módulo
+                    self.code = result.moduleBody;
+                  } catch (err) {
+                    alertify.error(
+                      gettextCatalog.getString(
+                        'Error reading the file: {{error}}',
+                        { error: err.message }
+                      )
+                    );
+                  }
+                }
+              );
+            },
+            5
+          );
+
+          this.addField(field5);
+
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
 
           //-- Store the initial values used for creating the form
-          //-- They will be used later for detecting a change in 
+          //-- They will be used later for detecting a change in
           //-- the values introduced by the user
           this.iniPortsIn = portsIn;
           this.iniPortsOut = portsOut;
@@ -1686,16 +1730,13 @@ angular.module('icestudio')
         //-- ERRORs are check and Notifications raised in case of errors
         //------------------------------------------------------------------------
         getPortInfo(names, evt) {
-
           let portInfo;
           let portInfos = [];
 
           //-- Check all the port names
           for (let name of names) {
-
             //-- Get the port Info: port name, size...
             portInfo = Form.parsePortName(name);
-
             //-- No portInfo... The was a syntax error
             if (!portInfo) {
               //-- Do not close the form
@@ -1703,8 +1744,10 @@ angular.module('icestudio')
 
               //-- Show a warning notification
               this.resultAlert = alertify.warning(
-                gettextCatalog.getString('Wrong block name {{name}}',
-                  { name: name }));
+                gettextCatalog.getString('Wrong block name {{name}}', {
+                  name: name,
+                })
+              );
               return;
             }
 
@@ -1714,14 +1757,12 @@ angular.module('icestudio')
             if (portInfo.name !== '') {
               portInfos.push(portInfo);
             }
-
           }
 
           //-- Close the form when finish
           evt.cancel = false;
 
           return portInfos;
-
         }
 
         //-------------------------------------------------------
@@ -1729,41 +1770,42 @@ angular.module('icestudio')
         //-- store them as properties
         //-------------------------------------------------------
         parseFields() {
-
           //-- Read the values from the form
           this.values = this.readFields();
 
           //-- Values[0]: Input port names
           //-- Parse the input port names
-          this.inPorts = Form.parseNames(this.values[0]);
+          this.inPorts = Form.parseNames(this.values[0].replace(/\s+/g, ''));
 
           //-- Values[1]: Output port names
           //-- Parse the output port names
-          this.outPorts = Form.parseNames(this.values[1]);
+          this.outPorts = Form.parseNames(this.values[1].replace(/\s+/g, ''));
 
           //-- Values[2]: Input parameters
           //-- Parse the input parameters
-          this.inParams = Form.parseNames(this.values[2]);
+          this.inParams = Form.parseNames(this.values[2].replace(/\s+/g, ''));
 
           //-- Values[3]: InputOutput port names at the left of the block
           //-- If field is present in Values, then parse the inout port names
           if (this.values[3]) {
-            this.inoutLeftPorts = Form.parseNames(this.values[3]);
+            this.inoutLeftPorts = Form.parseNames(
+              this.values[3].replace(/\s+/g, '')
+            );
           }
 
           //-- Values[4]: InputOutput port names at the right of the block
           //-- If field is present in Values, then parse the inout port names
           if (this.values[4]) {
-            this.inoutRightPorts = Form.parseNames(this.values[4]);
+            this.inoutRightPorts = Form.parseNames(
+              this.values[4].replace(/\s+/g, '')
+            );
           }
-
         }
 
         //------------------------------------------------
         //-- Process the information enter by the user
         //------------------------------------------------
         process(evt) {
-
           //-- If there was a previous notification, dismiss it
           if (this.resultAlert) {
             this.resultAlert.dismiss(false);
@@ -1777,10 +1819,16 @@ angular.module('icestudio')
           this.outPortsInfo = this.getPortInfo(this.outPorts, evt);
           this.inParamsInfo = this.getPortInfo(this.inParams, evt);
           if (this.hasOwnProperty('inoutLeftPorts')) {
-            this.inoutLeftPortsInfo = this.getPortInfo(this.inoutLeftPorts, evt);
+            this.inoutLeftPortsInfo = this.getPortInfo(
+              this.inoutLeftPorts,
+              evt
+            );
           }
           if (this.hasOwnProperty('inoutRightPorts')) {
-            this.inoutRightPortsInfo = this.getPortInfo(this.inoutRightPorts, evt);
+            this.inoutRightPortsInfo = this.getPortInfo(
+              this.inoutRightPorts,
+              evt
+            );
           }
 
           //-- Validate values entered by the user
@@ -1798,18 +1846,18 @@ angular.module('icestudio')
 
           //-- Add the optional arrays with the left/right InputOutput ports
           if (this.inoutLeftPortsInfo && this.inoutRightPortsInfo) {
-            userPorts = userPorts.concat(this.inoutLeftPortsInfo, this.inoutRightPortsInfo);
+            userPorts = userPorts.concat(
+              this.inoutLeftPortsInfo,
+              this.inoutRightPortsInfo
+            );
           }
 
           //-- Analyze all the port names, one by one
           for (let portInfo of userPorts) {
-
             //-- The current element is only checked if it exist
             if (portInfo) {
-
               //-- Check if the current name is already in the array
               if (allPortnames.includes(portInfo.name)) {
-
                 //-- It means that the port name is duplicated
                 //-- Show an error and return
                 evt.cancel = true;
@@ -1835,7 +1883,6 @@ angular.module('icestudio')
         //--    * false: No change in the block
         //-----------------------------------------------------------------------
         changed() {
-
           //-- Convert the ports into strings and compare them with the initial
           //-- values used when creating the form
 
@@ -1855,29 +1902,30 @@ angular.module('icestudio')
           if (this.inoutLeftPortsInfo && this.inoutRightPortsInfo) {
             inoutLeftPortNames = blocks.portsInfo2Str(this.inoutLeftPortsInfo);
 
-            inoutRightPortNames = blocks.portsInfo2Str(this.inoutRightPortsInfo);
+            inoutRightPortNames = blocks.portsInfo2Str(
+              this.inoutRightPortsInfo
+            );
           }
 
           //-- Compare these values with the initial ones
           //-- to detec if there has been a change
           //-- All the items compared are Strings
-          let changed = this.iniPortsIn !== inPortNames ||
+          let changed =
+            this.iniPortsIn !== inPortNames ||
             this.iniPortsOut !== outPortNames ||
             this.iniParamsIn !== inParamNames ||
-            this.hasOwnProperty('iniPortsInOutLeft') && this.iniPortsInOutLeft !== inoutLeftPortNames ||
-            this.hasOwnProperty('iniPortsInOutRight') && this.iniPortsInOutRight !== inoutRightPortNames;
+            (this.hasOwnProperty('iniPortsInOutLeft') &&
+              this.iniPortsInOutLeft !== inoutLeftPortNames) ||
+            (this.hasOwnProperty('iniPortsInOutRight') &&
+              this.iniPortsInOutRight !== inoutRightPortNames);
 
           //-- Return a boolean value
           return changed;
         }
-
       }
 
-
       class FormBasicMemory extends Form {
-
         constructor(names = '', value = 10, local = false) {
-
           //-- Create a blank Form (calling the upper Class)
           super();
 
@@ -1886,8 +1934,8 @@ angular.module('icestudio')
           //-- Field 0: Memory block names
           let field0 = new TextField(
             gettextCatalog.getString('Memory block names'), //-- Top message
-            names,   //-- Default names
-            0        //-- Field id
+            names, //-- Default names
+            0 //-- Field id
           );
 
           //-------- Field 1: Combobox
@@ -1896,40 +1944,39 @@ angular.module('icestudio')
           let options = [
             {
               value: 2,
-              label: gettextCatalog.getString('Binary')
+              label: gettextCatalog.getString('Binary'),
             },
             {
               value: 10,
-              label: gettextCatalog.getString('Decimal')
+              label: gettextCatalog.getString('Decimal'),
             },
             {
               value: 16,
-              label: gettextCatalog.getString('Hexadecimal')
-            }
+              label: gettextCatalog.getString('Hexadecimal'),
+            },
           ];
 
           let field1 = new ComboboxField(
             options,
             gettextCatalog.getString('Address format'), //-- Top message
-            value,     //-- Default value
-            1          //-- Field id
+            value, //-- Default value
+            1 //-- Field id
           );
 
-          //-- Field 2: Checkbox for selecting if the memory is a 
+          //-- Field 2: Checkbox for selecting if the memory is a
           //-- local parameter or not
           let field2 = new CheckboxField(
             gettextCatalog.getString('Local parameter'),
-            local,    //-- Default value
-            2         //-- Field id
+            local, //-- Default value
+            2 //-- Field id
           );
-
 
           //-- Add the fields to the form
           this.addField(field0);
           this.addField(field1);
           this.addField(field2);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
 
@@ -1951,7 +1998,7 @@ angular.module('icestudio')
 
           //-- Values[0]: Memory names
           //-- Parse the memory names
-          this.names = Form.parseNames(this.values[0]);
+          this.names = Form.parseNames(this.values[0].replace(/\s+/g, ''));
 
           //-- Values[1] is the combobox value
           this.value = parseInt(this.values[1]);
@@ -1968,13 +2015,11 @@ angular.module('icestudio')
         //-- ERRORs are check and Notifications raised in case of errors
         //------------------------------------------------------------------------
         getPortInfo(evt) {
-
           let portInfo;
           this.portInfos = [];
 
           //-- Check all the ports (The user may have include one or more)
           for (let name of this.names) {
-
             //-- Get the port Info: port name, size...
             portInfo = Form.parsePortName(name);
 
@@ -1985,8 +2030,10 @@ angular.module('icestudio')
 
               //-- Show a warning notification
               this.resultAlert = alertify.warning(
-                gettextCatalog.getString('Wrong block name {{name}}',
-                  { name: name }));
+                gettextCatalog.getString('Wrong block name {{name}}', {
+                  name: name,
+                })
+              );
               return;
             }
 
@@ -1998,14 +2045,12 @@ angular.module('icestudio')
 
           //-- Close the form when finish
           evt.cancel = false;
-
         }
 
         //------------------------------------------------
         //-- Process the information enter by the user
         //------------------------------------------------
         process(evt) {
-
           //-- If there was a previous notification, dismiss it
           if (this.resultAlert) {
             this.resultAlert.dismiss(false);
@@ -2023,13 +2068,11 @@ angular.module('icestudio')
         //-- Call this methods only when the form has been processed!
         //-------------------------------------------------------------
         newBlocks() {
-
           //-- Array for storing all the blocks created
           let blocks = [];
           let block;
 
           for (let i in this.portInfos) {
-
             //-- Create the block
             block = this.newBlock(i);
 
@@ -2039,13 +2082,12 @@ angular.module('icestudio')
 
           //-- Return an array of Blocks
           return blocks;
-
         }
 
         //-------------------------------------------------------------
         //-- Create the block defined in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -2053,7 +2095,6 @@ angular.module('icestudio')
         //--   * The Memory block
         //-------------------------------------------------------------
         newBlock(n) {
-
           //-- Create the block
           let block = new blocks.MemoryBlock(
             this.names[n],
@@ -2073,26 +2114,21 @@ angular.module('icestudio')
         //--    * false: No change in the block
         //-----------------------------------------------------------------------
         changed() {
-
           //-- Compare these values with the initial ones
           //-- to detec if there has been a change
           //-- All the items compared are Strings
-          let changed = this.nameIni !== this.values[0] ||
+          let changed =
+            this.nameIni !== this.values[0] ||
             this.valueIni !== this.value ||
             this.localIni !== this.local;
 
           //-- Return a boolean value
           return changed;
         }
-
       }
 
-
       class FormBasicConstant extends Form {
-
-
         constructor(names = '', local = false) {
-
           //-- Create a blank Form (calling the upper Class)
           super();
 
@@ -2101,23 +2137,23 @@ angular.module('icestudio')
           //-- Field 0: Constant names
           let field0 = new TextField(
             gettextCatalog.getString('Constant names'), //-- Top message
-            names,   //-- Constant block names
-            0        //-- Field id
+            names, //-- Constant block names
+            0 //-- Field id
           );
 
-          //-- Field 1: Checkbox for selecting if the constant is a 
+          //-- Field 1: Checkbox for selecting if the constant is a
           //-- local parameter or not
           let field1 = new CheckboxField(
             gettextCatalog.getString('Local parameter'),
-            local,    //-- Default value
-            1         //-- Field id
+            local, //-- Default value
+            1 //-- Field id
           );
 
           //-- Add the fields to the form
           this.addField(field0);
           this.addField(field1);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
 
@@ -2138,7 +2174,7 @@ angular.module('icestudio')
 
           //-- Values[0]: Constant names
           //-- Parse the Constant names
-          this.names = Form.parseNames(this.values[0]);
+          this.names = Form.parseNames(this.values[0].replace(/\s+/g, ''));
 
           //-- Values[1] is the checkbox that indicates if the memory
           //-- is a local parameter or not
@@ -2152,13 +2188,11 @@ angular.module('icestudio')
         //-- ERRORs are check and Notifications raised in case of errors
         //------------------------------------------------------------------------
         getPortInfo(evt) {
-
           let portInfo;
           this.portInfos = [];
 
           //-- Check all the ports (The user may have include one or more)
           for (let name of this.names) {
-
             //-- Get the port Info: port name, size...
             portInfo = Form.parsePortName(name);
 
@@ -2169,8 +2203,10 @@ angular.module('icestudio')
 
               //-- Show a warning notification
               this.resultAlert = alertify.warning(
-                gettextCatalog.getString('Wrong block name {{name}}',
-                  { name: name }));
+                gettextCatalog.getString('Wrong block name {{name}}', {
+                  name: name,
+                })
+              );
               return;
             }
 
@@ -2182,14 +2218,12 @@ angular.module('icestudio')
 
           //-- Close the form when finish
           evt.cancel = false;
-
         }
 
         //------------------------------------------------
         //-- Process the information enter by the user
         //------------------------------------------------
         process(evt) {
-
           //-- If there was a previous notification, dismiss it
           if (this.resultAlert) {
             this.resultAlert.dismiss(false);
@@ -2207,13 +2241,11 @@ angular.module('icestudio')
         //-- Call this methods only when the form has been processed!
         //-------------------------------------------------------------
         newBlocks() {
-
           //-- Array for storing all the blocks created
           let blocks = [];
           let block;
 
           for (let i in this.portInfos) {
-
             //-- Create the block
             block = this.newBlock(i);
 
@@ -2223,13 +2255,12 @@ angular.module('icestudio')
 
           //-- Return an array of Blocks
           return blocks;
-
         }
 
         //-------------------------------------------------------------
         //-- Create the block defined in the form
         //-- Call this method only when the form has been processed!
-        //-- 
+        //--
         //-- INPUTS:
         //--   * n:  Number of block to create
         //--
@@ -2237,13 +2268,8 @@ angular.module('icestudio')
         //--   * The Memory block
         //-------------------------------------------------------------
         newBlock(n) {
-
           //-- Create the block
-          let block = new blocks.ConstantBlock(
-            this.names[n],
-            '',
-            this.local
-          );
+          let block = new blocks.ConstantBlock(this.names[n], '', this.local);
 
           return block;
         }
@@ -2256,33 +2282,29 @@ angular.module('icestudio')
         //--    * false: No change in the block
         //-----------------------------------------------------------------------
         changed() {
-
           //-- Compare these values with the initial ones
           //-- to detec if there has been a change
           //-- All the items compared are Strings
-          let changed = this.nameIni !== this.values[0] ||
-            this.localIni !== this.local;
+          let changed =
+            this.nameIni !== this.values[0] || this.localIni !== this.local;
 
           //-- Return a boolean value
           return changed;
         }
-
       }
 
       class FormSelectBoard extends Form {
-
         constructor() {
-
           //-- Create a blank Form (calling the upper Class)
           super();
 
           //-------- Field 0: Combobox
 
           //-- Get all the boards
-          let options = common.boards.map(board => {
+          let options = common.boards.map((board) => {
             return {
               value: board.name,
-              label: board.info.label
+              label: board.info.label,
             };
           });
 
@@ -2290,14 +2312,14 @@ angular.module('icestudio')
           let field0 = new ComboboxField(
             options,
             gettextCatalog.getString('Select your board'), //-- Top message
-            '',     //-- Default value
-            0       //-- Field id
+            '', //-- Default value
+            0 //-- Field id
           );
 
           //-- Add the fields to the form
           this.addField(field0);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
@@ -2307,7 +2329,6 @@ angular.module('icestudio')
         //-- store them as properties
         //-------------------------------------------------------
         parseFields() {
-
           //-- Read the values from the form
           this.values = this.readFields();
         }
@@ -2324,9 +2345,7 @@ angular.module('icestudio')
       }
 
       class FormLogfile extends Form {
-
         constructor(logfile) {
-
           //-- Create a blank Form (calling the upper Class)
           super();
 
@@ -2335,14 +2354,14 @@ angular.module('icestudio')
           //-- Field 0: Log filename
           let field0 = new TextField(
             gettextCatalog.getString('Enter the log filename'), //-- Top message
-            logfile,   //-- Constant block names
-            0          //-- Field id
+            logfile, //-- Constant block names
+            0 //-- Field id
           );
 
           //-- Add the fields to the form
           this.addField(field0);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
@@ -2352,7 +2371,6 @@ angular.module('icestudio')
         //-- store them as properties
         //-------------------------------------------------------
         parseFields() {
-
           //-- Read the values from the form
           this.values = this.readFields();
         }
@@ -2366,13 +2384,10 @@ angular.module('icestudio')
           //-- Parse the Fields
           this.parseFields();
         }
-
       }
 
       class FormExternalPlugins extends Form {
-
         constructor(filename) {
-
           //-- Create a blank Form (calling the upper Class)
           super();
 
@@ -2380,16 +2395,15 @@ angular.module('icestudio')
 
           //-- Field 0: Log filename
           let field0 = new TextField(
-            gettextCatalog.getString(
-              'Enter the external plugins path'), //-- Top message
-            filename,    //-- External pluging full path
-            0            //-- Field id
+            gettextCatalog.getString('Enter the external plugins path'), //-- Top message
+            filename, //-- External pluging full path
+            0 //-- Field id
           );
 
           //-- Add the fields to the form
           this.addField(field0);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
@@ -2399,7 +2413,6 @@ angular.module('icestudio')
         //-- store them as properties
         //-------------------------------------------------------
         parseFields() {
-
           //-- Read the values from the form
           this.values = this.readFields();
         }
@@ -2413,12 +2426,9 @@ angular.module('icestudio')
           //-- Parse the Fields
           this.parseFields();
         }
-
       }
 
-
       class FormPythonEnv extends Form {
-
         constructor(pythonPath, pipPath) {
           //-- Create a blank Form (calling the upper Class)
           super();
@@ -2427,26 +2437,23 @@ angular.module('icestudio')
 
           //-- Field 0: Python path
           let field0 = new TextField(
-            gettextCatalog.getString(
-              'Enter the python path'), //-- Top message
-            pythonPath,    //-- Python path
-            0              //-- Field id
+            gettextCatalog.getString('Enter the python path'), //-- Top message
+            pythonPath, //-- Python path
+            0 //-- Field id
           );
 
           //-- Field 1: Pip path
           let field1 = new TextField(
-            gettextCatalog.getString(
-              'Enter the pip path'), //-- Top message
-            pipPath,    //-- Pip path
-            1           //-- Field id
+            gettextCatalog.getString('Enter the pip path'), //-- Top message
+            pipPath, //-- Pip path
+            1 //-- Field id
           );
-
 
           //-- Add the fields to the form
           this.addField(field0);
           this.addField(field1);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
@@ -2456,7 +2463,6 @@ angular.module('icestudio')
         //-- store them as properties
         //-------------------------------------------------------
         parseFields() {
-
           //-- Read the values from the form
           this.values = this.readFields();
         }
@@ -2470,11 +2476,9 @@ angular.module('icestudio')
           //-- Parse the Fields
           this.parseFields();
         }
-
       }
 
       class FormExternalCollections extends Form {
-
         constructor(collectionPath) {
           //-- Create a blank Form (calling the upper Class)
           super();
@@ -2483,16 +2487,15 @@ angular.module('icestudio')
 
           //-- Field 0: External collection path
           let field0 = new TextField(
-            gettextCatalog.getString(
-              'Enter the external collection path'), //-- Top message
+            gettextCatalog.getString('Enter the external collection path'), //-- Top message
             collectionPath, //-- Python path
-            0               //-- Field id
+            0 //-- Field id
           );
 
           //-- Add the fields to the form
           this.addField(field0);
 
-          //-- Control the notifications generated by 
+          //-- Control the notifications generated by
           //-- the errors when processing the form
           this.resultAlert = null;
         }
@@ -2502,7 +2505,6 @@ angular.module('icestudio')
         //-- store them as properties
         //-------------------------------------------------------
         parseFields() {
-
           //-- Read the values from the form
           this.values = this.readFields();
         }
@@ -2516,7 +2518,6 @@ angular.module('icestudio')
           //-- Parse the Fields
           this.parseFields();
         }
-
       }
 
       //--------------------------------------------------------------
@@ -2538,5 +2539,5 @@ angular.module('icestudio')
       this.FormExternalPlugins = FormExternalPlugins;
       this.FormPythonEnv = FormPythonEnv;
       this.FormExternalCollections = FormExternalCollections;
-
-    });
+    }
+  );

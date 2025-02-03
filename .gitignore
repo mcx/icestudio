@@ -12,6 +12,7 @@
 *.swp
 *~
 .tmp
+.vscode
 dist
 cache
 docs/_build

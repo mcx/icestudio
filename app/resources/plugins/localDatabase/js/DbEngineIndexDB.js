@@ -1,14 +1,14 @@
 class DbEngineIndexDB {
-
   constructor(config) {
-    this.config = (typeof config === 'undefined') ? {} : config;
+    this.config = typeof config === 'undefined' ? {} : config;
     this.databases = {};
   }
 
   isReady(dbId) {
-    return (typeof this.databases[dbId] !== 'undefined' &&
-    typeof this.databases[dbId].db !== 'undefined' &&
-    typeof this.databases[dbId].db.transaction !== 'undefined' 
+    return (
+      typeof this.databases[dbId] !== 'undefined' &&
+      typeof this.databases[dbId].db !== 'undefined' &&
+      typeof this.databases[dbId].db.transaction !== 'undefined'
     );
   }
 
@@ -26,8 +26,10 @@ class DbEngineIndexDB {
         var db = e.target.result;
         for (let i = 0; i < schema.storages.length; i++) {
           if (!db.objectStoreNames.contains(schema.storages[i])) {
-            let storage = db.createObjectStore(schema.storages[i], { keyPath: "id" });
-            storage.createIndex("id", "id", { unique: true });
+            let storage = db.createObjectStore(schema.storages[i], {
+              keyPath: 'id',
+            });
+            storage.createIndex('id', 'id', { unique: true });
           }
         }
       };
@@ -38,7 +40,6 @@ class DbEngineIndexDB {
           onOpen();
         }
       };
-
     } else {
       if (typeof onOpen !== 'undefined') {
         onOpen();
@@ -47,23 +48,21 @@ class DbEngineIndexDB {
   }
 
   retrieve(item) {
-
     if (this.isReady(item.database.dbId)) {
       let transaction = this.databases[item.database.dbId].db.transaction(
         [item.data.store],
-        "readwrite"
+        'readwrite'
       );
-
 
       transaction.onerror = function (event) {
         console.log(
-          "There has been an error with retrieving your data: " +
-          transaction.error
+          'There has been an error with retrieving your data: ' +
+            transaction.error
         );
       };
 
-      transaction.oncomplete = function (event) { };
-      let store = transaction.objectStore(item.data.store)
+      transaction.oncomplete = function (event) {};
+      let store = transaction.objectStore(item.data.store);
 
       var request = store.get(item.data.id);
       request.onerror = function (event) {
@@ -79,23 +78,23 @@ class DbEngineIndexDB {
     if (this.isReady(item.database.dbId)) {
       let transaction = this.databases[item.database.dbId].db.transaction(
         [item.data.store],
-        "readwrite"
+        'readwrite'
       );
 
       transaction.onerror = function (event) {
         console.log(
-          "There has been an error with retrieving your data: " +
-          transaction.error
+          'There has been an error with retrieving your data: ' +
+            transaction.error
         );
       };
 
-      transaction.oncomplete = function (event) { };
+      transaction.oncomplete = function (event) {};
       let store = transaction.objectStore(item.data.store);
 
       let request = store.put(item.data);
 
       request.onerror = function (event) {
-        if (request.error.name == "ConstraintError") {
+        if (request.error.name == 'ConstraintError') {
           event.preventDefault(); // don't abort the transaction
         } else {
           // unexpected error, can't handle it

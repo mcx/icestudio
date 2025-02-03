@@ -9,12 +9,11 @@ let db = false;
 
 db = new DbEngineIndexDB();
 let queue = [];
-let queueQuery=[];
+let queueQuery = [];
 let retryingStorage = false;
 let retryingRetrieve = false;
 
-function setEnvironment(data) {
-}
+function setEnvironment(data) {}
 function onRetrieve(item) {
   if (!db.isReady(item.database.dbId)) {
     queueQuery.push(item);
@@ -35,7 +34,6 @@ function onStore(item) {
       retryingStorage = true;
       db.openDatabase(item.database, retryStore);
     }
-
   } else {
     db.store(item);
     retryStore();
@@ -60,5 +58,4 @@ function retryRetrieve() {
 iceStudio.bus.events.subscribe('localDatabase.store', onStore);
 iceStudio.bus.events.subscribe('localDatabase.retrieve', onRetrieve);
 iceStudio.bus.events.subscribe('pluginManager.env', setEnvironment);
-iceStudio.bus.events.subscribe('pluginManager.updateEnv', setEnvironment); 
-
+iceStudio.bus.events.subscribe('pluginManager.updateEnv', setEnvironment);

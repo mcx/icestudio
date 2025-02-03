@@ -72,7 +72,6 @@ num_keys_fatal () {
       fi
   done < "${APPDIR}"/*.desktop
 
-
   # in case there is only one section
   # check for existence of key in [Desktop Entry]
   local seen_key="seen__${section}__${1}"
@@ -105,7 +104,6 @@ num_keys_warn () {
       fi
   done < "${APPDIR}"/*.desktop
 
-
   # in case there is only one section
   # check for existence of key in [Desktop Entry]
   local seen_key="seen__${section}__${1}"
@@ -116,7 +114,7 @@ num_keys_warn () {
 
 # num_keys_fatal Name # This is not a valid test since [Desktop Action ...] sections can also have Name=
 # num_keys_fatal Exec # This is not a valid test since [Desktop Action ...] sections can also have Name=
-# e.g, https://github.com/CDrummond/cantata/blob/master/cantata.desktop.cmake
+# e.g. https://github.com/CDrummond/cantata/blob/master/cantata.desktop.cmake
 num_keys_fatal Icon
 num_keys_fatal Categories
 # num_keys_warn Comment
@@ -137,7 +135,6 @@ else
   fi
 fi
 
-
 BLACKLISTED_FILES=$(cat "${HERE}/excludelist" | sed '/^\s*$/d ; /^#.*$/d ; s/\s*#.*$//')
 for FILE in $BLACKLISTED_FILES ; do
   if [ ! -z $(find "${APPDIR}" -name $FILE) ] ; then
@@ -147,4 +144,3 @@ done
 
 echo "Lint found no fatal issues"
 exit 0
-

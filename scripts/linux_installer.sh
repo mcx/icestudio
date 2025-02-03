@@ -29,7 +29,6 @@ fi
 cd ${SOURCE}
 PWD=`pwd`
 
-
 # Desktop Entry
 
 mkdir -p ${APP_DIR}
@@ -53,7 +52,6 @@ cp "${PWD}/resources/images/icestudio-logo.png" ${ICON}
 update-desktop-database ${APP_DIR}
 
 echo "${GREEN}\nIcestudio.desktop installed!${NC}"
-
 
 # Register extension .ice
 

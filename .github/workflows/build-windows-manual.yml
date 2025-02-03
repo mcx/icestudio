@@ -16,15 +16,15 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: develop
-      
+
       - name: Setup Nodejs version
         uses: actions/setup-node@v3
         with:
-          node-version: '21.1.0'
-      
+          node-version: '22.7.0'
+
       - name: Install npm dependencies
-        run:   npm install --legacy-peer-deps  
-      
+        run: npm install --legacy-peer-deps
+
       # It is necesarry to install wine for building the package for
       # windows. Also it is necesary to download the wine-mono windows
       # installer and install it with wine
@@ -33,14 +33,14 @@ jobs:
           sudo add-apt-repository universe
           sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install wine nsis 
+          sudo apt-get install wine nsis
           wget https://dl.winehq.org/wine/wine-mono/5.0.0/wine-mono-5.0.0-x86.msi
           export DISPLAY=:0.0
           wine msiexec /i wine-mono-5.0.0-x86.msi
-      
+
       - name: Build Microsoft Windows package
         run: |
-          export DISPLAY=:0.0 
+          export DISPLAY=:0.0
           npm run buildWindows
 
       # jq is bash command for reading properties from a json file
@@ -52,7 +52,7 @@ jobs:
         run: |
           version=$(jq -r '.version' package.json)
           echo "icestudio_version=${version}" >> $GITHUB_OUTPUT
-    
+
       # Timestamp for the build
       - id: build_date
         run: |
@@ -64,25 +64,23 @@ jobs:
         run: |
           content=`tr '\n' ' ' < app/buildinfo.json`
           echo "buildJson=${content}" >> $GITHUB_OUTPUT
-          
+
       - name: 'Upload MSI/win64'
         env:
-          ICESTUDIO_VERSION: "${{steps.icestudio_json.outputs.icestudio_version}}" 
-          TIMESTAMP: "${{steps.build_date.outputs.icestudio_timestamp}}"
-        uses: 'actions/upload-artifact@v3'
+          ICESTUDIO_VERSION: '${{steps.icestudio_json.outputs.icestudio_version}}'
+          TIMESTAMP: '${{steps.build_date.outputs.icestudio_timestamp}}'
+        uses: 'actions/upload-artifact@v4'
         with:
-          name: "win64_MSI_${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}"
-          path: "dist/icestudio-${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}-win64.exe"
+          name: 'win64_MSI_${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}'
+          path: 'dist/icestudio-${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}-win64.exe'
           if-no-files-found: error
-          
+
       - name: 'Upload ZIP/win64'
         env:
-          ICESTUDIO_VERSION: "${{steps.icestudio_json.outputs.icestudio_version}}" 
-          TIMESTAMP: "${{steps.build_date.outputs.icestudio_timestamp}}"
-        uses: 'actions/upload-artifact@v3'
+          ICESTUDIO_VERSION: '${{steps.icestudio_json.outputs.icestudio_version}}'
+          TIMESTAMP: '${{steps.build_date.outputs.icestudio_timestamp}}'
+        uses: 'actions/upload-artifact@v4'
         with:
-          name: "win64_ZIP_${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}"
-          path: "dist/icestudio-${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}-win64.zip"
+          name: 'win64_ZIP_${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}'
+          path: 'dist/icestudio-${{env.ICESTUDIO_VERSION}}${{env.TIMESTAMP}}-win64.zip'
           if-no-files-found: error
-
-

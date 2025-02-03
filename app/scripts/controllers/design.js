@@ -4,7 +4,8 @@ var subModuleActive = false;
 
 angular
   .module('icestudio')
-  .controller('DesignCtrl',
+  .controller(
+    'DesignCtrl',
     function (
       $rootScope,
       $scope,
@@ -13,12 +14,11 @@ angular
       graph,
       gettextCatalog,
       utils,
-      common) {
-
+      common
+    ) {
       //----------------------------------------------------------------
       //-- Module initialization
       //----------------------------------------------------------------
-      console.log("->DEBUG: design.js: START!");
 
       $scope.graph = graph;
       $scope.common = common;
@@ -30,12 +30,10 @@ angular
       $scope.toRestore = false;
 
       //-- Create the PAPER. It is the place were the circuits are drawn
-      //-- It is asociated to html element 'paper', located in the
+      //-- It is associated to html element 'paper', located in the
       //--  design.html file
       let htmlElement = $('.paper');
       graph.createPaper(htmlElement);
-
-      console.log("->DEBUG: design.js: STOP!");
 
       //-------------------------------------------------------------
       //-- FUNCTIONS
@@ -47,7 +45,9 @@ angular
         var item;
         if (common.isEditingSubmodule) {
           alertify.warning(
-            gettextCatalog.getString('To navigate through the design, you need to close \"edit mode\".')
+            gettextCatalog.getString(
+              'To navigate through the design, you need to close \"edit mode\".'
+            )
           );
         } else {
           if (!$scope.isNavigating) {
@@ -55,9 +55,18 @@ angular
 
             do {
               graph.breadcrumbs.pop();
+              common.submoduleHeap.pop();
               item = graph.breadcrumbs.slice(-1)[0];
+            } while (selectedItem !== item);
+            if (common.submoduleHeap.length > 0) {
+              const last = common.submoduleHeap.length - 1;
+              common.submoduleId = common.submoduleHeap[last].id;
+              common.submoduleUID = common.submoduleHeap[last].uid;
+              iceStudio.bus.events.publish('Navigation::ReadOnly');
+            } else {
+              iceStudio.bus.events.publish('Navigation::ReadWrite');
             }
-            while (selectedItem !== item);
+
             loadSelectedGraph();
           }
         }
@@ -67,13 +76,20 @@ angular
         if (!$scope.isNavigating) {
           $scope.isNavigating = true;
           graph.breadcrumbs.pop();
-
+          common.submoduleHeap.pop();
+          if (common.submoduleHeap.length > 0) {
+            const last = common.submoduleHeap.length - 1;
+            common.submoduleId = common.submoduleHeap[last].id;
+            common.submoduleUID = common.submoduleHeap[last].uid;
+            iceStudio.bus.events.publish('Navigation::ReadOnly');
+          } else {
+            iceStudio.bus.events.publish('Navigation::ReadWrite');
+          }
           loadSelectedGraph();
         }
       };
 
       $scope.editModeToggle = function ($event) {
-
         var btn = $event.currentTarget;
 
         if (!$scope.isNavigating) {
@@ -90,18 +106,21 @@ angular
             subModuleActive = false;
             var cells = $scope.graph.getCells();
 
-
             // Sort Constant/Memory cells by x-coordinate
             cells = _.sortBy(cells, function (cell) {
-              if (cell.get('type') === 'ice.Constant' ||
-                cell.get('type') === 'ice.Memory') {
+              if (
+                cell.get('type') === 'ice.Constant' ||
+                cell.get('type') === 'ice.Memory'
+              ) {
                 return cell.get('position').x;
               }
             });
             // Sort I/O cells by y-coordinate
             cells = _.sortBy(cells, function (cell) {
-              if (cell.get('type') === 'ice.Input' ||
-                cell.get('type') === 'ice.Output') {
+              if (
+                cell.get('type') === 'ice.Input' ||
+                cell.get('type') === 'ice.Output'
+              ) {
                 return cell.get('position').y;
               }
             });
@@ -111,13 +130,16 @@ angular
             var p = utils.cellsToProject(graphData.cells);
             tmp = utils.clone(common.allDependencies[block.type]);
             tmp.design.graph = p.design.graph;
-            /*var hId = utils.dependencyID(tmp);*/
-
             var hId = block.type;
             common.allDependencies[hId] = tmp;
-            $scope.toRestore = hId;
 
-            common.forceBack = true;
+            /* ---------------------------------------- */
+            /* Avoid automatically back on toggle edit  */
+            //$scope.toRestore = hId;
+            //common.forceBack = true;
+            /* ---------------------------------------- */
+
+            common.forceBack = false;
           } else {
             lockImg = $('img', btn);
             lockImgSrc = lockImg.attr('data-unlock');
@@ -132,18 +154,18 @@ angular
           $rootScope.$broadcast('navigateProject', {
             update: false,
             project: tmp,
-            editMode: rw
+            editMode: rw,
+            fromDoubleClick: false,
           });
           utils.rootScopeSafeApply();
-
         }
       };
 
       function loadSelectedGraph() {
-        utils.beginBlockingTask(); 
-        setTimeout(function(){
+        utils.beginBlockingTask();
+        setTimeout(function () {
           _decoupledLoadSelectedGraph();
-        },500);
+        }, 500);
       }
 
       function _decoupledLoadSelectedGraph() {
@@ -152,12 +174,13 @@ angular
         var design = false;
         var i = 0;
         if (n === 1) {
-
           design = project.get('design');
           opt.disabled = false;
-          if ($scope.toRestore !== false &&
+          if (
+            $scope.toRestore !== false &&
             common.submoduleId !== false &&
-            design.graph.blocks.length > 0) {
+            design.graph.blocks.length > 0
+          ) {
             for (i = 0; i < design.graph.blocks.length; i++) {
               if (common.submoduleUID === design.graph.blocks[i].id) {
                 design.graph.blocks[i].type = $scope.toRestore;
@@ -173,15 +196,15 @@ angular
             utils.endBlockingTask();
           });
           $scope.topModule = true;
-        }
-        else {
+        } else {
           var type = graph.breadcrumbs[n - 1].type;
           var dependency = common.allDependencies[type];
           design = dependency.design;
-          if ($scope.toRestore !== false &&
+          if (
+            $scope.toRestore !== false &&
             common.submoduleId !== false &&
-            design.graph.blocks.length > 0) {
-            //toRestoreLn=$scope.toRestore;
+            design.graph.blocks.length > 0
+          ) {
             for (i = 0; i < design.graph.blocks.length; i++) {
               if (common.submoduleUID === design.graph.blocks[i].id) {
                 common.allDependencies[type].design.graph.blocks[i].type =
@@ -190,7 +213,6 @@ angular
             }
             $scope.toRestore = false;
           }
-
           graph.fitContent();
           graph.resetView();
           graph.loadDesign(dependency.design, opt, function () {
@@ -203,32 +225,36 @@ angular
 
       $rootScope.$on('navigateProject', function (event, args) {
         var opt = { disabled: true };
+        if (typeof common.submoduleHeap === 'undefined') {
+          common.submoduleHeap = [];
+        }
+        let heap = { id: false, uid: false };
         if (typeof args.submodule !== 'undefined') {
-
           common.submoduleId = args.submodule;
-
+          heap.id = args.submodule;
         }
         if (typeof args.submoduleId !== 'undefined') {
-
           common.submoduleUID = args.submoduleId;
 
+          heap.uid = args.submoduleId;
         }
-        if (typeof args.editMode !== 'undefined') {
 
+        if (heap.id !== false || heap.uid !== false) {
+          common.submoduleHeap.push(heap);
+        }
+
+        if (typeof args.editMode !== 'undefined') {
           opt.disabled = args.editMode;
         }
-
         if (args.update) {
           graph.resetView();
+
           project.update({ deps: false }, function () {
             graph.loadDesign(args.project.design, opt, function () {
               utils.endBlockingTask();
             });
-
           });
-
-        }
-        else {
+        } else {
           graph.resetView();
 
           graph.loadDesign(args.project.design, opt, function () {
@@ -238,12 +264,22 @@ angular
         $scope.topModule = false;
         $scope.information = args.project.package;
         //utils.rootScopeSafeApply();
-        if (typeof common.forceBack !== 'undefined' &&
-          common.forceBack === true) {
+        if (
+          typeof common.forceBack !== 'undefined' &&
+          common.forceBack === true
+        ) {
           common.forceBack = false;
           $scope.breadcrumbsBack();
         }
 
+        if (common.isEditingSubmodule || common.submoduleHeap.length === 0) {
+          iceStudio.bus.events.publish('Navigation::ReadWrite');
+        } else {
+          iceStudio.bus.events.publish('Navigation::ReadOnly');
+        }
+
+        let flowInfo = { fromDoubleClick: args.fromDoubleClick ?? false };
+        $rootScope.$broadcast('navigateProjectEnded', flowInfo);
       });
 
       $rootScope.$on('breadcrumbsBack', function (/*event*/) {
@@ -254,7 +290,6 @@ angular
       $rootScope.$on('editModeToggle', function (event) {
         $scope.editModeToggle(event);
         utils.rootScopeSafeApply();
-
       });
-
-    });
+    }
+  );

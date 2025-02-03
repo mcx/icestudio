@@ -1,6 +1,6 @@
 {
   "label": "Fomu",
-  "SysClkMhz":48,
+  "SysClkMhz": 48,
   "datasheet": "https://github.com/im-tomu/fomu-hardware",
   "interface": "SDU",
   "FPGAResources": {

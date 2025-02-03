@@ -1,9 +1,9 @@
 'use strict';
-/*jshint unused:false*/
+
 class IceCollection {
   constructor(opts) {
     this.constants = {
-      defaultCollection: "",
+      defaultCollection: '',
       maxLevelSearch: 20,
     };
     this.config = opts || {};
@@ -20,6 +20,7 @@ class IceCollection {
       )
     );
   }
+
   getAll(paths) {
     let _this = this;
     let collections = [];
@@ -34,6 +35,7 @@ class IceCollection {
     });
     return collections;
   }
+
   get(name, path, children) {
     let collection = {
       name: name,
@@ -42,30 +44,30 @@ class IceCollection {
         blocks: [],
         examples: [],
         package: {},
-        readme: "",
+        readme: '',
       },
     };
     for (var i in children) {
       var child = children[i];
       switch (child.name) {
-        case "blocks":
+        case 'blocks':
           if (child.children) {
             collection.content.blocks = child.children;
           }
           break;
-        case "examples":
+        case 'examples':
           if (child.children) {
             collection.content.examples = child.children;
           }
           break;
-        case "package":
+        case 'package':
           if (!child.children) {
             try {
               collection.content.package = require(child.path);
             } catch (e) {}
           }
           break;
-        case "README":
+        case 'README':
           if (!child.children) {
             collection.content.readme = child.path;
           }
@@ -86,7 +88,8 @@ class IceCollection {
             return _this.fs.joinPath(folder, name);
           })
           .filter(function (path) {
-            return (_this.fs.isValidPath(path) &&
+            return (
+              _this.fs.isValidPath(path) &&
               (_this.fs.isDir(path) || _this.fs.isSymbolicLink(path)) &&
               _this.isCollectionPath(path)
             );
@@ -97,6 +100,7 @@ class IceCollection {
     }
     return collectionsPaths;
   }
+
   contains(array, item) {
     return array.indexOf(item) !== -1;
   }
@@ -124,21 +128,22 @@ class IceCollection {
 
   hasPackageJson(path, content) {
     return (
-      this.contains(content, "package.json") &&
-      this.fs.isFile(this.fs.joinPath(path, "package.json"))
+      this.contains(content, 'package.json') &&
+      this.fs.isFile(this.fs.joinPath(path, 'package.json'))
     );
   }
+
   hasBlocks(path, content) {
     return (
-      this.contains(content, "blocks") &&
-      this.fs.isDir(this.fs.joinPath(path, "blocks"))
+      this.contains(content, 'blocks') &&
+      this.fs.isDir(this.fs.joinPath(path, 'blocks'))
     );
   }
+
   hasExamples(path, content) {
     return (
-      this.contains(content, "examples") &&
-      this.fs.isDir(this.fs.joinPath(path, "examples"))
+      this.contains(content, 'examples') &&
+      this.fs.isDir(this.fs.joinPath(path, 'examples'))
     );
   }
- 
 }

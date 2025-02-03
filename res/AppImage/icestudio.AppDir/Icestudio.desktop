@@ -7,5 +7,6 @@ Terminal=false
 Type=Application
 X-AppImage-BuildId={{icestudioBuildId}}
 Categories=Development
+MimeType=text/x-icestudio
 
 
